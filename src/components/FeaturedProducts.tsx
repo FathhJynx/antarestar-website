@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SectionHeading, StaggerContainer, StaggerItem } from "@/components/AnimationPrimitives";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 
@@ -9,30 +10,33 @@ const FeaturedProducts = () => {
   const featured = products.filter((p) => p.badge).slice(0, 4);
 
   return (
-    <section className="py-20 md:py-28 section-padding">
+    <section className="py-24 md:py-32 section-padding relative">
       <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12"
-        >
-          <div>
-            <p className="text-accent font-body text-sm tracking-[0.2em] uppercase mb-2">Curated Selection</p>
-            <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">Featured Gear</h2>
-          </div>
-          <Button variant="ghost" asChild className="mt-4 md:mt-0 text-accent hover:text-accent">
-            <Link to="/store">
-              View All <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
-        </motion.div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {featured.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
-          ))}
+        <div className="flex flex-col md:flex-row md:items-end justify-between">
+          <SectionHeading subtitle="Curated Selection" title="Featured Gear" />
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="mb-14 md:mb-16"
+          >
+            <Button variant="ghost" asChild className="text-accent hover:text-accent group">
+              <Link to="/store">
+                View All Collection
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </motion.div>
         </div>
+
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-7">
+          {featured.map((product) => (
+            <StaggerItem key={product.id}>
+              <ProductCard product={product} />
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   );

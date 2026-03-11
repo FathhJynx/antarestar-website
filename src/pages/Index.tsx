@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import MarqueeBanner from "@/components/MarqueeBanner";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import BrandStory from "@/components/BrandStory";
 import LifestyleSection from "@/components/LifestyleSection";
@@ -10,10 +11,11 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
       <main>
         <HeroSection />
+        <MarqueeBanner />
         <FeaturedProducts />
         <BrandStory />
         <LifestyleSection />
