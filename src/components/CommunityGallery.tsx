@@ -1,49 +1,67 @@
 import { motion } from "framer-motion";
+import { Instagram } from "lucide-react";
+import { SectionHeading, StaggerContainer, StaggerItem } from "@/components/AnimationPrimitives";
 import c1 from "@/assets/community-1.jpg";
 import c2 from "@/assets/community-2.jpg";
 import c3 from "@/assets/community-3.jpg";
 import c4 from "@/assets/community-4.jpg";
 
 const images = [
-  { src: c1, label: "Waterfall Explorer" },
-  { src: c2, label: "Summit Chaser" },
-  { src: c3, label: "Night Camper" },
-  { src: c4, label: "Urban Adventurer" },
+  { src: c1, label: "Waterfall Explorer", aspect: "aspect-square" },
+  { src: c2, label: "Summit Chaser", aspect: "aspect-[3/4]" },
+  { src: c3, label: "Night Camper", aspect: "aspect-square" },
+  { src: c4, label: "Urban Adventurer", aspect: "aspect-[3/4]" },
 ];
 
 const CommunityGallery = () => {
   return (
-    <section className="py-20 md:py-28 section-padding">
+    <section className="py-24 md:py-32 section-padding">
       <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <p className="text-accent font-body text-sm tracking-[0.2em] uppercase mb-2">#AntarestarAdventure</p>
-          <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground">Community Inspiration</h2>
-        </motion.div>
+        <SectionHeading subtitle="#AntarestarAdventure" title="Community Inspiration" center />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" staggerDelay={0.1}>
           {images.map((img, i) => (
-            <motion.div
-              key={img.label}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer"
-            >
-              <img src={img.src} alt={img.label} className="img-cover transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
-                <p className="font-display font-semibold text-primary-foreground text-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                  {img.label}
-                </p>
+            <StaggerItem key={img.label}>
+              <div className={`relative ${i % 2 === 1 ? 'aspect-[3/4]' : 'aspect-square'} rounded-xl overflow-hidden group cursor-pointer`}>
+                <img
+                  src={img.src}
+                  alt={img.label}
+                  className="img-cover transition-all duration-700 ease-out-expo group-hover:scale-[1.1] group-hover:brightness-75"
+                  loading="lazy"
+                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="w-12 h-12 rounded-full border-2 border-primary-foreground/50 flex items-center justify-center mb-3"
+                  >
+                    <Instagram className="w-5 h-5 text-primary-foreground" />
+                  </motion.div>
+                  <p className="font-display font-semibold text-primary-foreground text-sm tracking-wide">
+                    {img.label}
+                  </p>
+                </div>
               </div>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
+
+        {/* Instagram CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-10"
+        >
+          <a
+            href="#"
+            className="inline-flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-accent transition-colors reveal-line pb-1"
+          >
+            <Instagram className="w-4 h-4" />
+            Follow us on Instagram
+          </a>
+        </motion.div>
       </div>
     </section>
   );

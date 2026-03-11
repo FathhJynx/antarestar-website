@@ -1,54 +1,58 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { SectionHeading, StaggerContainer, StaggerItem } from "@/components/AnimationPrimitives";
 import productJacket from "@/assets/product-jacket.jpg";
 import productBag from "@/assets/product-bag.jpg";
 import productBoots from "@/assets/product-boots.jpg";
 import productCap from "@/assets/product-cap.jpg";
 
 const cats = [
-  { name: "Jackets", image: productJacket, count: 24 },
-  { name: "Bags", image: productBag, count: 18 },
-  { name: "Footwear", image: productBoots, count: 12 },
-  { name: "Accessories", image: productCap, count: 30 },
+  { name: "Jackets", image: productJacket, count: 24, color: "from-olive/80 to-olive/40" },
+  { name: "Bags", image: productBag, count: 18, color: "from-primary/80 to-primary/40" },
+  { name: "Footwear", image: productBoots, count: 12, color: "from-earth/80 to-earth/40" },
+  { name: "Accessories", image: productCap, count: 30, color: "from-accent/60 to-accent/20" },
 ];
 
 const FeaturedCategories = () => {
   return (
-    <section className="py-20 md:py-28 section-padding bg-primary">
-      <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <p className="text-accent font-body text-sm tracking-[0.2em] uppercase mb-2">Shop by Category</p>
-          <h2 className="font-display font-bold text-3xl md:text-4xl text-primary-foreground">Find Your Gear</h2>
-        </motion.div>
+    <section className="py-24 md:py-32 section-padding bg-primary relative grain overflow-hidden">
+      {/* Decorative blurred orbs */}
+      <div className="absolute top-20 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-[100px]" />
+      <div className="absolute bottom-20 -right-40 w-80 h-80 bg-accent/5 rounded-full blur-[100px]" />
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {cats.map((cat, i) => (
-            <motion.div
-              key={cat.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
+      <div className="section-container relative z-10">
+        <SectionHeading subtitle="Shop by Category" title="Find Your Gear" center light />
+
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6" staggerDelay={0.1}>
+          {cats.map((cat) => (
+            <StaggerItem key={cat.name}>
               <Link
                 to={`/store?category=${cat.name}`}
-                className="block group relative aspect-[3/4] rounded-xl overflow-hidden hover-lift"
+                className="block group relative aspect-[3/4] rounded-2xl overflow-hidden"
               >
-                <img src={cat.image} alt={cat.name} className="img-cover transition-transform duration-700 group-hover:scale-110" />
+                <motion.img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="img-cover transition-all duration-[1s] ease-out-expo group-hover:scale-[1.1]"
+                  loading="lazy"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t ${cat.color} opacity-40 group-hover:opacity-60 transition-opacity duration-500`} />
                 <div className="absolute inset-0 overlay-gradient" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="font-display font-bold text-lg md:text-xl text-primary-foreground">{cat.name}</h3>
-                  <p className="font-body text-xs text-primary-foreground/60">{cat.count} Products</p>
+
+                {/* Hover arrow */}
+                <div className="absolute top-4 right-4 w-10 h-10 rounded-full border border-primary-foreground/20 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-500">
+                  <ArrowUpRight className="w-4 h-4 text-primary-foreground" />
+                </div>
+
+                <div className="absolute bottom-5 left-5 right-5">
+                  <h3 className="font-display font-bold text-xl md:text-2xl text-primary-foreground mb-0.5">{cat.name}</h3>
+                  <p className="font-body text-[11px] text-primary-foreground/50 tracking-wider">{cat.count} Products</p>
                 </div>
               </Link>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
