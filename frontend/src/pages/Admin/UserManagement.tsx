@@ -18,7 +18,9 @@ import {
   Mail,
   Phone,
   X,
-  ShoppingBag
+  ShoppingBag,
+  Save,
+  ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +29,7 @@ import api from '@/lib/api';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/Admin/ConfirmModal';
 import PromptModal from '@/components/Admin/PromptModal';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { useQuery } from '@tanstack/react-query';
 
 const UserManagement = () => {
@@ -48,6 +51,8 @@ const UserManagement = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({ name: '', email: '', phone: '', role: '' });
+
+  useScrollLock(isViewOpen || isEditOpen);
 
   const { data: users = [], isLoading, refetch: refetchUsers } = useQuery({
     queryKey: ['admin_users', search],
@@ -453,20 +458,57 @@ const UserManagement = () => {
                       {/* Bio & Stats */}
                       <div className="md:col-span-2 space-y-8">
                          <div className="grid grid-cols-3 gap-4">
-                            <div className="bg-slate-900 rounded-3xl p-6 text-white text-center">
-                               <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2">Total Kekuatan</p>
-                               <p className="text-2xl font-display font-black text-accent">{selectedUser.total_points || 0}</p>
-                               <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mt-1">Poin AP</p>
+                            {/* AP Points Card */}
+                            <div className="bg-slate-900 rounded-[2.5rem] p-8 text-center relative overflow-hidden group border border-white/5 shadow-2xl">
+                               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
+                               <div className="relative z-10">
+                                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Total Kekuatan</p>
+                                  <h3 className="text-5xl font-display font-black text-accent tracking-tighter leading-none mb-2 italic">
+                                     {selectedUser.total_points || 0}
+                                  </h3>
+                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Poin AP</p>
+                               </div>
                             </div>
-                            <div className="bg-slate-50 rounded-3xl p-6 text-center border border-slate-100">
-                               <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Vol. Operasi</p>
-                               <p className="text-2xl font-display font-black text-slate-900">{selectedUser.orders_count || 0}</p>
-                               <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mt-1">Pesanan Selesai</p>
+
+                            {/* Operations Vol Card */}
+                            <div className="bg-white rounded-[2.5rem] p-8 text-center border border-slate-100 shadow-sm relative overflow-hidden group">
+                               <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2" />
+                               <div className="relative z-10">
+                                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Vol. Operasi</p>
+                                  <h3 className="text-5xl font-display font-black text-slate-900 tracking-tighter leading-none mb-2 italic">
+                                     {selectedUser.orders_count || 0}
+                                  </h3>
+                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Pesanan Selesai</p>
+                               </div>
                             </div>
-                            <div className="bg-slate-50 rounded-3xl p-6 text-center border border-slate-100">
-                               <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Level Otoritas</p>
-                               <p className="text-2xl font-display font-black text-slate-900 uppercase italic">{selectedUser.role === 'admin' ? 'Komandan' : 'Penjelajah'}</p>
-                               <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mt-1">Akses Protokol</p>
+
+                            {/* Authority Level Card */}
+                            <div className={`rounded-[2.5rem] p-8 text-center border relative overflow-hidden transition-all duration-500 shadow-sm ${
+                               selectedUser.role === 'admin' 
+                                 ? 'bg-slate-900 border-slate-800 text-white' 
+                                 : 'bg-white border-slate-100 text-slate-900'
+                            }`}>
+                               <div className="relative z-10">
+                                  <p className={`text-[10px] font-black uppercase tracking-[0.2em] mb-2 ${
+                                     selectedUser.role === 'admin' ? 'text-slate-500' : 'text-slate-400'
+                                  }`}>Level Otoritas</p>
+                                  <h3 className={`text-3xl font-display font-black uppercase italic leading-none mb-2 tracking-tighter ${
+                                     selectedUser.role === 'admin' ? 'text-accent' : 'text-slate-900'
+                                  }`}>
+                                     {selectedUser.role === 'admin' ? 'Komandan' : 'Penjelajah'}
+                                  </h3>
+                                  <p className={`text-[9px] font-black uppercase tracking-[0.3em] ${
+                                     selectedUser.role === 'admin' ? 'text-slate-500' : 'text-slate-400'
+                                  }`}>Akses Protokol</p>
+                               </div>
+                               {/* Watermark Icon */}
+                               <div className="absolute -right-4 -bottom-4 opacity-[0.03] scale-150">
+                                  {selectedUser.role === 'admin' ? (
+                                     <Shield className="w-24 h-24" />
+                                  ) : (
+                                     <Star className="w-24 h-24" />
+                                  )}
+                               </div>
                             </div>
                          </div>
 
@@ -485,26 +527,43 @@ const UserManagement = () => {
                             <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
                                <History className="w-3.5 h-3.5" /> Log Logistik
                             </h4>
-                            <div className="space-y-4">
-                               {selectedUser.orders?.slice(0, 3).map((order: any) => (
-                                  <div key={order.id} className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl shadow-sm transition-all hover:border-accent/40">
-                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center">
-                                           <ShoppingBag className="w-5 h-5 text-slate-400" />
-                                        </div>
-                                        <div>
-                                           <p className="text-[11px] font-black uppercase text-slate-900 leading-none mb-1">Pesanan #{order.id.substring(0, 6)}</p>
-                                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
-                                        </div>
-                                     </div>
-                                     <div className="text-right">
-                                        <p className="text-[12px] font-black text-slate-900 leading-none mb-1">Rp {Number(order.total_amount).toLocaleString('id-ID')}</p>
-                                        <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${
-                                           order.status === 'completed' ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'
-                                        }`}>{order.status === 'completed' ? 'Selesai' : order.status}</span>
-                                     </div>
-                                  </div>
-                               ))}
+                            <div className="space-y-3">
+                                {selectedUser.orders?.slice(0, 3).map((order: any) => (
+                                   <div key={order.id} className="group relative pr-4">
+                                      <div className="flex items-center justify-between p-5 bg-slate-50/50 border border-slate-100 rounded-3xl transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 hover:-translate-y-1">
+                                         <div className="flex items-center gap-5">
+                                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
+                                               <ShoppingBag className="w-5 h-5 text-slate-400 group-hover:text-accent transition-colors" />
+                                            </div>
+                                            <div>
+                                               <p className="text-[13px] font-display font-black uppercase text-slate-900 leading-none mb-1.5 tracking-tight italic">
+                                                  #{order.id.substring(0, 8).toUpperCase()}
+                                               </p>
+                                               <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                                                  <Calendar className="w-3 h-3 text-slate-300" />
+                                                  {new Date(order.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                               </p>
+                                            </div>
+                                         </div>
+                                         <div className="text-right">
+                                            <div className="flex items-center justify-end gap-1 mb-1.5 leading-none">
+                                               <span className="text-[9px] font-black text-slate-300">Rp</span>
+                                               <span className="text-[15px] font-display font-black text-slate-900 tracking-tighter italic">
+                                                  {Number(order.total_price || 0).toLocaleString('id-ID')}
+                                               </span>
+                                            </div>
+                                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border transition-colors ${
+                                               order.status === 'completed' 
+                                                 ? 'bg-green-500 border-green-400 text-white shadow-lg shadow-green-100' 
+                                                 : 'bg-white border-slate-200 text-slate-400'
+                                            }`}>
+                                               <div className={`w-1 h-1 rounded-full ${order.status === 'completed' ? 'bg-white' : 'bg-slate-300'}`} />
+                                               {order.status === 'completed' ? 'Selesai' : order.status}
+                                            </span>
+                                         </div>
+                                      </div>
+                                   </div>
+                                ))}
                                {selectedUser.orders?.length === 0 && <p className="text-[11px] italic text-slate-400">Tidak ada riwayat logistik tercatat.</p>}
                             </div>
                          </div>
@@ -521,61 +580,87 @@ const UserManagement = () => {
         {isEditOpen && selectedUser && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsEditOpen(false)} className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" />
-             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-[2.5rem] w-full max-w-md p-10 relative z-10 shadow-2xl">
-                <div className="mb-8 text-center">
-                   <div className="w-20 h-20 bg-accent/10 rounded-[2rem] flex items-center justify-center text-accent mx-auto mb-6">
-                      <Edit className="w-8 h-8" />
+             <motion.div initial={{ scale: 0.98, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.98, opacity: 0, y: 10 }} className="bg-white rounded-[2.5rem] w-full max-w-md p-10 relative z-10 shadow-2xl border border-slate-100 overflow-hidden">
+                {/* Visual Backdrop Accent */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-accent to-accent/20" />
+                
+                <div className="mb-10 text-center">
+                   <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-accent mx-auto mb-6 shadow-sm border border-accent/5">
+                      <Edit className="w-7 h-7" />
                    </div>
-                   <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-2">Profil <span className="text-accent underline">Override</span></h3>
-                   <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Sesuaikan kredensial penjelajah dan tingkat otoritas.</p>
+                   <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-1">Profil <span className="text-accent underline">Override</span></h3>
+                   <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em]">Modifikasi manifes logistik dan tingkat otoritas.</p>
                 </div>
 
                 <form onSubmit={handleEditSubmit} className="space-y-6">
                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Nama Lengkap</label>
+                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
+                         <Users className="w-3 h-3" /> Nama Lengkap
+                      </label>
                       <input 
                         type="text" 
                         required
                         value={editFormData.name}
                         onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                        className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all shadow-sm"
+                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body"
                       />
                    </div>
                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Protokol Email</label>
+                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
+                         <Mail className="w-3 h-3" /> Protokol Email
+                      </label>
                       <input 
                         type="email" 
                         required
                         value={editFormData.email}
                         onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
-                        className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all shadow-sm"
+                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body"
                       />
                    </div>
                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Kontak (Telepon)</label>
+                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
+                         <Phone className="w-3 h-3" /> Kontak Aktif
+                      </label>
                       <input 
                         type="text" 
                         value={editFormData.phone}
                         onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
                         placeholder="e.g. +628123456789"
-                        className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all shadow-sm"
+                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body"
                       />
                    </div>
                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Akses Protokol (Peran)</label>
-                      <select 
-                        value={editFormData.role}
-                        onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
-                        className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all appearance-none"
-                      >
-                         <option value="user">Penjelajah (User)</option>
-                         <option value="admin">Komandan (Admin)</option>
-                      </select>
+                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
+                         <Shield className="w-3 h-3" /> Izin Otoritas (Role)
+                      </label>
+                      <div className="relative">
+                        <select 
+                           value={editFormData.role}
+                           onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
+                           className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all appearance-none cursor-pointer"
+                        >
+                           <option value="user">Penjelajah (Basic Access)</option>
+                           <option value="admin">Komandan (Full Protocol Control)</option>
+                        </select>
+                        <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 rotate-90 text-slate-400 pointer-events-none" />
+                      </div>
                    </div>
                    
-                   <div className="flex gap-4 pt-4">
-                      <button type="button" onClick={() => setIsEditOpen(false)} className="flex-1 h-12 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all">Batal</button>
-                      <button type="submit" className="flex-[2] h-12 bg-slate-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl">Simpan Perubahan</button>
+                   <div className="flex gap-4 pt-6">
+                      <button 
+                        type="button" 
+                        onClick={() => setIsEditOpen(false)} 
+                        className="flex-1 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
+                      >
+                         Batalkan
+                      </button>
+                      <button 
+                        type="submit" 
+                        className="flex-[2] h-11 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 flex items-center justify-center gap-2"
+                      >
+                         <Save className="w-3.5 h-3.5 text-accent" />
+                         Sync Profile
+                      </button>
                    </div>
                 </form>
              </motion.div>

@@ -16,12 +16,15 @@ import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/Admin/ConfirmModal';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { useQuery } from '@tanstack/react-query';
 
 const CategoryManagement = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
+
+  useScrollLock(isModalOpen);
   const [formData, setFormData] = useState({ name: '', image_url: '' });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -68,10 +71,10 @@ const CategoryManagement = () => {
 
     try {
       if (editingCategory) {
-        await api.put(`/admin/categories/${editingCategory.id}`, formData);
+        await api.put(`/admin/catalog/categories/${editingCategory.id}`, formData);
         toast.success('Kategori berhasil diperbarui');
       } else {
-        await api.post('/admin/categories', formData);
+        await api.post('/admin/catalog/categories', formData);
         toast.success('Kategori berhasil dibuat');
       }
       setFormData({ name: '', image_url: '' });
@@ -91,7 +94,7 @@ const CategoryManagement = () => {
   const onConfirmDelete = async () => {
     const loadingToast = toast.loading('Menghapus kategori...');
     try {
-      await api.delete(`/admin/categories/${deleteConfig.id}`);
+      await api.delete(`/admin/catalog/categories/${deleteConfig.id}`);
       toast.success(`Kategori ${deleteConfig.name} telah dihapus.`, { id: loadingToast });
       refetchCategories();
       setIsConfirmOpen(false);
@@ -203,17 +206,17 @@ const CategoryManagement = () => {
                className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
              />
              <motion.div 
-               initial={{ opacity: 0, scale: 0.95, y: 20 }}
+               initial={{ opacity: 0, scale: 0.98, y: 10 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
-               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-               className="bg-white rounded-[2.5rem] w-full max-w-md p-10 relative z-10 shadow-2xl"
+               exit={{ opacity: 0, scale: 0.98, y: 10 }}
+               className="bg-white rounded-[2rem] w-full max-w-sm p-8 relative z-10 shadow-2xl border border-slate-100"
              >
-                <div className="mb-8">
-                   <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-2">
-                     {editingCategory ? 'Perbarui' : 'Buat'} <span className="text-accent underline">Kategori</span>
-                   </h3>
-                   <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Tentukan kategori penjelajah baru untuk toko Anda.</p>
-                </div>
+                 <div className="mb-6">
+                    <h3 className="font-display font-black text-xl uppercase tracking-tighter italic mb-1">
+                      {editingCategory ? 'Perbarui' : 'Buat'} <span className="text-accent underline">Kategori</span>
+                    </h3>
+                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-tight">Tentukan kategori penjelajah baru untuk toko Anda.</p>
+                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
@@ -246,32 +249,32 @@ const CategoryManagement = () => {
                           </div>
                        </div>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Nama Kategori</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Perlengkapan Mendaki"
-                        className="w-full h-14 px-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm"
-                      />
-                   </div>
-                   <div className="flex gap-3 pt-4">
-                      <button 
-                        type="button"
-                        onClick={() => setIsModalOpen(false)}
-                        className="flex-1 h-12 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
-                      >
-                         Batal
-                      </button>
-                      <button 
-                        type="submit"
-                        className="flex-[2] h-12 rounded-2xl bg-slate-900 text-white text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg"
-                      >
-                         {editingCategory ? 'Simpan Perubahan' : 'Inisialisasi Kategori'}
-                      </button>
-                   </div>
+                     <div className="space-y-2">
+                       <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Nama Kategori</label>
+                       <input 
+                         type="text" 
+                         required
+                         value={formData.name}
+                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                         placeholder="e.g. Perlengkapan Mendaki"
+                         className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm"
+                       />
+                    </div>
+                    <div className="flex gap-3 pt-2">
+                       <button 
+                         type="button"
+                         onClick={() => setIsModalOpen(false)}
+                         className="flex-1 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
+                       >
+                          Batal
+                       </button>
+                       <button 
+                         type="submit"
+                         className="flex-[2] h-11 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg"
+                       >
+                          {editingCategory ? 'Simpan' : 'Inisialisasi'}
+                       </button>
+                    </div>
                 </form>
              </motion.div>
           </div>

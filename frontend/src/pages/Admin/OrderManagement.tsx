@@ -15,13 +15,19 @@ import {
   Calendar,
   CreditCard,
   ExternalLink,
-  PackageCheck
+  PackageCheck,
+  Star,
+  Camera,
+  Loader2,
+  Save,
+  AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { useQuery } from '@tanstack/react-query';
 
 const OrderManagement = () => {
@@ -30,6 +36,8 @@ const OrderManagement = () => {
 
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  useScrollLock(isDetailModalOpen);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
@@ -195,7 +203,7 @@ const OrderManagement = () => {
                      </div>
                      <div>
                         <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Amount</p>
-                        <p className="text-[13px] font-black text-slate-900">Rp {(order.total_price || 0).toLocaleString('id-ID')}</p>
+                        <p className="text-[13px] font-black text-slate-900">Rp {Number(order.total_price || 0).toLocaleString('id-ID')}</p>
                      </div>
                      <div className="hidden md:block">
                         <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Order Date</p>
@@ -307,7 +315,7 @@ const OrderManagement = () => {
                                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.product_variant?.name || 'Default Variant'}</p>
                                        </div>
                                        <div className="text-right">
-                                          <p className="text-[13px] font-black text-slate-900">Rp {item.price.toLocaleString('id-ID')}</p>
+                                          <p className="text-[13px] font-black text-slate-900">Rp {Number(item.price || 0).toLocaleString('id-ID')}</p>
                                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Qty: {item.quantity}</p>
                                        </div>
                                     </div>
@@ -317,21 +325,21 @@ const OrderManagement = () => {
                               <div className="mt-10 pt-8 border-t border-slate-100 space-y-4 px-2">
                                  <div className="flex justify-between items-center text-slate-400 font-bold uppercase tracking-widest text-[10px]">
                                     <span>Subtotal Produk</span>
-                                    <span>Rp {(selectedOrder.total_price + (selectedOrder.discount_amount || 0) - (selectedOrder.shipping_cost || 0)).toLocaleString('id-ID')}</span>
+                                    <span>Rp {Number(selectedOrder.total_price + (selectedOrder.discount_amount || 0) - (selectedOrder.shipping_cost || 0)).toLocaleString('id-ID')}</span>
                                  </div>
                                  <div className="flex justify-between items-center text-slate-400 font-bold uppercase tracking-widest text-[10px]">
                                     <span>Biaya Logistik</span>
-                                    <span>Rp {(selectedOrder.shipping_cost || 0).toLocaleString('id-ID')}</span>
+                                    <span>Rp {Number(selectedOrder.shipping_cost || 0).toLocaleString('id-ID')}</span>
                                  </div>
                                  {selectedOrder.discount_amount > 0 && (
                                    <div className="flex justify-between items-center text-red-400 font-bold uppercase tracking-widest text-[10px]">
                                       <span>Potongan Voucher</span>
-                                      <span>-Rp {selectedOrder.discount_amount.toLocaleString('id-ID')}</span>
+                                      <span>-Rp {Number(selectedOrder.discount_amount || 0).toLocaleString('id-ID')}</span>
                                    </div>
                                  )}
                                  <div className="flex justify-between items-center pt-4 border-t border-slate-100">
                                     <span className="font-display font-black text-lg uppercase tracking-tighter">Total Keseluruhan</span>
-                                    <span className="font-display font-black text-2xl text-accent">Rp {selectedOrder.total_price.toLocaleString('id-ID')}</span>
+                                    <span className="font-display font-black text-2xl text-accent">Rp {Number(selectedOrder.total_price || 0).toLocaleString('id-ID')}</span>
                                  </div>
                               </div>
                            </div>

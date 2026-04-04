@@ -18,6 +18,22 @@ const AnnouncementBanner = () => {
     }
   });
 
+  useEffect(() => {
+    if (activeCampaign) {
+      const isDismissed = localStorage.getItem(`dismissed-flash-sale-${activeCampaign.id || activeCampaign.name}`);
+      if (isDismissed) {
+        setIsVisible(false);
+      }
+    }
+  }, [activeCampaign]);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    if (activeCampaign) {
+      localStorage.setItem(`dismissed-flash-sale-${activeCampaign.id || activeCampaign.name}`, "true");
+    }
+  };
+
   const isStarted = activeCampaign?.start_date ? new Date(activeCampaign.start_date).getTime() <= new Date().getTime() : false;
   
   useEffect(() => {
@@ -78,7 +94,7 @@ const AnnouncementBanner = () => {
             </Link>
 
             <button 
-              onClick={() => setIsVisible(false)}
+              onClick={handleClose}
               className="absolute right-4 p-1 opacity-40 hover:opacity-100 transition-opacity"
             >
               <X className="w-4 h-4" />

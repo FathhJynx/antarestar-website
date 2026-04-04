@@ -210,8 +210,8 @@ const MemberArea = () => {
                       
                       <div className="space-y-3">
                         <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-white/50">
-                          <span>{(profile.points || 0).toLocaleString('id-ID')} AP</span>
-                          <span>{(profile.nextTierPoints || 500).toLocaleString('id-ID')} AP</span>
+                          <span>{Number(profile.points || 0).toLocaleString('id-ID')} AP</span>
+                          <span>{Number(profile.nextTierPoints || 500).toLocaleString('id-ID')} AP</span>
                         </div>
                         <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                           <motion.div 
@@ -223,7 +223,7 @@ const MemberArea = () => {
                           />
                         </div>
                         <p className="text-[9px] text-white/30 text-center font-bold tracking-widest uppercase">
-                           {(Math.max(0, (profile.nextTierPoints || 0) - (profile.points || 0))).toLocaleString('id-ID')} poin lagi ke Elite
+                           {Number(Math.max(0, (profile.nextTierPoints || 0) - (profile.points || 0))).toLocaleString('id-ID')} poin lagi ke Elite
                         </p>
                       </div>
                     </div>
@@ -240,7 +240,7 @@ const MemberArea = () => {
                       <Star className="w-5 h-5 text-accent" />
                    </div>
                    <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground mb-1">Poin Penjelajah</p>
-                   <p className="font-display font-black text-2xl">{(profile.points || 0).toLocaleString('id-ID')}</p>
+                   <p className="font-display font-black text-2xl">{Number(profile.points || 0).toLocaleString('id-ID')}</p>
                 </div>
                 <div className="bg-card border border-border p-6 rounded-3xl text-center">
                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-3">
@@ -372,7 +372,7 @@ const MemberArea = () => {
                             <p className={`text-[11px] uppercase tracking-wider font-display font-black truncate max-w-[80px] sm:max-w-none ${user.name === profile.name ? 'text-accent' : 'text-foreground/80'}`}>{user.name}</p>
                           </div>
                         </div>
-                        <p className="font-display font-black text-xs text-foreground/60">{(user.points || 0).toLocaleString('id-ID')} AP</p>
+                        <p className="font-display font-black text-xs text-foreground/60">{Number(user.points || 0).toLocaleString('id-ID')} AP</p>
                       </div>
                     )) : (
                         <div className="flex flex-col items-center justify-center py-8 text-center opacity-30">

@@ -202,10 +202,21 @@ const GridCard = ({ product, index = 0 }: { product: Product; index: number }) =
         {/* Rating Row (Desktop Only) */}
         <div className="hidden sm:flex items-center justify-between gap-1 mb-2">
           <StarRow rating={product.rating} reviewCount={product.reviewCount} />
+          {product.sold_count && product.sold_count > 0 && (
+            <span className="text-[10px] font-black font-display uppercase tracking-wider text-accent drop-shadow-sm">
+              {product.sold_count > 1000 ? `${(product.sold_count / 1000).toFixed(1)}k+` : product.sold_count}+ Terjual
+            </span>
+          )}
         </div>
 
         {/* Sold info for mobile */}
-        <div className="sm:hidden h-2" />
+        {product.sold_count && product.sold_count > 0 && (
+          <div className="sm:hidden mb-2">
+            <span className="text-[9px] font-black font-display uppercase tracking-widest text-accent/80">
+              {product.sold_count}+ Terjual
+            </span>
+          </div>
+        )}
 
         {/* Price row - Cleaner typography */}
         <div className="mt-auto flex flex-wrap items-baseline gap-1 sm:gap-2">
@@ -315,6 +326,14 @@ const ListCard = ({ product, index = 0 }: { product: Product; index: number }) =
           {/* Rating & sold */}
           <div className="flex items-center gap-3 mb-3">
             <StarRow rating={product.rating} reviewCount={product.reviewCount} />
+            {product.sold_count && product.sold_count > 0 && (
+              <div className="flex items-center gap-2 px-2 py-0.5 bg-accent/5 rounded-full border border-accent/10">
+                <div className="w-1 h-1 rounded-full bg-accent animate-pulse" />
+                <span className="text-[10px] font-black font-display uppercase tracking-widest text-accent">
+                  {product.sold_count}+ Sold
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

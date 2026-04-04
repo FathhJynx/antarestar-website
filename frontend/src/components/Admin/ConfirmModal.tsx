@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   cancelText = 'Cancel',
   variant = 'warning'
 }) => {
+  useScrollLock(isOpen);
   return (
     <AnimatePresence>
       {isOpen && (
@@ -34,59 +36,64 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             onClick={onClose}
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
           />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+           <motion.div 
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-white rounded-[2.5rem] w-full max-w-md p-10 relative z-10 shadow-2xl overflow-hidden"
+            exit={{ opacity: 0, scale: 0.98, y: 10 }}
+            className="bg-white rounded-[2rem] w-full max-w-[340px] p-8 relative z-10 shadow-2xl overflow-hidden border border-slate-100"
           >
             {/* Visual Accent */}
-            <div className={`absolute top-0 left-0 right-0 h-2 ${
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${
                 variant === 'danger' ? 'bg-red-500' :
                 variant === 'info' ? 'bg-blue-500' :
                 'bg-amber-500'
             }`} />
 
-            <div className="flex flex-col items-center text-center">
-              <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center mb-6 shadow-lg ${
-                  variant === 'danger' ? 'bg-red-50' :
-                  variant === 'info' ? 'bg-blue-50' :
-                  'bg-amber-50'
+            <div className="flex flex-col items-center text-center relative z-10">
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-sm border ${
+                  variant === 'danger' ? 'bg-red-50 border-red-100' :
+                  variant === 'info' ? 'bg-blue-50 border-blue-100' :
+                  'bg-amber-50 border-amber-100'
               }`}>
                 {variant === 'danger' ? (
-                  <AlertTriangle className="w-8 h-8 text-red-500" />
+                  <AlertTriangle className="w-7 h-7 text-red-500" />
                 ) : variant === 'info' ? (
-                   <ShieldCheck className="w-8 h-8 text-blue-500" />
+                   <ShieldCheck className="w-7 h-7 text-blue-500" />
                 ) : (
-                  <AlertTriangle className="w-8 h-8 text-amber-500" />
+                  <AlertTriangle className="w-7 h-7 text-amber-500" />
                 )}
               </div>
 
-              <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-3">
+              <h3 className="font-display font-black text-xl uppercase tracking-tighter italic mb-2">
                 {title}
               </h3>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest leading-relaxed mb-10">
+              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] leading-relaxed mb-8 px-2">
                 {message}
               </p>
 
-                <div className="flex gap-4 w-full">
-                   <button 
-                     onClick={onClose}
-                     className="flex-1 h-12 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
-                   >
-                      {cancelText}
-                   </button>
+                <div className="flex flex-col gap-2 w-full">
                    <button 
                      onClick={onConfirm}
-                     className={`flex-[2] h-12 rounded-2xl text-[11px] font-black uppercase tracking-widest text-white shadow-lg transition-all active:scale-95 ${
-                        variant === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-200' : 
-                        variant === 'warning' ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-200' :
-                        'bg-slate-900 hover:bg-slate-800 shadow-slate-200'
+                     className={`w-full h-11 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                        variant === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-200/50' : 
+                        variant === 'warning' ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-200/50' :
+                        'bg-slate-900 hover:bg-slate-800 shadow-slate-900/10'
                      }`}
                    >
                       {confirmText}
                    </button>
+                   <button 
+                     onClick={onClose}
+                     className="w-full h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
+                   >
+                      {cancelText}
+                   </button>
                 </div>
+            </div>
+
+            {/* Subtle Watermark */}
+            <div className="absolute -right-4 -bottom-4 opacity-[0.03] pointer-events-none">
+                {variant === 'danger' ? <AlertTriangle className="w-24 h-24" /> : <ShieldCheck className="w-24 h-24" />}
             </div>
           </motion.div>
         </div>

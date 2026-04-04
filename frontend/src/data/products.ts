@@ -24,6 +24,7 @@ export interface Product {
   rating?: number;
   reviewCount?: number;
   stock?: number;
+  sold_count?: number;
 }
 
 // No dummy products

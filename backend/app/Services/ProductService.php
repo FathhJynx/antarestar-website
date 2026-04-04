@@ -224,4 +224,10 @@ class ProductService
     {
         return $this->productRepository->deleteImage($id);
     }
+
+    public function getSimilarProducts(string $id)
+    {
+        $products = $this->productRepository->getSimilarProducts($id);
+        return $products->map(fn($p) => $this->transformProductForFlashSale($p));
+    }
 }

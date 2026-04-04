@@ -23,11 +23,14 @@ import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/Admin/ConfirmModal';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { useQuery } from '@tanstack/react-query';
 
 const FlashSaleManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<any>(null);
+
+  useScrollLock(isModalOpen);
   
   // Product Selection Modal
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -336,16 +339,16 @@ const FlashSaleManagement = () => {
         {isModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" />
-             <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} className="bg-white rounded-[3rem] w-full max-w-xl p-10 relative z-10 shadow-2xl overflow-hidden">
-                <div className="mb-8 flex items-center justify-between relative z-10">
+             <motion.div initial={{ scale: 0.98, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.98, opacity: 0, y: 10 }} className="bg-white rounded-[2rem] w-full max-w-lg p-8 relative z-10 shadow-2xl overflow-hidden border border-slate-100">
+                <div className="mb-6 flex items-center justify-between relative z-10">
                    <div>
-                      <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic leading-none">
+                      <h3 className="font-display font-black text-xl uppercase tracking-tighter italic leading-none">
                          {editingCampaign ? 'Update' : 'Launch'} <span className="text-red-500">Flash Sale</span>
                       </h3>
-                      <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-2">Atur parameter waktu kampanye kilat.</p>
+                      <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest mt-2">Atur parameter waktu kampanye kilat.</p>
                    </div>
-                   <button onClick={() => setIsModalOpen(false)} className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
-                      <X className="w-6 h-6" />
+                   <button onClick={() => setIsModalOpen(false)} className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
+                      <X className="w-5 h-5" />
                    </button>
                 </div>
 
@@ -357,7 +360,7 @@ const FlashSaleManagement = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. MEGA SALE MUDIK 2024"
-                        className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-red-500/10 transition-all font-display uppercase italic"
+                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-red-500/10 transition-all font-display uppercase italic"
                       />
                    </div>
 

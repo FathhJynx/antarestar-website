@@ -67,7 +67,8 @@ class ProductRepository extends BaseRepository
             'variants',
             'images',
             'reviews'
-        ]);
+        ])
+        ->withSum('orderItems as sold_count', 'quantity');
 
         if (!empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
@@ -93,7 +94,16 @@ class ProductRepository extends BaseRepository
 
         $sortBy = $filters['sort_by'] ?? 'created_at';
         $sortDir = $filters['sort_dir'] ?? 'desc';
-        $query->orderBy($sortBy, $sortDir);
+
+        if ($sortBy === 'popular') {
+            $query->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
+                  ->leftJoin('order_items', 'product_variants.id', '=', 'order_items.product_variant_id')
+                  ->selectRaw('products.*, SUM(order_items.quantity) as total_sold')
+                  ->groupBy('products.id')
+                  ->orderBy('total_sold', 'desc');
+        } else {
+            $query->orderBy($sortBy, $sortDir);
+        }
 
         return $query->paginate($perPage);
     }
@@ -110,7 +120,9 @@ class ProductRepository extends BaseRepository
             'images', 
             'reviews.user', 
             'reviews.order.items.productVariant'
-        ])->find($id);
+        ])
+        ->withSum('orderItems as sold_count', 'quantity')
+        ->find($id);
     }
 
     public function findProductBySlug(string $slug): ?Product
@@ -125,7 +137,24 @@ class ProductRepository extends BaseRepository
             'images', 
             'reviews.user', 
             'reviews.order.items.productVariant'
-        ])->where('slug', $slug)->first();
+        ])
+        ->withSum('orderItems as sold_count', 'quantity')
+        ->where('slug', $slug)->first();
+    }
+
+    public function getSimilarProducts(string $productId, int $limit = 6): Collection
+    {
+        $product = $this->model->find($productId);
+        if (!$product) {
+            return new Collection();
+        }
+
+        return $this->model->with(['category', 'variants', 'images', 'reviews'])
+            ->withSum('orderItems as sold_count', 'quantity')
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $productId)
+            ->limit($limit)
+            ->get();
     }
 
     // Variant methods

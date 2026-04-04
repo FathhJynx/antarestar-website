@@ -13,7 +13,9 @@ import {
   Trash,
   Tag,
   Box,
-  Coins
+  Coins,
+  ShoppingBag,
+  ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
@@ -21,6 +23,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/Admin/ConfirmModal';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { useQuery } from '@tanstack/react-query';
 
 const ProductManagement = () => {
@@ -31,6 +34,8 @@ const ProductManagement = () => {
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
+
+  useScrollLock(isModalOpen);
   const [isUploading, setIsUploading] = useState<{[key: number]: boolean}>({});
   
   // Custom Modal States
@@ -151,10 +156,10 @@ const ProductManagement = () => {
     
     try {
       if (editingProduct) {
-        await api.put(`/admin/products/${editingProduct.id}`, formData);
+        await api.put(`/admin/catalog/products/${editingProduct.id}`, formData);
         toast.success('Produk berhasil diperbarui', { id: loadingToast });
       } else {
-        await api.post('/admin/products', formData);
+        await api.post('/admin/catalog/products', formData);
         toast.success('Produk berhasil dibuat', { id: loadingToast });
       }
       setIsModalOpen(false);
@@ -172,7 +177,7 @@ const ProductManagement = () => {
   const onConfirmDelete = async () => {
     const loadingToast = toast.loading('Menghapus produk...');
     try {
-      await api.delete(`/admin/products/${deleteConfig.id}`);
+      await api.delete(`/admin/catalog/products/${deleteConfig.id}`);
       toast.success(`${deleteConfig.name} telah dihapus.`, { id: loadingToast });
       refetchProducts();
       setIsConfirmOpen(false);
@@ -280,14 +285,17 @@ const ProductManagement = () => {
                            </div>
                         </td>
                         <td className="px-6 py-6">
-                          <div className="flex flex-col">
-                             <span className="text-[13px] font-black text-slate-900">
-                                Rp {minPrice.toLocaleString('id-ID')}
-                             </span>
-                             {maxPrice > minPrice && (
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Hingga {maxPrice.toLocaleString('id-ID')}</span>
-                             )}
-                          </div>
+                             <div className="flex flex-col">
+                                <span className="text-[14px] font-black text-slate-900 leading-none">
+                                   Rp {Number(minPrice || 0).toLocaleString('id-ID')}
+                                </span>
+                                {maxPrice > minPrice && (
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5 flex items-center gap-1">
+                                   <ChevronRight className="w-3 h-3 text-slate-300" />
+                                   Hingga {Number(maxPrice || 0).toLocaleString('id-ID')}
+                                </span>
+                                )}
+                             </div>
                         </td>
                         <td className="px-6 py-6">
                            <div className="flex flex-col gap-1.5">
@@ -342,27 +350,27 @@ const ProductManagement = () => {
                className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
              />
              <motion.div 
-               initial={{ opacity: 0, scale: 0.9, y: 20 }}
+               initial={{ opacity: 0, scale: 0.98, y: 10 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
-               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-               className="bg-white rounded-[3rem] w-full max-w-4xl max-h-[90vh] overflow-hidden relative z-10 shadow-2xl flex flex-col"
+               exit={{ opacity: 0, scale: 0.98, y: 10 }}
+               className="bg-white rounded-[2rem] w-full max-w-4xl max-h-[75vh] overflow-hidden relative z-10 shadow-2xl flex flex-col border border-slate-100"
              >
                 {/* Modal Header */}
-                <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                    <div>
-                      <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic">
+                      <h3 className="font-display font-black text-xl uppercase tracking-tighter italic">
                         {editingProduct ? 'Perbarui' : 'Inisialisasi'} <span className="text-accent underline">Perlengkapan</span>
                       </h3>
-                      <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-1">Konfigurasi spesifikasi alat dan data inventori.</p>
+                      <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest mt-1">Konfigurasi spesifikasi alat dan data inventori.</p>
                    </div>
-                   <button onClick={() => setIsModalOpen(false)} className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all shadow-sm">
+                   <button onClick={() => setIsModalOpen(false)} className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all shadow-sm">
                       <X className="w-5 h-5" />
                    </button>
                 </div>
 
                 {/* Modal Body */}
-                <div className="flex-1 overflow-y-auto p-10">
-                   <form id="productForm" onSubmit={handleSubmit} className="space-y-10">
+                <div className="flex-1 overflow-y-auto p-8">
+                   <form id="productForm" onSubmit={handleSubmit} className="space-y-8">
                       {/* Basic Info */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                          <div className="space-y-2">
@@ -375,7 +383,7 @@ const ProductManagement = () => {
                               value={formData.name}
                               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                               placeholder="e.g. Tenda Camp Pro"
-                              className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm"
+                              className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm"
                             />
                          </div>
                          <div className="space-y-2">
@@ -386,7 +394,7 @@ const ProductManagement = () => {
                               required
                               value={formData.category_id}
                               onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                              className="w-full h-14 px-6 bg-slate-50 border border-slate-100 rounded-2xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm appearance-none"
+                              className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm appearance-none"
                             >
                                <option value="">Pilih Kategori</option>
                                {categories.map(cat => (
@@ -403,7 +411,7 @@ const ProductManagement = () => {
                               value={formData.description}
                               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                               placeholder="Jelaskan kemampuan dan fitur alat ini..."
-                              className="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm resize-none"
+                              className="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm resize-none"
                             />
                          </div>
                       </div>
@@ -592,21 +600,21 @@ const ProductManagement = () => {
                 </div>
 
                 {/* Modal Footer */}
-                <div className="px-10 py-8 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div className="px-8 py-6 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
                    <button 
                      type="button"
                      onClick={() => setIsModalOpen(false)}
-                     className="px-8 h-12 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-all"
+                     className="px-6 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-all"
                    >
                       Batalkan Perubahan
                    </button>
                    <button 
                      form="productForm"
                      type="submit"
-                     className="px-10 h-12 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition-all flex items-center gap-3"
+                     className="px-8 h-11 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition-all flex items-center gap-3"
                    >
                       <Save className="w-4 h-4" /> 
-                      {editingProduct ? 'Perbarui Produk' : 'Terbitkan Produk'}
+                      {editingProduct ? 'Simpan' : 'Terbitkan'}
                    </button>
                 </div>
              </motion.div>

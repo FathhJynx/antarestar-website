@@ -176,4 +176,9 @@ class ProductController extends BaseController
         $this->productService->deleteProductImage($id);
         return $this->success(null, 'Image deleted.');
     }
+
+    public function similar(string $id): JsonResponse
+    {
+        return $this->success($this->productService->getSimilarProducts($id), 'Similar products list.');
+    }
 }

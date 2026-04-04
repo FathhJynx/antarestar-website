@@ -69,36 +69,55 @@ const InView = ({ children, delay = 0, className = "" }: { children: React.React
 );
 
 // ─── 1. Stats Strip ──────────────────────────────────────────
-const STATS = [
-  { n: "10 K+",  l: "Produk Terjual" },
-  { n: "4.9 ★",  l: "Rating Pelanggan" },
-  { n: "100+",   l: "Korporat & Instansi" },
-  { n: "7 Thn",  l: "Dedikasi Outdoor" },
-];
+const StatsStrip = () => {
+  const { data: stats } = useQuery({
+    queryKey: ['public-stats'],
+    queryFn: async () => {
+      const res = await api.get('/stats');
+      return res.data.data;
+    },
+    staleTime: 60000, // 1 minute
+  });
 
-const StatsStrip = () => (
-  <div className="bg-primary border-b border-white/10">
-    <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12 py-10 md:py-12">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-        {STATS.map((s, i) => (
-          <InView key={s.l} delay={i * 0.08}>
-            <div className="text-center">
-              <p className="font-display font-black text-3xl md:text-4xl text-accent mb-1 leading-none">{s.n}</p>
-              <p className="font-body text-xs md:text-sm text-white/50 uppercase tracking-widest">{s.l}</p>
-            </div>
-          </InView>
-        ))}
+  const displayStats = [
+    { n: stats?.sold?.display || "10 K+",  l: stats?.sold?.label || "Produk Terjual" },
+    { n: stats?.explorers?.display || "5.0 K+",  l: stats?.explorers?.label || "Penjelajah Aktif" },
+    { n: stats?.rating?.display || "4.9 ★",  l: stats?.rating?.label || "Rating Pelanggan" },
+    { n: stats?.experience?.display || "7 Thn",  l: stats?.experience?.label || "Dedikasi Outdoor" },
+  ];
+
+  return (
+    <div className="bg-primary border-b border-white/10">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12 py-10 md:py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          {displayStats.map((s, i) => (
+            <InView key={s.l} delay={i * 0.08}>
+              <div className="text-center">
+                <p className="font-display font-black text-3xl md:text-4xl text-accent mb-1 leading-none tracking-tighter italic">{s.n}</p>
+                <p className="font-body text-[10px] md:text-[11px] text-white/50 uppercase tracking-[0.2em]">{s.l}</p>
+              </div>
+            </InView>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── 2. Shop by Category ────────────────────────────────────────
 // Categories are now fetched from API
 
 // ─── Category card UI (shared by mobile + desktop layouts) ──
+interface CategoryItem {
+  name: string;
+  img: string;
+  href: string;
+  count: number;
+  big: boolean;
+}
+
 interface CatCardProps {
-  cat: typeof CATS[number];
+  cat: CategoryItem;
   big?: boolean;
   desktopFill?: boolean; // on desktop the parent grid cell determines height
 }

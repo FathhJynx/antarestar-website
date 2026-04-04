@@ -142,9 +142,9 @@ const SoldProducts = () => {
                       <td className="px-6 py-6">
                         <div className="flex flex-col">
                            <span className="text-[13px] font-black text-slate-900">
-                              Rp {item.price.toLocaleString('id-ID')}
+                              Rp {Number(item.price || 0).toLocaleString('id-ID')}
                            </span>
-                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Total: Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
+                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Total: Rp {Number(item.price * item.quantity).toLocaleString('id-ID')}</span>
                         </div>
                       </td>
                       <td className="px-6 py-6">

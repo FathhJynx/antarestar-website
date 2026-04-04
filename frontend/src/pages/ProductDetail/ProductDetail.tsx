@@ -129,6 +129,37 @@ const ProductDetail = () => {
       }
     },
   });
+  
+  const { data: similarProducts = [], isLoading: isFetchingSimilar } = useQuery({
+    queryKey: ['similar-products', id],
+    queryFn: async () => {
+      try {
+        const res = await api.get(`/products/${id}/similar`);
+        const raw = res.data.data || [];
+        return raw.map((p: any) => {
+          const activeVariant = p.variants?.find((v: any) => v.is_on_flash_sale) || p.variants?.[0];
+          const isOnFlashSale = activeVariant?.is_on_flash_sale;
+          
+          return {
+            id: String(p.id),
+            name: String(p.name),
+            image: p.images?.find((img: any) => img.is_primary)?.image_url || p.images?.[0]?.image_url || 'https://via.placeholder.com/300',
+            price: Number(activeVariant?.price || 0),
+            originalPrice: isOnFlashSale ? Number(activeVariant.price) : undefined,
+            flashSalePrice: isOnFlashSale ? Number(activeVariant.flash_sale_price) : undefined,
+            rating: p.reviews?.length > 0 
+              ? p.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / p.reviews.length 
+              : 0,
+            reviewCount: p.reviews?.length || 0,
+            category: p.category?.name || "Perlengkapan"
+          };
+        });
+      } catch (e) {
+        return [];
+      }
+    },
+    enabled: !!id
+  });
 
   const product: any = remoteProduct;
   const [selectedSize, setSelectedSize] = useState<string>("");
@@ -187,7 +218,7 @@ const ProductDetail = () => {
     ? Math.round(((originalPrice - effectivePrice) / originalPrice) * 100)
     : 0;
 
-  const relatedProducts: any[] = [];
+  const relatedProducts = similarProducts;
 
   const handleAddToCart = () => {
     if (availableSizes.length > 0 && !selectedSize) {
@@ -646,7 +677,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Related Products */}
-          {relatedProducts.length > 0 && (
+          {(relatedProducts.length > 0 || isFetchingSimilar) && (
             <div className="mt-16 border-t border-border pt-10">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="font-display font-black text-2xl uppercase">Produk Serupa</h2>
@@ -654,10 +685,17 @@ const ProductDetail = () => {
                   Lihat Semua <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                {relatedProducts.map((p, i) => (
-                  <ProductCard key={p.id} product={p} index={i} />
-                ))}
+              
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                {isFetchingSimilar ? (
+                  Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-2xl" />
+                  ))
+                ) : (
+                  relatedProducts.map((p, i) => (
+                    <ProductCard key={p.id} product={p as any} index={i} />
+                  ))
+                )}
               </div>
             </div>
           )}

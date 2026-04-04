@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\B2BController;
 use App\Http\Controllers\Api\RegionController;
+use App\Http\Controllers\Api\PublicStatsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 // ==========================================
 
 // Auth
+Route::get('/stats', [PublicStatsController::class, 'index']);
+
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -32,6 +35,7 @@ Route::prefix('auth')->group(function () {
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
     Route::get('/{id}', [ProductController::class, 'show']);
+    Route::get('/{id}/similar', [ProductController::class, 'similar']);
     Route::get('/slug/{slug}', [ProductController::class, 'showBySlug']);
 });
 

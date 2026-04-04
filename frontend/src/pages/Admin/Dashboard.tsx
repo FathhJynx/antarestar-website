@@ -72,7 +72,7 @@ const AdminDashboard = () => {
   const statCards = [
     { 
       label: 'Total Pendapatan', 
-      value: `Rp ${(stats?.overview?.total_revenue || 0).toLocaleString('id-ID')}`, 
+      value: `Rp ${Number(stats?.overview?.total_revenue || 0).toLocaleString('id-ID')}`, 
       icon: DollarSign, 
       color: 'blue',
       growth: '+12.5%',
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
                        }}
                        labelStyle={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', marginBottom: '4px', color: '#64748b' }}
                        itemStyle={{ fontSize: '12px', fontWeight: 900, color: '#FB8500' }}
-                       formatter={(value: number) => [`Rp ${value.toLocaleString('id-ID')}`, 'Pendapatan']}
+                       formatter={(value: number) => [`Rp ${Number(value || 0).toLocaleString('id-ID')}`, 'Pendapatan']}
                     />
                     <Area 
                        type="monotone" 
@@ -261,7 +261,7 @@ const AdminDashboard = () => {
                         </span>
                       </td>
                       <td className="px-6 py-5 text-[12px] font-black text-slate-900">
-                        Rp {order.total.toLocaleString('id-ID')}
+                        Rp {Number(order.total || 0).toLocaleString('id-ID')}
                       </td>
                       <td className="px-8 py-5 text-right text-[11px] font-bold text-slate-400 uppercase tracking-widest">
                         {order.date}

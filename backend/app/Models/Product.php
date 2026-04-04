@@ -43,4 +43,9 @@ class Product extends Model
     {
         return $this->hasMany(FlashSaleProduct::class);
     }
+
+    public function orderItems()
+    {
+        return $this->hasManyThrough(OrderItem::class, ProductVariant::class);
+    }
 }

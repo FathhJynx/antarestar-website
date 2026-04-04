@@ -19,6 +19,15 @@ const HeroSection = () => {
     }
   });
 
+  const { data: stats } = useQuery({
+    queryKey: ['public-stats-hero'],
+    queryFn: async () => {
+      const res = await api.get('/stats');
+      return res.data.data;
+    },
+    staleTime: 60000,
+  });
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -95,6 +104,25 @@ const HeroSection = () => {
               <MapPin className="w-3 h-3 text-accent" />
               Indonesia's Premier Outdoor Brand
             </span>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease }}
+              className="flex items-center gap-2 bg-white/5 backdrop-blur-[2px] border border-white/10 rounded-full px-3 py-1.5"
+            >
+              <div className="flex -space-x-2">
+                {[1,2,3].map(i => (
+                  <div key={i} className="w-5 h-5 rounded-full border border-black bg-muted overflow-hidden">
+                    <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Explorer avatar" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              <span className="text-white/70 font-body text-[10px] font-bold tracking-tight">
+                <span className="text-accent">{stats?.explorers?.display || "5K+"}</span> Explorers Joined
+              </span>
+            </motion.div>
+
             {activeCampaign && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
