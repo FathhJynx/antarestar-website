@@ -164,6 +164,7 @@ const ProductDetail = () => {
   const product: any = remoteProduct;
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [qty, setQty] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -302,18 +303,45 @@ const ProductDetail = () => {
         <div className="section-container">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
 
-            {/* Left: Image */}
+            {/* Left: Image Gallery */}
             <div className="space-y-4">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative aspect-square rounded-2xl overflow-hidden bg-muted group"
+                className="relative aspect-square rounded-3xl overflow-hidden bg-muted group border border-border/50"
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 shadow-inner"
-                />
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeImageIndex}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                    src={product.images[activeImageIndex] || product.image}
+                    alt={`${product.name} - ${activeImageIndex + 1}`}
+                    className="w-full h-full object-cover shadow-inner"
+                  />
+                </AnimatePresence>
+
+                {/* Gallery Navigation Arrows (only show if multiple images) */}
+                {product.images && product.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setActiveImageIndex((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center text-slate-800 hover:bg-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => setActiveImageIndex((prev) => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center text-slate-800 hover:bg-white transition-all opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
+                )}
+
+                {/* Badges */}
                 {product.badge && (
                   <span className="absolute top-4 left-4 bg-accent text-accent-foreground text-xs font-bold px-3 py-1.5 rounded-full font-body uppercase tracking-wider">
                     {product.badge}
@@ -331,6 +359,23 @@ const ProductDetail = () => {
                   </div>
                 )}
               </motion.div>
+
+              {/* Thumbnails */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                  {product.images.map((img: string, idx: number) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all duration-200 ${
+                        activeImageIndex === idx ? "border-accent ring-2 ring-accent/20" : "border-border hover:border-accent/50 opacity-70 hover:opacity-100"
+                      }`}
+                    >
+                      <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right: Product Info */}

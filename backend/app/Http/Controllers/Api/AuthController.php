@@ -9,6 +9,11 @@ use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Authentication
+ * 
+ * Endpoints for user registration, login, and session management.
+ */
 class AuthController extends BaseController
 {
     protected AuthService $authService;
@@ -39,5 +44,28 @@ class AuthController extends BaseController
     public function me(Request $request): JsonResponse
     {
         return $this->success($request->user()->load(['membership.tier']), 'Current user.');
+    }
+
+    public function forgotPassword(Request $request): JsonResponse
+    {
+        $request->validate(['email' => 'required|email']);
+        
+        $status = $this->authService->forgotPassword($request->only('email'));
+        return $this->success(null, $status);
+    }
+
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = $this->authService->resetPassword($request->only(
+            'email', 'password', 'password_confirmation', 'token'
+        ));
+
+        return $this->success(null, $status);
     }
 }

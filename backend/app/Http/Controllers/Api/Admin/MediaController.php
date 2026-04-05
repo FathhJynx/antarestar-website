@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * @group Admin: Management
+ * @authenticated
+ * 
+ * Media and file upload management.
+ */
 class MediaController extends BaseController
 {
     /**

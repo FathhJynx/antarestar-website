@@ -1,0 +1,174 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/regions/provinces
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Province list.","data":[{"id":"16d7e0a5-4bb0-47d3-8748-5ca491073c0f","name":"Bali","created_at":"2026-04-03T10:57:30.000000Z","updated_at":"2026-04-03T10:57:30.000000Z"},{"id":"cede605b-3595-4b20-b75a-9776fdb11a21","name":"Bali","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"8515a3fd-e2ae-4d20-bdd1-265363786a9d","name":"DKI Jakarta","created_at":"2026-04-03T10:57:30.000000Z","updated_at":"2026-04-03T10:57:30.000000Z"},{"id":"9e10975d-6e8f-421e-b89e-67bbce2a25f0","name":"DKI Jakarta","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"1330308f-b234-4713-8121-51a2db9e97a2","name":"Jawa Barat","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"f37d9531-df64-45d3-b63a-531865d9ae0b","name":"Jawa Barat","created_at":"2026-04-03T10:57:30.000000Z","updated_at":"2026-04-03T10:57:30.000000Z"},{"id":"3b75c62e-f0fb-496c-bd40-cadb626258ae","name":"Jawa Tengah","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"bd3f0b26-eb4f-4c9d-b65d-e997b2a16176","name":"Jawa Tengah","created_at":"2026-04-03T10:57:30.000000Z","updated_at":"2026-04-03T10:57:30.000000Z"},{"id":"27107191-4c07-4406-89e0-871397d57370","name":"Jawa Timur","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"fc4da206-c24d-4a00-8405-08fd12dac564","name":"Jawa Timur","created_at":"2026-04-03T10:57:30.000000Z","updated_at":"2026-04-03T10:57:30.000000Z"}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/regions/provinces/{provinceId}/cities'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      provinceId:
+        custom: []
+        name: provinceId
+        description: ''
+        required: true
+        example: 1330308f-b234-4713-8121-51a2db9e97a2
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      provinceId: 1330308f-b234-4713-8121-51a2db9e97a2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"City list.","data":[{"id":"48838183-296b-45e3-8d69-9a0b9c37dc3b","province_id":"1330308f-b234-4713-8121-51a2db9e97a2","name":"Bandung","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"9ebf3dbf-b25a-4972-8660-17e58e449264","province_id":"1330308f-b234-4713-8121-51a2db9e97a2","name":"Bekasi","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"46dfd04d-7107-4718-8965-dd270d4b0f05","province_id":"1330308f-b234-4713-8121-51a2db9e97a2","name":"Bogor","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"740fc7f8-c3e2-4109-9585-7ffac8976d56","province_id":"1330308f-b234-4713-8121-51a2db9e97a2","name":"Cirebon","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"83d411b6-fc28-4fb5-b0d2-b78983a27c56","province_id":"1330308f-b234-4713-8121-51a2db9e97a2","name":"Depok","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/product-reviews
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a new product review.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      order_id:
+        custom: []
+        name: order_id
+        description: 'Must be a valid UUID. The <code>id</code> of an existing record in the orders table.'
+        required: true
+        example: 6ff8f7f6-1eb3-3525-be4a-3932c805afed
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Must be a valid UUID. The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: 6b72fe4a-5b40-307c-bc24-f79acf9a1bb9
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      rating:
+        custom: []
+        name: rating
+        description: 'Must be at least 1. Must not be greater than 5.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      comment:
+        custom: []
+        name: comment
+        description: 'Must not be greater than 1000 characters.'
+        required: false
+        example: i
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      order_id: 6ff8f7f6-1eb3-3525-be4a-3932c805afed
+      product_id: 6b72fe4a-5b40-307c-bc24-f79acf9a1bb9
+      rating: 2
+      comment: i
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

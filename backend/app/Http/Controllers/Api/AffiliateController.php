@@ -8,6 +8,11 @@ use App\Services\AffiliateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Affiliate Program
+ * 
+ * Endpoints for affiliate registration, dashboard, track and payouts.
+ */
 class AffiliateController extends BaseController
 {
     protected AffiliateService $affiliateService;

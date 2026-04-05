@@ -12,6 +12,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @group Admin: Management
+ * @authenticated
+ * 
+ * High-level administrative dashboard and system-wide statistics.
+ */
 class DashboardController extends BaseController
 {
     public function stats(): JsonResponse

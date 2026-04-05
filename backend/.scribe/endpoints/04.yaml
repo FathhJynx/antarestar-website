@@ -1,0 +1,560 @@
+name: 'Content & Notifications'
+description: |-
+
+  Public articles and user notification management system.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/articles
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Articles list.","data":{"current_page":1,"data":[{"id":"2166d3a9-1136-4e40-b603-eff11eb5613b","title":"Best Camping Spots in Indonesia 2024","slug":"best-camping-spots-indonesia-2024","content":"Indonesia offers some of the most breathtaking camping spots in Southeast Asia. From the volcanic landscapes of Mount Bromo to the pristine beaches of Raja Ampat, here are our top picks for camping destinations this year. Each location offers unique natural beauty and varied terrain that outdoor enthusiasts will love.","image_url":"https:\/\/images.unsplash.com\/photo-1487730116645-74489c95b41b?w=800","is_published":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},{"id":"3789ad37-29fe-409f-9bfd-69f583d4ab1c","title":"10 Essential Tips for Your First Mountain Trek","slug":"10-essential-tips-first-mountain-trek","content":"Embarking on your first mountain trek is an exciting milestone. Here are 10 essential tips to ensure a safe and memorable experience: 1. Start with proper gear - invest in quality hiking boots and a reliable backpack. 2. Train beforehand - build your stamina with regular cardio. 3. Check the weather - always monitor conditions before heading out. 4. Pack light but smart - bring only the essentials. 5. Stay hydrated - carry enough water and purification tablets. 6. Tell someone your itinerary. 7. Learn basic navigation skills. 8. Respect the environment - leave no trace. 9. Start early - begin your trek before sunrise. 10. Know your limits - there is no shame in turning back.","image_url":"https:\/\/images.unsplash.com\/photo-1464822759023-fed622ff2c3b?w=800","is_published":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"first_page_url":"http:\/\/localhost\/api\/articles?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost\/api\/articles?page=1","links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"http:\/\/localhost\/api\/articles?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"next_page_url":null,"path":"http:\/\/localhost\/api\/articles","per_page":15,"prev_page_url":null,"to":2,"total":2}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/articles/{id}'
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the article.'
+        required: true
+        example: 2166d3a9-1136-4e40-b603-eff11eb5613b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 2166d3a9-1136-4e40-b603-eff11eb5613b
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Article detail.","data":{"id":"2166d3a9-1136-4e40-b603-eff11eb5613b","title":"Best Camping Spots in Indonesia 2024","slug":"best-camping-spots-indonesia-2024","content":"Indonesia offers some of the most breathtaking camping spots in Southeast Asia. From the volcanic landscapes of Mount Bromo to the pristine beaches of Raja Ampat, here are our top picks for camping destinations this year. Each location offers unique natural beauty and varied terrain that outdoor enthusiasts will love.","image_url":"https:\/\/images.unsplash.com\/photo-1487730116645-74489c95b41b?w=800","is_published":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/articles/slug/{slug}'
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      slug:
+        custom: []
+        name: slug
+        description: 'The slug of the slug.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      slug: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 404
+        content: '{"success":false,"message":"Article not found."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/notifications
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/notifications/unread-count
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/notifications/{id}/read'
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the notification.'
+        required: true
+        example: 06c7c856-31c5-4859-b44a-6b07f7830673
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 06c7c856-31c5-4859-b44a-6b07f7830673
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: api/notifications/read-all
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/articles
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'Must not be greater than 200 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      slug:
+        custom: []
+        name: slug
+        description: 'Must not be greater than 200 characters.'
+        required: true
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      content:
+        custom: []
+        name: content
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      is_published:
+        custom: []
+        name: is_published
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      title: b
+      slug: 'n'
+      content: architecto
+      image_url: 'http://bailey.com/'
+      is_published: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/admin/articles/{id}'
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the article.'
+        required: true
+        example: 2166d3a9-1136-4e40-b603-eff11eb5613b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 2166d3a9-1136-4e40-b603-eff11eb5613b
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'Must not be greater than 200 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      slug:
+        custom: []
+        name: slug
+        description: 'Must not be greater than 200 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      content:
+        custom: []
+        name: content
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      is_published:
+        custom: []
+        name: is_published
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      title: b
+      slug: 'n'
+      content: architecto
+      image_url: 'http://bailey.com/'
+      is_published: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/articles/{id}'
+    metadata:
+      custom: []
+      groupName: 'Content & Notifications'
+      groupDescription: |-
+
+        Public articles and user notification management system.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the article.'
+        required: true
+        example: 2166d3a9-1136-4e40-b603-eff11eb5613b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 2166d3a9-1136-4e40-b603-eff11eb5613b
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

@@ -7,6 +7,11 @@ use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Product Catalog
+ * 
+ * Public endpoints for browsing categories and products with filtering support.
+ */
 class ProductController extends BaseController
 {
     protected ProductService $productService;

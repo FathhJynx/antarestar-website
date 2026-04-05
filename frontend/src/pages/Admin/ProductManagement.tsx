@@ -122,6 +122,24 @@ const ProductManagement = () => {
     setFormData({ ...formData, variants: newVariants });
   };
 
+  const handleAddImage = () => {
+    setFormData({
+      ...formData,
+      images: [...formData.images, { image_url: '', is_primary: formData.images.length === 0 }]
+    });
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const newImages = [...formData.images];
+    newImages.splice(index, 1);
+    
+    if (newImages.length > 0 && !newImages.some(img => img.is_primary)) {
+      newImages[0].is_primary = true;
+    }
+    
+    setFormData({ ...formData, images: newImages });
+  };
+
   const handleFileUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -545,11 +563,32 @@ const ProductManagement = () => {
 
                       {/* Image Management */}
                       <div className="space-y-6">
-                         <h4 className="text-[12px] font-black uppercase tracking-tight text-slate-900 border-l-4 border-accent pl-3 leading-none">Aset Visual</h4>
+                         <div className="flex items-center justify-between">
+                            <h4 className="text-[12px] font-black uppercase tracking-tight text-slate-900 border-l-4 border-accent pl-3 leading-none">Aset Visual</h4>
+                            <button 
+                              type="button"
+                              onClick={handleAddImage}
+                              className="px-4 py-2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-lg"
+                            >
+                               + Tambah Galeri
+                            </button>
+                         </div>
                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {formData.images.map((image, idx) => (
-                               <div key={idx} className="space-y-2">
-                                  <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">URL Media {idx + 1}</label>
+                               <div key={idx} className="space-y-2 p-4 bg-slate-50/50 border border-slate-100 rounded-3xl relative group/card">
+                                  {formData.images.length > 1 && (
+                                     <button 
+                                       type="button"
+                                       onClick={() => handleRemoveImage(idx)}
+                                       className="absolute -top-2 -right-2 w-8 h-8 bg-white border border-slate-200 text-slate-400 hover:text-red-500 rounded-full flex items-center justify-center shadow-lg transition-colors z-20"
+                                     >
+                                        <X className="w-4 h-4" />
+                                     </button>
+                                  )}
+                                  <label className="text-[8px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                                     URL Media {idx + 1} 
+                                     {image.is_primary && <span className="px-2 py-0.5 bg-accent text-white rounded-md">Utama</span>}
+                                  </label>
                                    <div className="relative group/field flex flex-col gap-3">
                                       <div className="flex gap-3">
                                          <div className="w-20 h-20 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden flex-shrink-0 flex items-center justify-center relative group-hover:border-accent/40 transition-all">
@@ -576,7 +615,7 @@ const ProductManagement = () => {
                                                      newImages[idx].image_url = e.target.value;
                                                      setFormData({ ...formData, images: newImages });
                                                   }}
-                                                  className="w-full h-full pl-10 pr-4 bg-slate-50 border border-slate-100 rounded-2xl text-[11px] font-bold outline-none focus:ring-2 focus:ring-accent/10 transition-all shadow-sm"
+                                                  className="w-full h-full pl-10 pr-4 bg-white border border-slate-200 rounded-2xl text-[11px] font-bold outline-none focus:ring-2 focus:ring-accent/10 transition-all shadow-sm"
                                                />
                                             </div>
                                             <label className="inline-flex items-center gap-2 px-6 h-9 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all cursor-pointer shadow-lg active:scale-95">

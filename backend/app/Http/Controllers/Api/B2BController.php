@@ -7,6 +7,11 @@ use App\Services\B2BService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group B2B & Corporate
+ * 
+ * Endpoints for B2B portal inquiries and corporate order management.
+ */
 class B2BController extends BaseController
 {
     protected B2BService $b2bService;

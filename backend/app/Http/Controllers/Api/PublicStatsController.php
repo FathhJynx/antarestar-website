@@ -8,6 +8,11 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * @group Social Proof & Stats
+ * 
+ * Public endpoints for retrieving community growth and sales statistics.
+ */
 class PublicStatsController extends BaseController
 {
     /**

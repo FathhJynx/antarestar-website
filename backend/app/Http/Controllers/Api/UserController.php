@@ -8,6 +8,11 @@ use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Member: Profile
+ * 
+ * Endpoints for managing user profile, points, and addresses.
+ */
 class UserController extends BaseController
 {
     protected UserService $userService;

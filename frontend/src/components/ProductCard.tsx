@@ -10,6 +10,7 @@ interface ProductCardProps {
   product: Product;
   index?: number;
   viewMode?: "grid" | "list";
+  onQuickAdd?: (product: Product) => void;
 }
 
 const formatPrice = (price: number) =>
@@ -37,7 +38,7 @@ const StarRow = ({ rating = 0, reviewCount = 0 }: { rating?: number; reviewCount
 };
 
 /* ─── Grid Card ─────────────────────────────────────────── */
-const GridCard = ({ product, index = 0 }: { product: Product; index: number }) => {
+const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index: number; onQuickAdd?: (product: Product) => void }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [isAdding, setIsAdding] = useState(false);
@@ -52,6 +53,13 @@ const GridCard = ({ product, index = 0 }: { product: Product; index: number }) =
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // If onQuickAdd is passed, delegate to the parent
+    if (product.variants && product.variants.length > 0 && onQuickAdd) {
+      onQuickAdd(product);
+      return;
+    }
+
     setIsAdding(true);
     
     addToCart({
@@ -75,6 +83,12 @@ const GridCard = ({ product, index = 0 }: { product: Product; index: number }) =
   const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (product.variants && product.variants.length > 0 && onQuickAdd) {
+      onQuickAdd(product);
+      return;
+    }
+
     setIsBuying(true);
     
     const buyNowItem = {
@@ -235,7 +249,7 @@ const GridCard = ({ product, index = 0 }: { product: Product; index: number }) =
 };
 
 /* ─── List Card ─────────────────────────────────────────── */
-const ListCard = ({ product, index = 0 }: { product: Product; index: number }) => {
+const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index: number; onQuickAdd?: (product: Product) => void }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [isAdding, setIsAdding] = useState(false);
@@ -246,6 +260,12 @@ const ListCard = ({ product, index = 0 }: { product: Product; index: number }) =
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (product.variants && product.variants.length > 0 && onQuickAdd) {
+      onQuickAdd(product);
+      return;
+    }
+
     setIsAdding(true);
     
     addToCart({
@@ -269,6 +289,12 @@ const ListCard = ({ product, index = 0 }: { product: Product; index: number }) =
   const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (product.variants && product.variants.length > 0 && onQuickAdd) {
+      onQuickAdd(product);
+      return;
+    }
+
     setIsBuying(true);
     
     const buyNowItem = {
@@ -389,9 +415,9 @@ const ListCard = ({ product, index = 0 }: { product: Product; index: number }) =
 };
 
 /* ─── Main export ─────────────────────────────────────────── */
-const ProductCard = ({ product, index = 0, viewMode = "grid" }: ProductCardProps) => {
-  if (viewMode === "list") return <ListCard product={product} index={index} />;
-  return <GridCard product={product} index={index} />;
+const ProductCard = ({ product, index = 0, viewMode = "grid", onQuickAdd }: ProductCardProps) => {
+  if (viewMode === "list") return <ListCard product={product} index={index} onQuickAdd={onQuickAdd} />;
+  return <GridCard product={product} index={index} onQuickAdd={onQuickAdd} />;
 };
 
 export default ProductCard;

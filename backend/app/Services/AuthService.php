@@ -6,6 +6,7 @@ use App\Repositories\AuthRepository;
 use App\Repositories\UserRepository;
 use App\Models\Tier;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -83,6 +84,34 @@ class AuthService
     public function logout($user): void
     {
         $user->currentAccessToken()->delete();
+    }
+
+    public function forgotPassword(array $data): string
+    {
+        $status = Password::sendResetLink($data);
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            throw ValidationException::withMessages(['email' => __($status)]);
+        }
+
+        return __($status);
+    }
+
+    public function resetPassword(array $data): string
+    {
+        $status = Password::reset($data, function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+
+            $user->save();
+        });
+
+        if ($status !== Password::PASSWORD_RESET) {
+            throw ValidationException::withMessages(['email' => __($status)]);
+        }
+
+        return __($status);
     }
 
     private function generateReferralCode(): string

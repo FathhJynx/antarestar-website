@@ -25,8 +25,10 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    const trimmedEmail = email.trim();
+
     try {
-      const response = await api.post("/auth/login", { email, password });
+      const response = await api.post("/auth/login", { email: trimmedEmail, password });
       
       if (response.data && response.data.data) {
         const { user, token } = response.data.data;
@@ -38,8 +40,13 @@ const Login = () => {
         navigate(from, { replace: true });
       }
     } catch (error: any) {
+      // Extract specific error messages if available (from Laravel Validation)
+      const errorMsg = error.response?.data?.errors 
+        ? Object.values(error.response.data.errors).flat()[0] as string
+        : error.response?.data?.message || "Email atau password salah.";
+
       toast.error("Login Gagal", {
-        description: error.response?.data?.message || "Email atau password yang Anda masukkan salah.",
+        description: errorMsg,
       });
     } finally {
       setIsLoading(false);
@@ -139,7 +146,7 @@ const Login = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password" className="font-display text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Kata Sandi</Label>
-                <button type="button" className="text-accent hover:text-accent/80 font-display text-[10px] font-black uppercase tracking-widest">Lupa Kata Sandi?</button>
+                <Link to="/forgot-password" className="text-accent hover:text-accent/80 font-display text-[10px] font-black uppercase tracking-widest">Lupa Kata Sandi?</Link>
               </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />

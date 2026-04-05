@@ -1,0 +1,1206 @@
+name: 'Product Catalog'
+description: |-
+
+  Public endpoints for browsing categories and products with filtering support.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/products
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Products list.","data":{"current_page":1,"data":[{"id":"afef86c7-59ec-441c-802c-c2eeb1b33198","name":"Antarestar Official \u2013 Jaket Gunung Gorpcore Bromo Windproof Waterproof Jacket Musim Dingin Casual Outdoor","slug":"antarestar-official-jaket-gunung-gorpcore-bromo-windproof-waterproof-jacket-musim-dingin-casual-outdoor","description":"Jaket Bromo dirancang untuk menghadapi cuaca ekstrem dan memberikan kenyamanan maksimal dalam segala kondisi. Menggunakan material 3 layer waterproof yang tahan air dan angin, jaket ini cocok untuk berbagai aktivitas outdoor, dari hiking hingga perjalanan di alam terbuka. Dengan desain yang mengutamakan fleksibilitas dan perlindungan, jaket ini dilengkapi dengan berbagai fitur praktis, seperti resleting waterproof, tali serut elastis di pinggang dan hoodie, serta lengan adjustable dengan velcro dan karet. Saku utama dan tambahan di lengan kiri memastikan barang Anda tetap aman dan kering selama petualangan. Jaket Bromo juga dilengkapi dengan jahitan bartack di ujung resleting untuk meningkatkan daya tahan, menjadikannya pilihan tepat untuk menemani petualangan Anda di alam bebas.\n\nFeatures :\n\nMaterial 3 layer waterproof\n\nTahan air dan angin, tetap breathable untuk kenyamanan maksimal.\n\nLengan Adjustable dengan Velcro & Karet \u2013 Dapat disesuaikan untuk kenyamanan optimal di segala kondisi.\n\nTali Serut Elastis di Pinggang & Hoodie\n\nDapat disesuaikan agar lebih pas dengan tubuh Anda.\n\nSaku Utama dan Saku Tambahan di Lengan Kiri dengan Resleting Waterproof\n\nMenjaga barang tetap aman dan kering.\n\nResleting Waterproof YKK No. 5 & No. 3\n\nMenjaga keamanan barang dari cipratan air.\n\nLogo dan Nama Series Bordir\n\nMemberikan sentuhan premium pada jaket.\n\nJahitan Bartack di Ujung Resleting\n\nMemperkuat ketahanan jahitan jaket di area yang sering digunakan.\n\nBENEFITS:\n\nMemberikan perlindungan maksimal terhadap cuaca ekstrem dengan material 3 layer waterproof yang tahan air dan angin.\n\nMeningkatkan kenyamanan saat bergerak dengan desain yang adjustable dan fitur-fitur fungsional.\n\nSaku waterproof menjaga barang tetap aman dan kering bahkan dalam kondisi hujan.\n\nDesain tahan lama dengan jahitan bartack yang meningkatkan daya tahan jaket di area yang rawan aus.\n\nMaterial:\n\nMaterial 3 layer waterproof \u2013 Tahan air, ringan, dan tetap breathable.\n\nSize Chart\n\nM:\n\nLebar dada: 56\n\nPanjang badan: 68\n\nLebar bahu: 46\n\nPanjang tangan: 63\n\nL:\n\nLebar dada: 58\n\nPanjang badan: 70\n\nLebar bahu: 48\n\nPanjang tangan: 64\n\nXL:\n\nLebar dada: 58\n\nPanjang badan: 68\n\nLebar bahu: 50\n\nPanjang tangan: 64\n\nXXL:\n\nLebar dada: 60\n\nPanjang badan: 74\n\nLebar bahu: 52\n\nPanjang tangan: 66","category_id":"2b344173-4fcb-4f62-9ffb-d1243065a4ff","created_at":"2026-04-04T11:26:01.000000Z","updated_at":"2026-04-04T11:26:01.000000Z","sold_count":null,"category":{"id":"2b344173-4fcb-4f62-9ffb-d1243065a4ff","name":"Jackets","slug":"jackets","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"13c49429-5aff-4665-81c1-74e4494ccb6e","product_id":"afef86c7-59ec-441c-802c-c2eeb1b33198","name":"XL Hitam","color_name":"Hitam","color_code":"#000","size":"XL","price":"690000.00","stock":0,"created_at":"2026-04-04T11:26:01.000000Z","updated_at":"2026-04-04T11:26:01.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"481a8196-cc31-4aee-8315-4a8647c46a7e","product_id":"afef86c7-59ec-441c-802c-c2eeb1b33198","name":"XXL Hitam","color_name":"Hitam","color_code":"#000","size":"XXL","price":"690000.00","stock":100,"created_at":"2026-04-04T11:26:01.000000Z","updated_at":"2026-04-04T11:26:01.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"7a48549a-a3b6-4ddb-a89c-15589a85779d","product_id":"afef86c7-59ec-441c-802c-c2eeb1b33198","name":"L Hitam","color_name":"Hitam","color_code":"#000","size":"L","price":"690000.00","stock":98,"created_at":"2026-04-04T11:26:01.000000Z","updated_at":"2026-04-04T11:26:01.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"ca1df75b-9ce2-46dd-af3d-8959b009f6fa","product_id":"afef86c7-59ec-441c-802c-c2eeb1b33198","name":"M Hitam","color_name":"Hitam","color_code":"#000","size":"M","price":"690000.00","stock":100,"created_at":"2026-04-04T11:26:01.000000Z","updated_at":"2026-04-04T11:26:01.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"6ef6f304-0147-4480-85e8-252894569930","product_id":"afef86c7-59ec-441c-802c-c2eeb1b33198","image_url":"https:\/\/antarestar.com\/wp-content\/uploads\/2025\/06\/BROMO-MALL-1-768x768.png","is_primary":true,"created_at":"2026-04-04T11:26:01.000000Z","updated_at":"2026-04-04T11:26:01.000000Z"}],"reviews":[]},{"id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Explorer Trail 65L Backpack","slug":"explorer-trail-65l-backpack","description":"Heavy-duty trekking backpack with ergonomic support system. Features rain cover, multiple compartments, and adjustable harness. Built for multi-day expeditions.","category_id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":"13","category":{"id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","name":"Bags","slug":"bags","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[{"id":"6d332367-307a-40ee-a9a0-fd9d11401c68","flash_sale_id":"e95e4114-7fbf-4975-8d6a-8cce55711216","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","discount_type":"percentage","discount_value":"41.00","sale_stock":100,"created_at":"2026-04-04T08:37:12.000000Z","updated_at":"2026-04-04T08:37:12.000000Z","flash_sale":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","start_date":"2026-04-04T13:45:00.000000Z","end_date":"2026-04-05T13:45:00.000000Z","is_active":true,"created_at":"2026-04-04T06:45:17.000000Z","updated_at":"2026-04-04T06:45:17.000000Z"}}],"variants":[{"id":"6e376148-8f37-4a1f-b876-5c50af34dfdb","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Midnight Black","color_name":"Midnight Black","color_code":"#1A1A1A","size":null,"price":"1250000.00","stock":24,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:53:28.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"d5e0d951-6056-4ffc-bde1-f7157ec30ed9","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Forest Green","color_name":"Forest Green","color_code":"#2D5A27","size":null,"price":"1250000.00","stock":30,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"f7c4face-1ebc-4634-9fa9-624c9f7eeeae","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Alpine Red","color_name":"Alpine Red","color_code":"#A52A2A","size":null,"price":"1350000.00","stock":8,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:33:24.000000Z","is_on_flash_sale":true,"flash_sale_price":796500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}}],"images":[{"id":"7abf665d-bdc3-4ff5-aa29-dccca2320c4d","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","image_url":"https:\/\/images.unsplash.com\/photo-1553062407-98eeb64c6a62?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[{"id":"52c1089c-75af-4ca7-9213-8401e12d7748","user_id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","order_id":"505716f4-f13f-4e2b-a102-dada0aefa237","rating":5,"comment":"keren tas nya","is_visible":1,"created_at":"2026-04-04T10:02:59.000000Z","updated_at":"2026-04-04T10:02:59.000000Z"}]},{"id":"513943eb-499b-485a-a7df-a6f86bcba3c3","name":"Lumen X1000 Headlamp","slug":"lumen-x1000-headlamp","description":"1000 lumens USB-rechargeable headlamp with red light mode and IPX6 waterproof rating. 200m beam distance. 8 lighting modes for any outdoor situation.","category_id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":null,"category":{"id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","name":"Accessories","slug":"accessories","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"1bc1c7b1-5bc7-4e2b-99df-03fcbb4d1a95","product_id":"513943eb-499b-485a-a7df-a6f86bcba3c3","name":"Pro (sensor mode)","color_name":null,"color_code":null,"size":null,"price":"425000.00","stock":35,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"8ffe247e-25f4-4d16-a005-6131eae683dc","product_id":"513943eb-499b-485a-a7df-a6f86bcba3c3","name":"Standard","color_name":null,"color_code":null,"size":null,"price":"285000.00","stock":60,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"2542c0ba-5629-422b-a53b-6e92f5b5188a","product_id":"513943eb-499b-485a-a7df-a6f86bcba3c3","image_url":"https:\/\/images.unsplash.com\/photo-1551698618-1dfe5d97d256?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[]},{"id":"8994b025-7a01-4774-8c2c-b8964d65bb95","name":"Antarestar Summit Pro Tent","slug":"antarestar-summit-pro-tent","description":"Professional-grade 4-season tent designed for extreme conditions. Lightweight yet durable, with reinforced poles and waterproof flysheet. Perfect for high-altitude expeditions.","category_id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":"1","category":{"id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","name":"Accessories","slug":"accessories","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"15a10cb2-65f6-4310-bcbc-3717ed1f59c6","product_id":"8994b025-7a01-4774-8c2c-b8964d65bb95","name":"2-Person","color_name":null,"color_code":null,"size":"2P","price":"2850000.00","stock":25,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"be308027-3bd0-49be-94f7-8ddc38373625","product_id":"8994b025-7a01-4774-8c2c-b8964d65bb95","name":"4-Person","color_name":null,"color_code":null,"size":"4P","price":"4200000.00","stock":10,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"e59c00eb-34c9-4f4f-9e51-dbe8ed6762bb","product_id":"8994b025-7a01-4774-8c2c-b8964d65bb95","name":"3-Person","color_name":null,"color_code":null,"size":"3P","price":"3450000.00","stock":14,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T12:39:50.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"902e04f4-ff82-445d-9ea9-d443731edf7f","product_id":"8994b025-7a01-4774-8c2c-b8964d65bb95","image_url":"https:\/\/images.unsplash.com\/photo-1504280390367-361c6d9f38f4?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[{"id":"324e499f-037c-4eed-86cf-f47aa08ce20d","user_id":"d6c5ec51-d97a-4201-9838-0160d614e301","product_id":"8994b025-7a01-4774-8c2c-b8964d65bb95","order_id":"d10defa2-aeba-4c5a-acc4-0b6b164dc960","rating":5,"comment":"bagus","is_visible":1,"created_at":"2026-04-04T01:22:12.000000Z","updated_at":"2026-04-04T01:22:12.000000Z"}]},{"id":"8bb8ea03-4874-4f65-a17f-72ca64403f47","name":"Antarestar Logo T-Shirt","slug":"antarestar-logo-t-shirt","description":"Premium cotton t-shirt with high-quality screen printing. Comfortable for both outdoor activities and casual wear.","category_id":"89e2254f-e2d6-4524-9a6f-61ab6bc4ebe4","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":"1","category":{"id":"89e2254f-e2d6-4524-9a6f-61ab6bc4ebe4","name":"Apparel","slug":"apparel","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"090cab1d-edb6-4ca8-8de5-63de35f54a6c","product_id":"8bb8ea03-4874-4f65-a17f-72ca64403f47","name":"M - Black","color_name":null,"color_code":null,"size":null,"price":"150000.00","stock":44,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T06:21:34.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"c6999bd3-c8bb-4dc3-84a6-3a7d96253379","product_id":"8bb8ea03-4874-4f65-a17f-72ca64403f47","name":"L - Black","color_name":null,"color_code":null,"size":null,"price":"150000.00","stock":40,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"d54f858b-91eb-4571-b0bf-a6130888c27b","product_id":"8bb8ea03-4874-4f65-a17f-72ca64403f47","name":"S - Black","color_name":null,"color_code":null,"size":null,"price":"150000.00","stock":50,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"9a60580b-582e-49f4-993c-a37923051253","product_id":"8bb8ea03-4874-4f65-a17f-72ca64403f47","image_url":"https:\/\/images.unsplash.com\/photo-1521572163474-6864f9cf17ab?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[{"id":"d631a76b-6271-4266-9533-2f9251557999","user_id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","product_id":"8bb8ea03-4874-4f65-a17f-72ca64403f47","order_id":"c42aadc5-8fb6-49a2-b275-68d23b26502a","rating":1,"comment":"bajunya sobek","is_visible":1,"created_at":"2026-04-04T06:25:03.000000Z","updated_at":"2026-04-04T06:25:03.000000Z"}]},{"id":"d5b04b4b-eb20-41c1-a80b-7feda025a003","name":"Trailblazer GTX Hiking Boots","slug":"trailblazer-gtx-hiking-boots","description":"Waterproof Gore-Tex hiking boots with Vibram outsoles. Superior ankle support and cushioning for rugged terrain. Ideal for both day hikes and extended treks.","category_id":"6610956d-c295-4deb-b73b-a361ccd0ded9","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":"2","category":{"id":"6610956d-c295-4deb-b73b-a361ccd0ded9","name":"Footwear","slug":"footwear","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"3dd7f182-8c72-419d-bbce-9c3c65786645","product_id":"d5b04b4b-eb20-41c1-a80b-7feda025a003","name":"Size 42","color_name":null,"color_code":null,"size":"42","price":"1450000.00","stock":25,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"98ce2646-243a-4483-af50-d1575297bdda","product_id":"d5b04b4b-eb20-41c1-a80b-7feda025a003","name":"Size 40","color_name":null,"color_code":null,"size":"40","price":"1450000.00","stock":19,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T06:29:23.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"dbb98a24-57f4-4b03-8940-f148116042b5","product_id":"d5b04b4b-eb20-41c1-a80b-7feda025a003","name":"Size 44","color_name":null,"color_code":null,"size":"44","price":"1450000.00","stock":14,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T06:29:23.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"bed00a50-45b4-4867-bc09-b821f019a7d0","product_id":"d5b04b4b-eb20-41c1-a80b-7feda025a003","image_url":"https:\/\/images.unsplash.com\/photo-1606107557195-0e29a4b5b4aa?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[]},{"id":"f0845f45-f2e9-4c80-80f7-2e0c09f868e4","name":"StormShield Rain Jacket","slug":"stormshield-rain-jacket","description":"Lightweight, packable rain jacket with 20K waterproof rating. Taped seams, adjustable hood, and pit-zip ventilation. Your go-to protection against mountain storms.","category_id":"2b344173-4fcb-4f62-9ffb-d1243065a4ff","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":null,"category":{"id":"2b344173-4fcb-4f62-9ffb-d1243065a4ff","name":"Jackets","slug":"jackets","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"7b87e42d-29d8-446a-8959-82697b19e375","product_id":"f0845f45-f2e9-4c80-80f7-2e0c09f868e4","name":"Blue - L","color_name":"Ocean Blue","color_code":"#0077BE","size":"L","price":"750000.00","stock":35,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"84bb4b3c-eef9-459d-a175-1cda4be23dc4","product_id":"f0845f45-f2e9-4c80-80f7-2e0c09f868e4","name":"Blue - M","color_name":"Ocean Blue","color_code":"#0077BE","size":"M","price":"750000.00","stock":40,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"dcba16c2-5612-41a4-a0b6-f8c6e9ce7eae","product_id":"f0845f45-f2e9-4c80-80f7-2e0c09f868e4","name":"Black - XL","color_name":"Matte Black","color_code":"#282828","size":"XL","price":"800000.00","stock":30,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"6a18dec7-bc54-4d82-84e2-3cc8554060fb","product_id":"f0845f45-f2e9-4c80-80f7-2e0c09f868e4","image_url":"https:\/\/images.unsplash.com\/photo-1591047139829-d91aecb6caea?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[]},{"id":"fda7c359-0dd6-47c1-b4e2-2f25cba4bcac","name":"CampChef Pro Stove","slug":"campchef-pro-stove","description":"Portable camping stove with piezo ignition. Boils water in under 3 minutes. Compact design packs into included stuff sack. Compatible with standard gas canisters.","category_id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":null,"category":{"id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","name":"Accessories","slug":"accessories","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[],"variants":[{"id":"03897751-43fe-40c2-9059-bb086a971e1a","product_id":"fda7c359-0dd6-47c1-b4e2-2f25cba4bcac","name":"Pro (with windscreen)","color_name":null,"color_code":null,"size":null,"price":"485000.00","stock":30,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null},{"id":"412c2627-2ddb-4935-a9a3-4b364a59eb7a","product_id":"fda7c359-0dd6-47c1-b4e2-2f25cba4bcac","name":"Standard","color_name":null,"color_code":null,"size":null,"price":"385000.00","stock":50,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":false,"flash_sale_price":null}],"images":[{"id":"7134983b-0a0b-4e9c-834f-43d09923b2d5","product_id":"fda7c359-0dd6-47c1-b4e2-2f25cba4bcac","image_url":"https:\/\/images.unsplash.com\/photo-1556909114-f6e7ad7d3136?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[]}],"first_page_url":"http:\/\/localhost\/api\/products?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost\/api\/products?page=1","links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"http:\/\/localhost\/api\/products?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"next_page_url":null,"path":"http:\/\/localhost\/api\/products","per_page":15,"prev_page_url":null,"to":8,"total":8}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/products/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Product detail.","data":{"id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Explorer Trail 65L Backpack","slug":"explorer-trail-65l-backpack","description":"Heavy-duty trekking backpack with ergonomic support system. Features rain cover, multiple compartments, and adjustable harness. Built for multi-day expeditions.","category_id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","sold_count":"13","category":{"id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","name":"Bags","slug":"bags","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"},"flash_sale_products":[{"id":"6d332367-307a-40ee-a9a0-fd9d11401c68","flash_sale_id":"e95e4114-7fbf-4975-8d6a-8cce55711216","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","discount_type":"percentage","discount_value":"41.00","sale_stock":100,"created_at":"2026-04-04T08:37:12.000000Z","updated_at":"2026-04-04T08:37:12.000000Z","flash_sale":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","start_date":"2026-04-04T13:45:00.000000Z","end_date":"2026-04-05T13:45:00.000000Z","is_active":true,"created_at":"2026-04-04T06:45:17.000000Z","updated_at":"2026-04-04T06:45:17.000000Z"}}],"variants":[{"id":"6e376148-8f37-4a1f-b876-5c50af34dfdb","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Midnight Black","color_name":"Midnight Black","color_code":"#1A1A1A","size":null,"price":"1250000.00","stock":24,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:53:28.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"d5e0d951-6056-4ffc-bde1-f7157ec30ed9","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Forest Green","color_name":"Forest Green","color_code":"#2D5A27","size":null,"price":"1250000.00","stock":30,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"f7c4face-1ebc-4634-9fa9-624c9f7eeeae","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Alpine Red","color_name":"Alpine Red","color_code":"#A52A2A","size":null,"price":"1350000.00","stock":8,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:33:24.000000Z","is_on_flash_sale":true,"flash_sale_price":796500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}}],"images":[{"id":"7abf665d-bdc3-4ff5-aa29-dccca2320c4d","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","image_url":"https:\/\/images.unsplash.com\/photo-1553062407-98eeb64c6a62?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"reviews":[{"id":"52c1089c-75af-4ca7-9213-8401e12d7748","user_id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","order_id":"505716f4-f13f-4e2b-a102-dada0aefa237","rating":5,"comment":"keren tas nya","is_visible":1,"created_at":"2026-04-04T10:02:59.000000Z","updated_at":"2026-04-04T10:02:59.000000Z","user":{"id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","name":"Fathan Jamil","email":"fathanjamil757@gmail.com","role":"user","phone":null,"birth_date":null,"bio":null,"referral_code":"ANT-I7BQSYDO","email_verified_at":null,"created_at":"2026-04-04T06:19:58.000000Z","updated_at":"2026-04-04T06:19:58.000000Z"},"order":{"id":"505716f4-f13f-4e2b-a102-dada0aefa237","user_id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","address_id":"8174029a-4896-43a2-bb22-f75f852d2736","affiliate_id":null,"coupon_id":null,"total_price":"752500.00","discount_amount":"0.00","status":"completed","payment_method":"bca","shipping_courier":"SiCepat \/ J&T","shipping_service":"Reguler","shipping_cost":"15000.00","created_at":"2026-04-04T09:53:28.000000Z","updated_at":"2026-04-04T09:59:27.000000Z","items":[{"id":"e0fb98aa-e9df-4fbb-8623-fa340f80007c","order_id":"505716f4-f13f-4e2b-a102-dada0aefa237","product_variant_id":"6e376148-8f37-4a1f-b876-5c50af34dfdb","quantity":1,"price":"737500.00","created_at":"2026-04-04T09:53:28.000000Z","updated_at":"2026-04-04T09:53:28.000000Z","product_variant":{"id":"6e376148-8f37-4a1f-b876-5c50af34dfdb","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Midnight Black","color_name":"Midnight Black","color_code":"#1A1A1A","size":null,"price":"1250000.00","stock":24,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:53:28.000000Z"}}]}}]}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/products/{id}/similar'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Similar products list.","data":[]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/products/slug/{slug}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      slug:
+        custom: []
+        name: slug
+        description: 'The slug of the slug.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      slug: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 404
+        content: '{"success":false,"message":"Product not found."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/categories
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Categories list.","data":[{"id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","name":"Bags","slug":"bags","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","products_count":1},{"id":"2b344173-4fcb-4f62-9ffb-d1243065a4ff","name":"Jackets","slug":"jackets","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","products_count":2},{"id":"4fd036f9-2fd2-4fc2-a80d-c63d8fae8aa6","name":"Accessories","slug":"accessories","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","products_count":3},{"id":"6610956d-c295-4deb-b73b-a361ccd0ded9","name":"Footwear","slug":"footwear","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","products_count":1},{"id":"89e2254f-e2d6-4524-9a6f-61ab6bc4ebe4","name":"Apparel","slug":"apparel","image_url":null,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","products_count":1}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/catalog/categories
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 100 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      image_url: 'http://bailey.com/'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/admin/catalog/categories/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the category.'
+        required: true
+        example: 0230c6a4-763a-4f6f-9c30-efe6b3186b4f
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 0230c6a4-763a-4f6f-9c30-efe6b3186b4f
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      image_url: 'http://bailey.com/'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/catalog/categories/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the category.'
+        required: true
+        example: 0230c6a4-763a-4f6f-9c30-efe6b3186b4f
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 0230c6a4-763a-4f6f-9c30-efe6b3186b4f
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/catalog/products
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 150 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      category_id:
+        custom: []
+        name: category_id
+        description: 'The <code>id</code> of an existing record in the categories table.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      variants:
+        custom: []
+        name: variants
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      images:
+        custom: []
+        name: images
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].name':
+        custom: []
+        name: 'variants[].name'
+        description: 'This field is required when <code>variants</code> is present. Must not be greater than 150 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'variants[].price':
+        custom: []
+        name: 'variants[].price'
+        description: 'This field is required when <code>variants</code> is present. Must be at least 0.'
+        required: false
+        example: 84
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'variants[].stock':
+        custom: []
+        name: 'variants[].stock'
+        description: 'This field is required when <code>variants</code> is present. Must be at least 0.'
+        required: false
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'variants[].color_name':
+        custom: []
+        name: 'variants[].color_name'
+        description: 'Must not be greater than 50 characters.'
+        required: false
+        example: m
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].color_code':
+        custom: []
+        name: 'variants[].color_code'
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: iyvdljnikhwaykcm
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].size':
+        custom: []
+        name: 'variants[].size'
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: yuwpwlvqwrsitcps
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'images[].image_url':
+        custom: []
+        name: 'images[].image_url'
+        description: 'This field is required when <code>images</code> is present. Must not be greater than 255 characters.'
+        required: false
+        example: 'http://mclaughlin.info/dolores-enim-non-facere-tempora'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'images[].is_primary':
+        custom: []
+        name: 'images[].is_primary'
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      description: 'Eius et animi quos velit et.'
+      category_id: architecto
+      variants:
+        -
+          name: 'n'
+          price: 84
+          stock: 12
+          color_name: m
+          color_code: iyvdljnikhwaykcm
+          size: yuwpwlvqwrsitcps
+      images:
+        -
+          image_url: 'http://mclaughlin.info/dolores-enim-non-facere-tempora'
+          is_primary: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/admin/catalog/products/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      description:
+        custom: []
+        name: description
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      category_id:
+        custom: []
+        name: category_id
+        description: 'The <code>id</code> of an existing record in the categories table.'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      variants:
+        custom: []
+        name: variants
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      images:
+        custom: []
+        name: images
+        description: ''
+        required: false
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].id':
+        custom: []
+        name: 'variants[].id'
+        description: 'The <code>id</code> of an existing record in the product_variants table.'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].name':
+        custom: []
+        name: 'variants[].name'
+        description: 'This field is required when <code>variants</code> is present. Must not be greater than 150 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'variants[].price':
+        custom: []
+        name: 'variants[].price'
+        description: 'This field is required when <code>variants</code> is present. Must be at least 0.'
+        required: false
+        example: 84
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'variants[].stock':
+        custom: []
+        name: 'variants[].stock'
+        description: 'This field is required when <code>variants</code> is present. Must be at least 0.'
+        required: false
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'variants[].color_name':
+        custom: []
+        name: 'variants[].color_name'
+        description: 'Must not be greater than 50 characters.'
+        required: false
+        example: m
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].color_code':
+        custom: []
+        name: 'variants[].color_code'
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: iyvdljnikhwaykcm
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'variants[].size':
+        custom: []
+        name: 'variants[].size'
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: yuwpwlvqwrsitcps
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'images[].id':
+        custom: []
+        name: 'images[].id'
+        description: 'The <code>id</code> of an existing record in the product_images table.'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      'images[].image_url':
+        custom: []
+        name: 'images[].image_url'
+        description: 'This field is required when <code>images</code> is present. Must not be greater than 255 characters.'
+        required: false
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'images[].is_primary':
+        custom: []
+        name: 'images[].is_primary'
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      description: 'Eius et animi quos velit et.'
+      category_id: architecto
+      variants:
+        -
+          id: architecto
+          name: 'n'
+          price: 84
+          stock: 12
+          color_name: m
+          color_code: iyvdljnikhwaykcm
+          size: yuwpwlvqwrsitcps
+      images:
+        -
+          id: architecto
+          image_url: 'http://bailey.com/'
+          is_primary: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/catalog/products/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 16bd01a3-69d6-4f00-bbe9-c2eda898b109
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/catalog/variants
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 150 characters.'
+        required: true
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      price:
+        custom: []
+        name: price
+        description: 'Must be at least 0.'
+        required: true
+        example: 84
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      stock:
+        custom: []
+        name: stock
+        description: 'Must be at least 0.'
+        required: true
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      product_id: architecto
+      name: 'n'
+      price: 84
+      stock: 12
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/admin/catalog/variants/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the variant.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      price:
+        custom: []
+        name: price
+        description: 'Must be at least 0.'
+        required: false
+        example: 39
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      stock:
+        custom: []
+        name: stock
+        description: 'Must be at least 0.'
+        required: false
+        example: 84
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      price: 39
+      stock: 84
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/catalog/variants/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the variant.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/catalog/product-images
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      image_url:
+        custom: []
+        name: image_url
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: 'http://bailey.com/'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      is_primary:
+        custom: []
+        name: is_primary
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      product_id: architecto
+      image_url: 'http://bailey.com/'
+      is_primary: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/catalog/product-images/{id}'
+    metadata:
+      custom: []
+      groupName: 'Product Catalog'
+      groupDescription: |-
+
+        Public endpoints for browsing categories and products with filtering support.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product image.'
+        required: true
+        example: 2542c0ba-5629-422b-a53b-6e92f5b5188a
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 2542c0ba-5629-422b-a53b-6e92f5b5188a
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

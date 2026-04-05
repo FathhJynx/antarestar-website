@@ -7,6 +7,11 @@ use App\Services\ContentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Content & Notifications
+ * 
+ * Public articles and user notification management system.
+ */
 class ContentController extends BaseController
 {
     protected ContentService $contentService;

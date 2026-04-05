@@ -7,6 +7,11 @@ use App\Services\PromotionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Promotions & Flash Sales
+ * 
+ * Endpoints for managing coupons, birthday rewards, and active flash sales.
+ */
 class PromotionController extends BaseController
 {
     protected PromotionService $promotionService;

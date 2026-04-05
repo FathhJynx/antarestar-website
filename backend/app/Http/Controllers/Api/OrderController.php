@@ -8,6 +8,11 @@ use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Member: Orders
+ * 
+ * Endpoints for managing user orders, shipment logs, and reviews.
+ */
 class OrderController extends BaseController
 {
     protected OrderService $orderService;

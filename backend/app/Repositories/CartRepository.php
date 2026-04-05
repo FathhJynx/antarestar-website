@@ -18,7 +18,7 @@ class CartRepository extends BaseRepository
     public function getActiveCart(string $userId): ?Cart
     {
         return $this->model->where('user_id', $userId)
-            ->with(['items.productVariant.product'])
+            ->with(['items.productVariant.product.images'])
             ->first();
     }
 

@@ -15,6 +15,7 @@ import { sortOptions } from "@/data/products";
 import StoreHero         from "@/components/StoreHero";
 import StoreFilterSidebar, { MIN_PRICE, MAX_PRICE, fmtK } from "@/components/StoreFilterSidebar";
 import StoreMobileFilter  from "@/components/StoreMobileFilter";
+import QuickAddModal from "@/components/QuickAddModal";
 
 
 
@@ -52,6 +53,15 @@ const fetchProducts = async () => {
         ? p.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / p.reviews.length 
         : 0,
       reviewCount: p.reviews?.length || 0,
+      sizes: [...new Set(p.variants?.map((v: any) => v.size).filter(Boolean))] as string[],
+      colors: Object.values((p.variants || []).reduce((acc: any, v: any) => {
+        if (v.color_code && !acc[v.color_code]) {
+          acc[v.color_code] = { name: v.color_name, hex: v.color_code };
+        }
+        return acc;
+      }, {})),
+      variants: p.variants || [],
+      stock: p.variants?.reduce((sum: number, v: any) => sum + v.stock, 0) || Number(p.stock || 0),
     };
   });
 };
@@ -74,6 +84,7 @@ const Store = () => {
   const [priceMin,          setPriceMin]          = useState(MIN_PRICE);
   const [priceMax,          setPriceMax]          = useState(MAX_PRICE);
   const [isLoading,         setIsLoading]         = useState(false);
+  const [quickAddProduct,   setQuickAddProduct]   = useState<any>(null);
 
   const { data: remoteProducts = [], isLoading: isFetchingProducts } = useQuery({
     queryKey: ['products'],
@@ -492,7 +503,7 @@ const Store = () => {
                     className={viewMode === "list" ? "flex flex-col gap-4" : "grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-7"}
                   >
                     {filtered.map((product, i) => (
-                      <ProductCard key={product.id} product={product} index={i} viewMode={viewMode} />
+                      <ProductCard key={product.id} product={product} index={i} viewMode={viewMode} onQuickAdd={setQuickAddProduct} />
                     ))}
                   </motion.div>
                 )}
@@ -519,6 +530,12 @@ const Store = () => {
         onPriceMinChange={setPriceMin}
         onPriceMaxChange={setPriceMax}
         onReset={resetFilters}
+      />
+
+      <QuickAddModal 
+        product={quickAddProduct}
+        isOpen={!!quickAddProduct}
+        onClose={() => setQuickAddProduct(null)}
       />
 
       <Footer />

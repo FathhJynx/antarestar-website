@@ -29,6 +29,8 @@ Route::get('/stats', [PublicStatsController::class, 'index']);
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 // Products (public browsing)
@@ -125,6 +127,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Promotions (auth required actions)
     Route::prefix('promotions')->group(function () {
+        Route::get('/coupons', [PromotionController::class, 'coupons']);
         Route::post('/coupons/validate', [PromotionController::class, 'validateCoupon']);
         Route::get('/birthday-reward', [PromotionController::class, 'checkBirthdayReward']);
         Route::post('/birthday-reward/{id}/claim', [PromotionController::class, 'claimBirthdayReward']);

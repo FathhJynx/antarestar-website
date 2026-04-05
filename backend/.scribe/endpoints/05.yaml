@@ -1,0 +1,646 @@
+name: 'Promotions & Flash Sales'
+description: |-
+
+  Endpoints for managing coupons, birthday rewards, and active flash sales.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/promotions/flash-sales
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Active flash sales.","data":[{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","start_date":"2026-04-04T13:45:00.000000Z","end_date":"2026-04-05T13:45:00.000000Z","is_active":true,"created_at":"2026-04-04T06:45:17.000000Z","updated_at":"2026-04-04T06:45:17.000000Z","products":[{"id":"6d332367-307a-40ee-a9a0-fd9d11401c68","flash_sale_id":"e95e4114-7fbf-4975-8d6a-8cce55711216","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","discount_type":"percentage","discount_value":"41.00","sale_stock":100,"created_at":"2026-04-04T08:37:12.000000Z","updated_at":"2026-04-04T08:37:12.000000Z","product":{"id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Explorer Trail 65L Backpack","slug":"explorer-trail-65l-backpack","description":"Heavy-duty trekking backpack with ergonomic support system. Features rain cover, multiple compartments, and adjustable harness. Built for multi-day expeditions.","category_id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","images":[{"id":"7abf665d-bdc3-4ff5-aa29-dccca2320c4d","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","image_url":"https:\/\/images.unsplash.com\/photo-1553062407-98eeb64c6a62?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"variants":[{"id":"6e376148-8f37-4a1f-b876-5c50af34dfdb","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Midnight Black","color_name":"Midnight Black","color_code":"#1A1A1A","size":null,"price":"1250000.00","stock":24,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:53:28.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"d5e0d951-6056-4ffc-bde1-f7157ec30ed9","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Forest Green","color_name":"Forest Green","color_code":"#2D5A27","size":null,"price":"1250000.00","stock":30,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"f7c4face-1ebc-4634-9fa9-624c9f7eeeae","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Alpine Red","color_name":"Alpine Red","color_code":"#A52A2A","size":null,"price":"1350000.00","stock":8,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:33:24.000000Z","is_on_flash_sale":true,"flash_sale_price":796500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}}],"reviews":[{"id":"52c1089c-75af-4ca7-9213-8401e12d7748","user_id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","order_id":"505716f4-f13f-4e2b-a102-dada0aefa237","rating":5,"comment":"keren tas nya","is_visible":1,"created_at":"2026-04-04T10:02:59.000000Z","updated_at":"2026-04-04T10:02:59.000000Z"}],"flash_sale_products":[{"id":"6d332367-307a-40ee-a9a0-fd9d11401c68","flash_sale_id":"e95e4114-7fbf-4975-8d6a-8cce55711216","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","discount_type":"percentage","discount_value":"41.00","sale_stock":100,"created_at":"2026-04-04T08:37:12.000000Z","updated_at":"2026-04-04T08:37:12.000000Z","flash_sale":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","start_date":"2026-04-04T13:45:00.000000Z","end_date":"2026-04-05T13:45:00.000000Z","is_active":true,"created_at":"2026-04-04T06:45:17.000000Z","updated_at":"2026-04-04T06:45:17.000000Z"}}]}}]}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/promotions/flash-sales/{id}'
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the flash sale.'
+        required: true
+        example: e95e4114-7fbf-4975-8d6a-8cce55711216
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: e95e4114-7fbf-4975-8d6a-8cce55711216
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Flash sale detail.","data":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","start_date":"2026-04-04T13:45:00.000000Z","end_date":"2026-04-05T13:45:00.000000Z","is_active":true,"created_at":"2026-04-04T06:45:17.000000Z","updated_at":"2026-04-04T06:45:17.000000Z","products":[{"id":"6d332367-307a-40ee-a9a0-fd9d11401c68","flash_sale_id":"e95e4114-7fbf-4975-8d6a-8cce55711216","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","discount_type":"percentage","discount_value":"41.00","sale_stock":100,"created_at":"2026-04-04T08:37:12.000000Z","updated_at":"2026-04-04T08:37:12.000000Z","product":{"id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Explorer Trail 65L Backpack","slug":"explorer-trail-65l-backpack","description":"Heavy-duty trekking backpack with ergonomic support system. Features rain cover, multiple compartments, and adjustable harness. Built for multi-day expeditions.","category_id":"0230c6a4-763a-4f6f-9c30-efe6b3186b4f","created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","images":[{"id":"7abf665d-bdc3-4ff5-aa29-dccca2320c4d","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","image_url":"https:\/\/images.unsplash.com\/photo-1553062407-98eeb64c6a62?w=800","is_primary":true,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z"}],"variants":[{"id":"6e376148-8f37-4a1f-b876-5c50af34dfdb","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Midnight Black","color_name":"Midnight Black","color_code":"#1A1A1A","size":null,"price":"1250000.00","stock":24,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:53:28.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"d5e0d951-6056-4ffc-bde1-f7157ec30ed9","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Forest Green","color_name":"Forest Green","color_code":"#2D5A27","size":null,"price":"1250000.00","stock":30,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-03T10:36:57.000000Z","is_on_flash_sale":true,"flash_sale_price":737500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}},{"id":"f7c4face-1ebc-4634-9fa9-624c9f7eeeae","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","name":"Alpine Red","color_name":"Alpine Red","color_code":"#A52A2A","size":null,"price":"1350000.00","stock":8,"created_at":"2026-04-03T10:36:57.000000Z","updated_at":"2026-04-04T09:33:24.000000Z","is_on_flash_sale":true,"flash_sale_price":796500.0000000001,"flash_sale_details":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","end_date":"2026-04-05T13:45:00.000000Z","start_date":"2026-04-04T13:45:00.000000Z","discount_type":"percentage","discount_value":"41.00"}}],"reviews":[{"id":"52c1089c-75af-4ca7-9213-8401e12d7748","user_id":"2db3a578-1f7d-4728-a8e0-6aa2d69cad3a","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","order_id":"505716f4-f13f-4e2b-a102-dada0aefa237","rating":5,"comment":"keren tas nya","is_visible":1,"created_at":"2026-04-04T10:02:59.000000Z","updated_at":"2026-04-04T10:02:59.000000Z"}],"flash_sale_products":[{"id":"6d332367-307a-40ee-a9a0-fd9d11401c68","flash_sale_id":"e95e4114-7fbf-4975-8d6a-8cce55711216","product_id":"16bd01a3-69d6-4f00-bbe9-c2eda898b109","discount_type":"percentage","discount_value":"41.00","sale_stock":100,"created_at":"2026-04-04T08:37:12.000000Z","updated_at":"2026-04-04T08:37:12.000000Z","flash_sale":{"id":"e95e4114-7fbf-4975-8d6a-8cce55711216","name":"MEGA SALE 4.4","start_date":"2026-04-04T13:45:00.000000Z","end_date":"2026-04-05T13:45:00.000000Z","is_active":true,"created_at":"2026-04-04T06:45:17.000000Z","updated_at":"2026-04-04T06:45:17.000000Z"}}]}}]}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/promotions/coupons/validate
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      code:
+        custom: []
+        name: code
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      purchase_amount:
+        custom: []
+        name: purchase_amount
+        description: 'Must be at least 0.'
+        required: true
+        example: 39
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      code: architecto
+      purchase_amount: 39
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/promotions/birthday-reward
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/promotions/birthday-reward/{id}/claim'
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the birthday reward.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/admin/flash-sales
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/flash-sales
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 150 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      start_date:
+        custom: []
+        name: start_date
+        description: 'Must be a valid date.'
+        required: true
+        example: '2026-04-04T13:18:57'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      end_date:
+        custom: []
+        name: end_date
+        description: 'Must be a valid date. Must be a date after <code>start_date</code>.'
+        required: true
+        example: '2052-04-27'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      start_date: '2026-04-04T13:18:57'
+      end_date: '2052-04-27'
+      is_active: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/admin/flash-sales/{id}'
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the flash sale.'
+        required: true
+        example: e95e4114-7fbf-4975-8d6a-8cce55711216
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: e95e4114-7fbf-4975-8d6a-8cce55711216
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 150 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      start_date:
+        custom: []
+        name: start_date
+        description: 'Must be a valid date.'
+        required: false
+        example: '2026-04-04T13:18:57'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      end_date:
+        custom: []
+        name: end_date
+        description: 'Must be a valid date. Must be a date after <code>start_date</code>.'
+        required: false
+        example: '2052-04-27'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      start_date: '2026-04-04T13:18:57'
+      end_date: '2052-04-27'
+      is_active: false
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/flash-sales/{id}'
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the flash sale.'
+        required: true
+        example: e95e4114-7fbf-4975-8d6a-8cce55711216
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: e95e4114-7fbf-4975-8d6a-8cce55711216
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/admin/flash-sale-products
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      flash_sale_id:
+        custom: []
+        name: flash_sale_id
+        description: 'The <code>id</code> of an existing record in the flash_sales table.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      discount_type:
+        custom: []
+        name: discount_type
+        description: ''
+        required: true
+        example: percentage
+        type: string
+        enumValues:
+          - percentage
+          - fixed
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      discount_value:
+        custom: []
+        name: discount_value
+        description: 'Must be at least 0.'
+        required: true
+        example: 39
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      sale_stock:
+        custom: []
+        name: sale_stock
+        description: 'Must be at least 0.'
+        required: true
+        example: 84
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      flash_sale_id: architecto
+      product_id: architecto
+      discount_type: percentage
+      discount_value: 39
+      sale_stock: 84
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/admin/flash-sale-products/{id}'
+    metadata:
+      custom: []
+      groupName: 'Promotions & Flash Sales'
+      groupDescription: |-
+
+        Endpoints for managing coupons, birthday rewards, and active flash sales.
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the flash sale product.'
+        required: true
+        example: 6d332367-307a-40ee-a9a0-fd9d11401c68
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 6d332367-307a-40ee-a9a0-fd9d11401c68
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

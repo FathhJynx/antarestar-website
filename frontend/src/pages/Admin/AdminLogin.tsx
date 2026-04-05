@@ -23,8 +23,10 @@ const AdminLogin = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    const trimmedEmail = email.trim();
+
     try {
-      const response = await api.post("/auth/login", { email, password });
+      const response = await api.post("/auth/login", { email: trimmedEmail, password });
       
       if (response.data && response.data.data) {
         const { user, token } = response.data.data;
@@ -45,8 +47,12 @@ const AdminLogin = () => {
         navigate(from, { replace: true });
       }
     } catch (error: any) {
+      const errorMsg = error.response?.data?.errors 
+        ? Object.values(error.response.data.errors).flat()[0] as string
+        : error.response?.data?.message || "Kredensial yang Anda masukkan tidak valid.";
+
       toast.error("Otorisasi Gagal", {
-        description: error.response?.data?.message || "Kredensial yang Anda masukkan tidak valid.",
+        description: errorMsg,
       });
     } finally {
       setIsLoading(false);

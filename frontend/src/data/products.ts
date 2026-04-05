@@ -25,6 +25,7 @@ export interface Product {
   reviewCount?: number;
   stock?: number;
   sold_count?: number;
+  variants?: any[];
 }
 
 // No dummy products

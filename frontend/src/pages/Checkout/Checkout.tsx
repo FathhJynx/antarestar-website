@@ -95,16 +95,16 @@ const Checkout = () => {
        setSelectedAddress(null);
     });
     
-    api.get("/admin/coupons").then(res => {
-       const userCoupons = res.data?.data?.data || [];
+    api.get("/promotions/coupons").then(res => {
+       const userCoupons = res.data?.data || [];
        if (userCoupons.length > 0) {
            setVouchers(userCoupons.map((c: any) => ({
              id: c.id,
              code: c.code,
              name: c.description || c.code,
-             disc: c.discount_percentage ? c.discount_percentage / 100 : c.discount_amount,
+             disc: c.type === 'percentage' ? c.value / 100 : c.value,
              type: c.type === 'shipping' ? 'shipping' : 'discount',
-             minSpend: c.min_order_amount || 0
+             minSpend: c.min_purchase || 0
            })));
        }
     }).catch(console.warn);
@@ -391,7 +391,7 @@ const Checkout = () => {
                        const c = res.data.data;
                        setAppliedVoucher({
                           id: c.id, code: c.code, name: c.description || c.code,
-                          disc: c.discount_percentage ? c.discount_percentage / 100 : c.discount_amount,
+                          disc: c.type === 'percentage' ? c.value / 100 : c.value,
                           type: c.type === 'shipping' ? 'shipping' : 'discount'
                        });
                        toast.success("Voucher berhasil digunakan!");

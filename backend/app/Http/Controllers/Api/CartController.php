@@ -7,6 +7,11 @@ use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Member: Shopping Cart
+ * 
+ * Endpoints for managing the user's persistent shopping cart.
+ */
 class CartController extends BaseController
 {
     protected CartService $cartService;
