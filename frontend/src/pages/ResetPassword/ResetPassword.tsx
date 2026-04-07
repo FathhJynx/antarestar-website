@@ -75,7 +75,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-background font-body overflow-hidden">
+    <div className="min-h-screen w-full flex bg-[#0B0B0B] font-body overflow-hidden text-white">
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <img 
           src={heroImg} 
@@ -86,10 +86,10 @@ const ResetPassword = () => {
         
         <div className="relative z-10 p-16 flex flex-col justify-between h-full w-full">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 bg-orange-600 rounded-none flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
               <img src="/logo.webp" alt="Logo" className="w-6 h-6 object-contain brightness-0 invert" />
             </div>
-            <span className="font-display font-black text-xl text-white uppercase tracking-tighter">Antare<span className="text-accent">star</span></span>
+            <span className="font-display font-black text-xl text-white uppercase tracking-tighter">Antare<span className="text-orange-600">star</span></span>
           </Link>
 
           <div className="max-w-md">
@@ -120,7 +120,7 @@ const ResetPassword = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12 relative bg-background">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12 relative bg-[#0B0B0B] border-l border-white/5">
         <div className="lg:hidden absolute inset-0 z-0">
             <img src={heroImg} alt="BG" className="w-full h-full object-cover opacity-20 grayscale" />
             <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
@@ -133,17 +133,17 @@ const ResetPassword = () => {
           className="w-full max-w-[400px] relative z-10"
         >
           <div className="mb-10">
-            <h1 className="font-display font-black text-4xl text-primary uppercase tracking-tight mb-3">Kata Sandi Baru</h1>
-            <p className="text-muted-foreground text-sm">
-              Tentukan kata sandi baru untuk akun email <strong>{email}</strong>
+            <h1 className="font-display font-black text-4xl text-white uppercase tracking-tight mb-3 italic">GANTI SANDI BARU</h1>
+            <p className="text-white/50 text-sm">
+              Gas, tentukan sandi baru buat akun <strong className="text-white">{email}</strong>
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="password" className="font-display text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Kata Sandi Baru</Label>
+              <Label htmlFor="password" className="font-display text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Sandi Baru</Label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                 <Input
                   id="password"
                   type="password"
@@ -151,15 +151,15 @@ const ResetPassword = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-14 pl-12 bg-secondary/50 border-transparent focus:border-accent focus:ring-accent/10 rounded-2xl transition-all font-body text-sm"
+                  className="h-14 pl-12 bg-white/5 border-white/10 focus:border-orange-600 focus:ring-0 rounded-none transition-all font-body text-sm text-white placeholder:text-white/20"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password_confirmation" className="font-display text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Konfirmasi Kata Sandi Baru</Label>
+              <Label htmlFor="password_confirmation" className="font-display text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Ulangi Sandi Baru</Label>
               <div className="relative">
-                <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+                <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                 <Input
                   id="password_confirmation"
                   type="password"
@@ -167,7 +167,7 @@ const ResetPassword = () => {
                   required
                   value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
-                  className="h-14 pl-12 bg-secondary/50 border-transparent focus:border-accent focus:ring-accent/10 rounded-2xl transition-all font-body text-sm"
+                  className="h-14 pl-12 bg-white/5 border-white/10 focus:border-orange-600 focus:ring-0 rounded-none transition-all font-body text-sm text-white placeholder:text-white/20"
                 />
               </div>
             </div>
@@ -175,7 +175,7 @@ const ResetPassword = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-display font-black text-sm uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-primary/10 transition-all active:scale-[0.98] group"
+              className="w-full h-14 bg-orange-600 hover:bg-white hover:text-black text-white font-display font-black text-sm uppercase tracking-[0.2em] rounded-none transition-all active:scale-[0.98] group"
             >
               {isLoading ? (
                 <motion.div
@@ -185,19 +185,19 @@ const ResetPassword = () => {
                 />
               ) : (
                 <span className="flex items-center justify-center gap-3">
-                  Simpan Perubahan <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  SIMPAN & LOGIN <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               )}
             </Button>
           </form>
 
-          <div className="mt-12 pt-8 border-t border-border flex flex-col items-center gap-6">
+          <div className="mt-12 pt-8 border-t border-white/5 flex flex-col items-center gap-6">
             <Link 
               to="/login" 
-              className="flex items-center gap-2 text-muted-foreground hover:text-accent font-display text-[10px] uppercase font-black tracking-widest transition-colors"
+              className="flex items-center gap-2 text-white/30 hover:text-orange-600 font-display text-[10px] uppercase font-black tracking-widest transition-colors"
             >
               <ChevronLeft className="w-3 h-3" />
-              Kembali ke Login
+              Gas Balik ke Login
             </Link>
           </div>
         </motion.div>

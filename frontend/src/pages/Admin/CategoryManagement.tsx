@@ -1,285 +1,241 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { 
-  Layers, 
   Plus, 
   Search, 
+  Filter, 
   Edit2, 
   Trash2, 
-  MoreVertical,
+  Image as ImageIcon,
+  Layers,
+  X,
+  Save,
+  Trash,
   ChevronRight,
-  ArrowUpRight,
-  FolderOpen
+  Zap,
+  Camera
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
-import ConfirmModal from '@/components/Admin/ConfirmModal';
-import { useScrollLock } from '@/hooks/useScrollLock';
-import { useQuery } from '@tanstack/react-query';
+import { AdminModal } from '@/components/Admin/AdminModal';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const CategoryManagement = () => {
-  const navigate = useNavigate();
+  const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
-
-  useScrollLock(isModalOpen);
-  const [formData, setFormData] = useState({ name: '', image_url: '' });
   const [isUploading, setIsUploading] = useState(false);
 
-  // Custom Modal States
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [deleteConfig, setDeleteConfig] = useState({ id: '', name: '' });
-
-  const { data: categories = [], isLoading, refetch: refetchCategories } = useQuery({
-    queryKey: ['admin_categories'],
-    queryFn: async () => {
-      const response = await api.get('/categories');
-      return response.data.data || [];
-    },
-    refetchInterval: 10000,
+  const [formData, setFormData] = useState({
+    name: '',
+    image_url: ''
   });
+
+  const { data: categories = [], isLoading, refetch } = useQuery({
+    queryKey: ['admin_categories', search],
+    queryFn: async () => {
+      const response = await api.get('/categories', { params: { search } });
+      return response.data.data || [];
+    }
+  });
+
+  const categoryMutation = useMutation({
+    mutationFn: (data: any) => editingCategory 
+      ? api.put(`/admin/catalog/categories/${editingCategory.id}`, data)
+      : api.post('/admin/catalog/categories', data),
+    onSuccess: () => {
+      toast.success(editingCategory ? 'CATEGORY_PROTOCOL_UPDATED' : 'NEW_CATEGORY_INITIALIZED');
+      refetch();
+      setIsModalOpen(false);
+    }
+  });
+
+  const handleOpenModal = (category: any = null) => {
+    if (category) {
+      setEditingCategory(category);
+      setFormData({ name: category.name, image_url: category.image_url || '' });
+    } else {
+      setEditingCategory(null);
+      setFormData({ name: '', image_url: '' });
+    }
+    setIsModalOpen(true);
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const slotToast = toast.loading('Uploading niche imagery...');
+    const t = toast.loading('Synchronizing visual data...');
     setIsUploading(true);
 
     try {
       const uploadData = new FormData();
       uploadData.append('image', file);
-
-      const response = await api.post('/admin/media/upload', uploadData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-
-      setFormData(prev => ({ ...prev, image_url: response.data.data.url }));
-      toast.success('Gambar berhasil disinkronkan.', { id: slotToast });
+      const res = await api.post('/admin/media/upload', uploadData);
+      setFormData({ ...formData, image_url: res.data.data.url });
+      toast.success('Visual data synchronized.', { id: t });
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Gagal mengunggah gambar', { id: slotToast });
+      toast.error('Sync failed.', { id: t });
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim()) return;
+    categoryMutation.mutate(formData);
+  };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('AUTHORIZE TERMINATION OF THIS CATEGORY?')) return;
+    const t = toast.loading('ERASING DATA...');
     try {
-      if (editingCategory) {
-        await api.put(`/admin/catalog/categories/${editingCategory.id}`, formData);
-        toast.success('Kategori berhasil diperbarui');
-      } else {
-        await api.post('/admin/catalog/categories', formData);
-        toast.success('Kategori berhasil dibuat');
-      }
-      setFormData({ name: '', image_url: '' });
-      setEditingCategory(null);
-      setIsModalOpen(false);
-      refetchCategories();
+      await api.delete(`/admin/catalog/categories/${id}`);
+      toast.success('DATA REMOVED FROM CORE.', { id: t });
+      refetch();
     } catch (err) {
-      toast.error('Operasi gagal');
+      toast.error('ERASE_FAILED.', { id: t });
     }
   };
-
-  const handleDelete = (id: string, name: string) => {
-    setDeleteConfig({ id, name });
-    setIsConfirmOpen(true);
-  };
-
-  const onConfirmDelete = async () => {
-    const loadingToast = toast.loading('Menghapus kategori...');
-    try {
-      await api.delete(`/admin/catalog/categories/${deleteConfig.id}`);
-      toast.success(`Kategori ${deleteConfig.name} telah dihapus.`, { id: loadingToast });
-      refetchCategories();
-      setIsConfirmOpen(false);
-    } catch (err) {
-      toast.error('Gagal menghapus kategori.', { id: loadingToast });
-    }
-  };
-
 
   return (
     <AdminLayout>
-      <div className="space-y-8 pb-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="space-y-12 font-body">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-white/5">
           <div>
-            <h1 className="font-display font-black text-3xl uppercase tracking-tighter mb-2 italic">
-              Kategori <span className="text-accent text-lg">Produk</span>
+            <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic text-white text-shadow-glow">
+              CATEGORY <span className="text-accent underline decoration-4 underline-offset-8">SECTORS</span>
             </h1>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Organisir perlengkapan Anda ke dalam kategori penjelajah khusus.</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Global Taxonomy & Departmental Control Hub</p>
           </div>
           <button 
-            onClick={() => { setEditingCategory(null); setFormData({ name: '', image_url: '' }); setIsModalOpen(true); }}
-            className="h-12 px-8 bg-accent text-white font-black uppercase text-[11px] tracking-widest rounded-2xl flex items-center gap-2 shadow-lg shadow-accent/20 hover:scale-105 active:scale-95 transition-all"
+            onClick={() => handleOpenModal()}
+            className="h-16 px-10 bg-accent text-white font-display font-black uppercase text-[11px] tracking-[0.2em] rounded-2xl flex items-center gap-3 shadow-2xl hover:scale-105 active:scale-95 transition-all group"
           >
-            <Plus className="w-4 h-4" /> Buat Kategori Baru
+            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> 
+            MAP NEW SECTOR
           </button>
         </div>
 
-        {/* Category List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
-             [...Array(6)].map((_, i) => (
-                <div key={i} className="h-44 bg-white border border-slate-200 rounded-[2rem] animate-pulse" />
-             ))
-          ) : categories.map((cat, idx) => (
-            <motion.div 
-              key={cat.id} 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: idx * 0.05 }}
-              className="bg-white border border-slate-200 rounded-[2rem] p-8 hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden relative"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-accent/10 transition-colors" />
-              
-              <div className="flex justify-between items-start mb-6">
-                  <div className="w-12 h-12 bg-slate-50 rounded-2xl overflow-hidden flex items-center justify-center text-slate-400 group-hover:text-accent transition-all border border-slate-100">
-                     {cat.image_url ? (
-                        <img src={cat.image_url} alt="" className="w-full h-full object-cover" />
-                     ) : (
-                        <FolderOpen className="w-6 h-6" />
-                     )}
-                  </div>
-                 <div className="flex items-center gap-1">
-                    <button 
-                      onClick={() => { setEditingCategory(cat); setFormData({ name: cat.name, image_url: cat.image_url || '' }); setIsModalOpen(true); }}
-                      className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-xl transition-all"
-                    >
-                       <Edit2 className="w-3.5 h-3.5" />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(cat.id, cat.name)}
-                      className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
-                    >
-                       <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                 </div>
-              </div>
+        <div className="relative group">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-accent transition-colors" />
+          <input 
+            type="text" 
+            placeholder="SEARCH SECTOR MANIFEST..." 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full h-16 pl-16 pr-8 bg-white/[0.02] border border-white/5 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] outline-none focus:border-accent transition-all text-white placeholder:text-white/10"
+          />
+        </div>
 
-              <div className="relative z-10">
-                 <h4 className="font-display font-black text-xl uppercase tracking-tighter text-slate-900 mb-1 leading-none group-hover:text-accent transition-colors">{cat.name}</h4>
-                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-6">Slug: {cat.slug}</p>
-                 
-                 <div className="flex items-center justify-between mt-auto pt-6 border-t border-slate-50">
-                    <div className="flex items-center gap-2">
-                       <span className="text-[10px] font-black text-slate-700 uppercase tracking-widest">{cat.products_count || 0} Produk</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {isLoading ? (
+            [...Array(8)].map((_, i) => (
+              <div key={i} className="h-64 bg-white/[0.02] border border-white/5 rounded-[2.5rem] animate-pulse" />
+            ))
+          ) : categories?.map((cat: any) => (
+            <div key={cat.id} className="group relative overflow-hidden bg-[#111] border border-white/5 rounded-[2.5rem] p-8 hover:border-accent transition-all duration-500 shadow-2xl shadow-black h-[280px] flex flex-col justify-between">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-accent/10 transition-all" />
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="w-16 h-16 bg-white/5 rounded-2xl border border-white/10 overflow-hidden mb-6 flex-shrink-0 group-hover:scale-110 transition-all duration-700">
+                  {cat.image_url ? (
+                    <img src={cat.image_url} alt="" className="w-full h-full object-cover group-hover:opacity-40" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white/5">
+                       <Layers className="w-8 h-8" />
                     </div>
-                    <button 
-                       onClick={() => navigate(`/admin/products?category_id=${cat.id}`)}
-                       className="text-[10px] font-black uppercase tracking-widest text-slate-300 group-hover:text-accent flex items-center gap-1 transition-colors"
-                    >
-                       Lihat <ArrowUpRight className="w-3.5 h-3.5" />
-                    </button>
-                 </div>
+                  )}
+                </div>
+                <div>
+                   <h3 className="text-xl font-display font-black uppercase tracking-tighter italic text-white mb-2 group-hover:text-accent transition-colors">{cat.name}</h3>
+                   <div className="flex items-center gap-3">
+                      <div className="h-4 w-px bg-white/10" />
+                      <p className="text-[10px] text-white/20 font-black uppercase tracking-widest">{cat.products_count || 0} ASSETS LINKED</p>
+                   </div>
+                </div>
+                <div className="mt-auto pt-6 flex items-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                  <button onClick={() => handleOpenModal(cat)} className="flex-1 h-12 bg-white text-black font-black uppercase text-[10px] tracking-widest rounded-xl hover:bg-accent hover:text-white transition-all shadow-xl shadow-black italic">
+                    RE-MAP
+                  </button>
+                  <button onClick={() => handleDelete(cat.id)} className="w-12 h-12 flex items-center justify-center bg-red-600/10 border border-red-600/20 text-red-500 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-xl shadow-red-600/10">
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
 
-       {/* Deletion Confirmation */}
-       <ConfirmModal 
-         isOpen={isConfirmOpen}
-         onClose={() => setIsConfirmOpen(false)}
-         onConfirm={onConfirmDelete}
-         title="Penghapusan Kategori"
-         message={`Apakah Anda yakin ingin menghapus kategori ${deleteConfig.name}? Ini mungkin menyebabkan perlengkapan penjelajah tidak terkategori.`}
-         confirmText="Hapus Kategori"
-         variant="danger"
-       />
+      <AdminModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} maxWidth="max-w-md">
+        <div className="px-10 py-8 border-b border-white/5 bg-[#111] flex items-center gap-6 shrink-0 font-body">
+           <div className="w-14 h-14 bg-accent rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shadow-accent/20">
+              <Layers className="w-7 h-7" />
+           </div>
+           <div>
+              <h3 className="text-xl font-display font-black tracking-tighter uppercase italic">{editingCategory ? 'RE-MAP' : 'INITIALIZE'} SECTOR</h3>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mt-1">Global Department Sync</p>
+           </div>
+        </div>
 
-      {/* Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-             <motion.div 
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               onClick={() => setIsModalOpen(false)}
-               className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-             />
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.98, y: 10 }}
-               animate={{ opacity: 1, scale: 1, y: 0 }}
-               exit={{ opacity: 0, scale: 0.98, y: 10 }}
-               className="bg-white rounded-[2rem] w-full max-w-sm p-8 relative z-10 shadow-2xl border border-slate-100"
-             >
-                 <div className="mb-6">
-                    <h3 className="font-display font-black text-xl uppercase tracking-tighter italic mb-1">
-                      {editingCategory ? 'Perbarui' : 'Buat'} <span className="text-accent underline">Kategori</span>
-                    </h3>
-                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-tight">Tentukan kategori penjelajah baru untuk toko Anda.</p>
-                 </div>
+        <div className="flex-1 overflow-y-auto p-10 font-body">
+           <form id="categoryForm" onSubmit={handleSubmit} className="space-y-8">
+              <div className="space-y-3">
+                 <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Sector Label Name</label>
+                 <input 
+                    type="text" 
+                    required 
+                    value={formData.name} 
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
+                    className="w-full h-16 bg-white/5 border border-white/5 rounded-2xl px-6 text-[12px] font-black uppercase tracking-widest text-white outline-none focus:border-accent transition-all"
+                    placeholder="ENTER DESIGNATION..."
+                 />
+              </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                       <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Gambar Kategori</label>
-                       <div className="flex items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-3xl">
-                          <div className="w-16 h-16 rounded-2xl bg-white border border-slate-100 overflow-hidden flex items-center justify-center relative flex-shrink-0">
-                             {formData.image_url ? (
-                                <img src={formData.image_url} alt="" className="w-full h-full object-cover" />
-                             ) : (
-                                <FolderOpen className="w-6 h-6 text-slate-200" />
-                             )}
-                             {isUploading && (
-                                <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
-                                   <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-                                </div>
-                             )}
-                          </div>
-                          <div className="flex-1">
-                             <label className="inline-flex items-center gap-2 px-6 h-9 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all cursor-pointer shadow-lg active:scale-95">
-                                <Plus className="w-3 h-3" /> Pilih Gambar
-                                <input 
-                                   type="file" 
-                                   className="hidden" 
-                                   accept="image/*"
-                                   onChange={handleFileUpload}
-                                   disabled={isUploading}
-                                />
-                             </label>
-                             <p className="text-[8px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-1">PNG/JPG Maks 2MB</p>
-                          </div>
+              <div className="space-y-4">
+                 <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Visual Identification</label>
+                 <div className="aspect-video w-full rounded-[2rem] bg-black/40 border border-white/5 overflow-hidden relative group/upload">
+                    {formData.image_url ? (
+                       <img src={formData.image_url} alt="" className="w-full h-full object-cover group-hover/upload:opacity-40 transition-opacity" />
+                    ) : (
+                       <div className="absolute inset-0 flex items-center justify-center text-white/5">
+                          <Camera className="w-12 h-12" />
                        </div>
-                    </div>
-                     <div className="space-y-2">
-                       <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Nama Kategori</label>
-                       <input 
-                         type="text" 
-                         required
-                         value={formData.name}
-                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                         placeholder="e.g. Perlengkapan Mendaki"
-                         className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm"
-                       />
-                    </div>
-                    <div className="flex gap-3 pt-2">
-                       <button 
-                         type="button"
-                         onClick={() => setIsModalOpen(false)}
-                         className="flex-1 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
-                       >
-                          Batal
-                       </button>
-                       <button 
-                         type="submit"
-                         className="flex-[2] h-11 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg"
-                       >
-                          {editingCategory ? 'Simpan' : 'Inisialisasi'}
-                       </button>
-                    </div>
-                </form>
-             </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+                    )}
+                    {isUploading && (
+                       <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center">
+                          <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-accent">SYNCING...</span>
+                       </div>
+                    )}
+                    <label className="absolute inset-0 cursor-pointer flex items-center justify-center opacity-0 group-hover/upload:opacity-100 transition-all bg-accent/20">
+                       <span className="text-[11px] font-black uppercase tracking-widest text-white bg-black/80 px-6 py-3 rounded-full border border-white/10">SWAP_ASSET Hub</span>
+                       <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} disabled={isUploading} />
+                    </label>
+                 </div>
+                 <input 
+                    type="text" 
+                    value={formData.image_url} 
+                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })} 
+                    className="w-full h-12 bg-white/5 border-none text-[10px] font-mono text-white/20 outline-none px-4 rounded-xl"
+                    placeholder="CDN_ENDPOINT_URL..."
+                 />
+              </div>
+           </form>
+        </div>
+
+        <div className="px-10 py-8 border-t border-white/5 bg-[#111] flex items-center justify-end font-body">
+           <button 
+             type="submit" 
+             form="categoryForm" 
+             disabled={categoryMutation.isPending || isUploading}
+             className="h-16 px-10 bg-white text-black font-black uppercase text-[11px] tracking-[0.3em] rounded-2xl hover:bg-accent hover:text-white transition-all shadow-xl disabled:opacity-50 italic"
+           >
+              COMMIT_SEQUENCE
+           </button>
+        </div>
+      </AdminModal>
     </AdminLayout>
   );
 };

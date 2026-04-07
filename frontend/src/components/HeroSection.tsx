@@ -102,7 +102,7 @@ const HeroSection = () => {
           >
             <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-3.5 py-1.5 text-white/80 font-body text-[11px] tracking-[0.2em] uppercase">
               <MapPin className="w-3 h-3 text-accent" />
-              Indonesia's Premier Outdoor Brand
+              Brand Outdoor Favorit Indonesia
             </span>
             
             <motion.div
@@ -119,7 +119,7 @@ const HeroSection = () => {
                 ))}
               </div>
               <span className="text-white/70 font-body text-[10px] font-bold tracking-tight">
-                <span className="text-accent">{stats?.explorers?.display || "5K+"}</span> Explorers Joined
+                <span className="text-accent">{stats?.explorers?.display || "5K+"}</span> Penjelajah Bergabung
               </span>
             </motion.div>
 
@@ -145,7 +145,7 @@ const HeroSection = () => {
                 transition={{ duration: 1.05, delay: 0.25, ease }}
                 className="block text-white text-[clamp(2.5rem,12vw,9rem)] drop-shadow-md"
               >
-                Explore
+                Jelajah
               </motion.span>
             </span>
             
@@ -157,8 +157,8 @@ const HeroSection = () => {
                 transition={{ duration: 1.05, delay: 0.35, ease }}
                 className="block text-[clamp(2.5rem,12vw,9rem)] drop-shadow-md"
               >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/40">The</span>
-                <span className="text-accent ml-3 md:ml-6">Wild</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/40">Tanpa</span>
+                <span className="text-accent ml-3 md:ml-6">Batas</span>
               </motion.span>
             </span>
           </h1>
@@ -192,7 +192,7 @@ const HeroSection = () => {
                 </Button>
               )}
               <Button variant="hero" size="xl" className="rounded-none uppercase tracking-widest font-bold text-xs px-8" asChild><Link to="/store" className="group">
-                  Shop Arrival
+                  Cek Koleksi Terbaru
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link></Button>
             </motion.div>

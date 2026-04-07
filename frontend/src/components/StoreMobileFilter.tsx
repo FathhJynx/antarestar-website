@@ -49,48 +49,70 @@ const StoreMobileFilter = ({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 32, stiffness: 300, mass: 0.8 }}
-            className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-background rounded-t-3xl shadow-2xl max-h-[88dvh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-[#050505] border-t border-white/10 shadow-2xl max-h-[88dvh] flex flex-col"
           >
             {/* Drag handle */}
             <div className="flex justify-center pt-3 pb-1 shrink-0">
-              <div className="w-10 h-1 rounded-full bg-border" />
+              <div className="w-12 h-1 bg-white/20" />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-border shrink-0">
-              <div className="flex items-center gap-2">
-                <h2 className="font-display font-bold text-base">Filter Produk</h2>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-3">
+                <h2 className="font-display font-black text-xl text-white uppercase tracking-tighter">Filter</h2>
                 {activeFilterCount > 0 && (
-                  <span className="bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-body">
-                    {activeFilterCount}
+                  <span className="bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-widest">
+                    {activeFilterCount} AKTIF
                   </span>
                 )}
               </div>
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={onClose}
-                className="w-8 h-8 rounded-full bg-muted flex items-center justify-center"
+                className="w-8 h-8 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4 text-white" />
               </motion.button>
             </div>
 
             {/* Scrollable content */}
-            <div className="overflow-y-auto flex-1 px-5 py-4">
+            <div className="overflow-y-auto flex-1 px-6 py-6">
+
+               {/* Sort */}
+               <div className="mb-10">
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Urutkan</p>
+                <div className="flex flex-col">
+                  {sortOptions.map((opt) => (
+                    <motion.button
+                      key={opt}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => onSortChange(opt)}
+                      className={`flex items-center justify-between font-display font-black text-[11px] uppercase tracking-[0.2em] py-4 border-b border-white/5 transition-all duration-200 ${
+                        selectedSort === opt
+                          ? "text-orange-500"
+                          : "text-white/60"
+                      }`}
+                    >
+                      {opt}
+                      {selectedSort === opt && <Check className="w-4 h-4 text-orange-500 shrink-0" />}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
 
               {/* Category */}
-              <div className="mb-6">
-                <p className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Kategori</p>
+              <div className="mb-10">
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Kategori</p>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => (
                     <motion.button
                       key={cat}
                       whileTap={{ scale: 0.96 }}
                       onClick={() => onCategoryChange(cat)}
-                      className={`inline-flex items-center gap-1.5 font-body text-sm py-2 px-4 rounded-full border transition-all duration-200 ${
+                      className={`inline-flex items-center gap-1.5 font-display font-black uppercase text-[10px] tracking-[0.1em] py-2.5 px-5 transition-all duration-200 border ${
                         selectedCategory === cat
-                          ? "bg-accent text-white border-accent shadow-sm shadow-accent/20"
-                          : "bg-card text-foreground border-border"
+                          ? "bg-orange-500 text-white border-orange-500"
+                          : "bg-transparent text-white/70 border-white/10"
                       }`}
                     >
                       {selectedCategory === cat && <Check className="w-3.5 h-3.5 shrink-0" />}
@@ -101,18 +123,18 @@ const StoreMobileFilter = ({
               </div>
 
               {/* Activity */}
-              <div className="mb-6">
-                <p className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Aktivitas</p>
+              <div className="mb-10">
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Aktivitas</p>
                 <div className="flex flex-wrap gap-2">
                   {activities.map((act) => (
                     <motion.button
                       key={act}
                       whileTap={{ scale: 0.96 }}
                       onClick={() => onActivityChange(act)}
-                      className={`inline-flex items-center gap-1.5 font-body text-sm py-2 px-4 rounded-full border transition-all duration-200 ${
+                      className={`inline-flex items-center gap-1.5 font-display font-black uppercase text-[10px] tracking-[0.1em] py-2.5 px-5 transition-all duration-200 border ${
                         selectedActivity === act
-                          ? "bg-accent text-white border-accent shadow-sm shadow-accent/20"
-                          : "bg-card text-foreground border-border"
+                          ? "bg-orange-500 text-white border-orange-500"
+                          : "bg-transparent text-white/70 border-white/10"
                       }`}
                     >
                       {selectedActivity === act && <Check className="w-3.5 h-3.5 shrink-0" />}
@@ -123,63 +145,47 @@ const StoreMobileFilter = ({
               </div>
 
               {/* Price Range */}
-              <div className="mb-6">
-                <p className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Rentang Harga</p>
-                <div className="flex items-center justify-between font-body text-sm font-semibold text-foreground mb-3">
-                  <span className="bg-card border border-border rounded-xl px-3 py-1.5">Rp {fmtK(priceMin)}</span>
-                  <span className="text-muted-foreground">—</span>
-                  <span className="bg-card border border-border rounded-xl px-3 py-1.5">Rp {fmtK(priceMax)}</span>
+              <div className="mb-8">
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Harga</p>
+                <div className="flex items-center justify-between font-display font-black tracking-widest text-[10px] text-white/60 mb-5">
+                  <span className="bg-[#111111] border border-white/10 px-3 py-1.5">RP {fmtK(priceMin)}</span>
+                  <span className="text-white/20">—</span>
+                  <span className="bg-[#111111] border border-white/10 px-3 py-1.5">RP {fmtK(priceMax)}</span>
                 </div>
-                <div className="space-y-3">
-                  <input
-                    type="range" min={MIN_PRICE} max={MAX_PRICE} step={5000}
-                    value={priceMin}
-                    onChange={(e) => { const v = Number(e.target.value); if (v < priceMax) onPriceMinChange(v); }}
-                    className="w-full h-2 rounded-full accent-[hsl(var(--accent))] cursor-pointer"
-                  />
-                  <input
-                    type="range" min={MIN_PRICE} max={MAX_PRICE} step={5000}
-                    value={priceMax}
-                    onChange={(e) => { const v = Number(e.target.value); if (v > priceMin) onPriceMaxChange(v); }}
-                    className="w-full h-2 rounded-full accent-[hsl(var(--accent))] cursor-pointer"
-                  />
-                </div>
-              </div>
-
-              {/* Sort */}
-              <div className="mb-3">
-                <p className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Urutkan</p>
-                <div className="flex flex-col gap-1.5">
-                  {sortOptions.map((opt) => (
-                    <motion.button
-                      key={opt}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => onSortChange(opt)}
-                      className={`flex items-center justify-between font-body text-sm py-2.5 px-4 rounded-xl border transition-all duration-200 ${
-                        selectedSort === opt
-                          ? "bg-accent/10 text-accent border-accent/30 font-medium"
-                          : "bg-card text-foreground border-border"
-                      }`}
-                    >
-                      {opt}
-                      {selectedSort === opt && <Check className="w-4 h-4 text-accent shrink-0" />}
-                    </motion.button>
-                  ))}
+                <div className="space-y-4">
+                  <div className="relative h-1 bg-white/10">
+                     <input
+                      type="range" min={MIN_PRICE} max={MAX_PRICE} step={5000}
+                      value={priceMin}
+                      onChange={(e) => { const v = Number(e.target.value); if (v < priceMax) onPriceMinChange(v); }}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                     />
+                     <div className="absolute left-0 h-full bg-orange-500 pointer-events-none" style={{ width: `${(priceMin / MAX_PRICE) * 100}%` }} />
+                  </div>
+                  <div className="relative h-1 bg-white/10">
+                     <input
+                      type="range" min={MIN_PRICE} max={MAX_PRICE} step={5000}
+                      value={priceMax}
+                      onChange={(e) => { const v = Number(e.target.value); if (v > priceMin) onPriceMaxChange(v); }}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                     />
+                     <div className="absolute left-0 h-full bg-orange-500 pointer-events-none" style={{ width: `${(priceMax / MAX_PRICE) * 100}%` }} />
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="px-5 py-4 border-t border-border shrink-0 flex gap-3">
+            <div className="px-6 py-5 border-t border-white/10 shrink-0 flex gap-3 bg-[#0a0a0a]">
               <button
                 onClick={onReset}
-                className="flex-1 font-body text-sm font-semibold text-muted-foreground border border-border rounded-xl py-3 hover:border-foreground/30 transition-colors"
+                className="flex-1 font-display font-black uppercase text-[10px] tracking-widest text-white/40 border border-white/10 hover:text-white transition-colors"
               >
-                Reset
+                Reset Semua
               </button>
-              <Button variant="hero" className="flex-1 rounded-xl" onClick={onClose}>
-                Tampilkan {filteredCount} Produk
-              </Button>
+              <button className="flex-[2] font-display font-black uppercase text-xs tracking-widest px-4 py-4 bg-orange-500 text-white" onClick={onClose}>
+                Terapkan {filteredCount} Barang
+              </button>
             </div>
           </motion.div>
         </>

@@ -5,7 +5,6 @@ import {
   Filter, 
   Edit2, 
   Trash2, 
-  Eye,
   Image as ImageIcon,
   Layers,
   X,
@@ -15,16 +14,20 @@ import {
   Box,
   Coins,
   ShoppingBag,
-  ChevronRight
+  ChevronRight,
+  ArrowRight,
+  Zap,
+  Camera
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
+import { AdminModal } from '@/components/Admin/AdminModal';
 import ConfirmModal from '@/components/Admin/ConfirmModal';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const ProductManagement = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +38,6 @@ const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
 
-  useScrollLock(isModalOpen);
   const [isUploading, setIsUploading] = useState<{[key: number]: boolean}>({});
   
   // Custom Modal States
@@ -64,7 +66,6 @@ const ProductManagement = () => {
     },
   });
 
-
   // Form states
   const [formData, setFormData] = useState({
     name: '',
@@ -72,6 +73,24 @@ const ProductManagement = () => {
     category_id: '',
     variants: [{ name: 'Default', price: 0, stock: 0, color_name: '', color_code: '', size: '' }],
     images: [{ image_url: '', is_primary: true }]
+  });
+
+  const createProduct = useMutation({
+    mutationFn: (data: any) => api.post('/admin/catalog/products', data),
+    onSuccess: () => {
+        toast.success('ASSET_INITIALIZED_SUCCESSFULLY');
+        refetchProducts();
+        setIsModalOpen(false);
+    }
+  });
+
+  const updateProduct = useMutation({
+    mutationFn: ({ id, data }: { id: string, data: any }) => api.put(`/admin/catalog/products/${id}`, data),
+    onSuccess: () => {
+        toast.success('ASSET_PROTOCOL_UPDATED');
+        refetchProducts();
+        setIsModalOpen(false);
+    }
   });
 
   const handleOpenModal = (product: any = null) => {
@@ -160,9 +179,9 @@ const ProductManagement = () => {
       newImages[index].image_url = newUrl;
       setFormData({ ...formData, images: newImages });
 
-      toast.success(`Media slot ${index + 1} berhasil disinkronkan.`, { id: slotToast });
+      toast.success(`Media slot ${index + 1} synchronized.`, { id: slotToast });
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Gagal mengunggah media', { id: slotToast });
+      toast.error(err.response?.data?.message || 'Media synchronization failed', { id: slotToast });
     } finally {
       setIsUploading(prev => ({ ...prev, [index]: false }));
     }
@@ -170,20 +189,10 @@ const ProductManagement = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const loadingToast = toast.loading(editingProduct ? 'Memperbarui produk...' : 'Membuat produk baru...');
-    
-    try {
-      if (editingProduct) {
-        await api.put(`/admin/catalog/products/${editingProduct.id}`, formData);
-        toast.success('Produk berhasil diperbarui', { id: loadingToast });
-      } else {
-        await api.post('/admin/catalog/products', formData);
-        toast.success('Produk berhasil dibuat', { id: loadingToast });
-      }
-      setIsModalOpen(false);
-      refetchProducts();
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Operasi gagal', { id: loadingToast });
+    if (editingProduct) {
+        updateProduct.mutate({ id: editingProduct.id, data: formData });
+    } else {
+        createProduct.mutate(formData);
     }
   };
 
@@ -193,148 +202,150 @@ const ProductManagement = () => {
   };
 
   const onConfirmDelete = async () => {
-    const loadingToast = toast.loading('Menghapus produk...');
+    const loadingToast = toast.loading('TERMINATING ASSET...');
     try {
       await api.delete(`/admin/catalog/products/${deleteConfig.id}`);
-      toast.success(`${deleteConfig.name} telah dihapus.`, { id: loadingToast });
+      toast.success(`${deleteConfig.name} ERASED FROM LEDGER.`, { id: loadingToast });
       refetchProducts();
       setIsConfirmOpen(false);
     } catch (err) {
-      toast.error('Gagal menghapus produk.', { id: loadingToast });
+      toast.error('TERMINATION_SEQUENCE_FAILED.', { id: loadingToast });
     }
   };
 
   return (
     <AdminLayout>
-      <div className="space-y-8 pb-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="space-y-12">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-white/5">
           <div>
-            <h1 className="font-display font-black text-3xl uppercase tracking-tighter mb-2 italic">
-              Daftar <span className="text-accent text-lg">Produk</span>
+            <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic">
+              INVENTORY <span className="text-accent underline decoration-4 underline-offset-8">PROTOCOL</span>
             </h1>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Kelola katalog barang dan tingkat stok produk.</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Catalog Management & Stock Control Terminal</p>
           </div>
           <button 
             onClick={() => handleOpenModal()}
-            className="h-12 px-8 bg-accent text-white font-black uppercase text-[11px] tracking-widest rounded-2xl flex items-center gap-2 shadow-lg shadow-accent/20 hover:scale-105 active:scale-95 transition-all"
+            className="h-16 px-10 bg-accent text-white font-display font-black uppercase text-[11px] tracking-[0.2em] rounded-2xl flex items-center gap-3 shadow-2xl shadow-accent/20 hover:scale-105 active:scale-95 transition-all group"
           >
-            <Plus className="w-4 h-4" /> Tambah Produk Baru
+            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" /> 
+            INITIALIZE NEW SKU
           </button>
         </div>
 
-        {/* Filters and Search */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1 group">
-            <span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="w-4 h-4 text-slate-400 group-focus-within:text-accent transition-colors" />
-            </span>
+        {/* Filters and Search Hub — Boxy Brutalist */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div className="lg:col-span-8 relative group">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-accent transition-colors" />
             <input 
               type="text" 
-              placeholder="Cari berdasarkan nama, SKU, atau kategori..." 
+              placeholder="SEARCH CATALOG BY NAME, SKU, OR CATEGORY NODE..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-[1.25rem] text-[13px] font-bold outline-none ring-accent/10 focus:ring-4 transition-all"
+              className="w-full h-16 pl-16 pr-8 bg-white/[0.02] border border-white/5 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] outline-none focus:border-accent/40 transition-all text-white placeholder:text-white/10"
             />
           </div>
-          <button className="h-[52px] px-6 bg-white border border-slate-200 rounded-[1.25rem] flex items-center gap-2 text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
-            <Filter className="w-4 h-4" />
-            <span className="text-[11px] font-black uppercase tracking-widest">Filter</span>
-          </button>
-          
-          {categoryIdParam && (
-             <button 
-               onClick={() => setSearchParams({})}
-               className="h-[52px] px-6 bg-accent/5 border border-accent/10 rounded-[1.25rem] flex items-center gap-2 text-accent hover:bg-accent/10 transition-all shadow-sm"
-             >
-                <X className="w-4 h-4" />
-                <span className="text-[11px] font-black uppercase tracking-widest">Clear Category Filter</span>
-             </button>
-          )}
+          <div className="lg:col-span-4 flex gap-4">
+            <button className="flex-1 h-16 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center justify-center gap-3 text-white/40 hover:text-white hover:bg-white/5 transition-all group">
+              <Filter className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-black uppercase tracking-[0.2em]">FILTER HUB</span>
+            </button>
+            
+            {categoryIdParam && (
+               <button 
+                 onClick={() => setSearchParams({})}
+                 className="h-16 px-8 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-2 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-2xl shadow-red-500/10"
+               >
+                  <X className="w-5 h-5 font-black" />
+                  <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">RESET</span>
+               </button>
+            )}
+          </div>
         </div>
 
-        {/* Product List */}
-        <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden min-h-[400px]">
+        {/* Product Ledger Table */}
+        <div className="bg-white/[0.02] rounded-[3rem] border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.5)] overflow-hidden min-h-[600px] flex flex-col">
           {isLoading ? (
-            <div className="h-96 flex flex-col items-center justify-center opacity-40 italic">
-               <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
-               <p className="text-[10px] uppercase font-black tracking-[0.2em]">Sinkronisasi data produk...</p>
+            <div className="flex-1 flex flex-col items-center justify-center opacity-20">
+               <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin mb-8 shadow-[0_0_50px_rgba(251,133,0,0.3)]" />
+               <p className="text-[12px] uppercase font-black tracking-[0.4em]">Synchronizing Inventory Hub...</p>
             </div>
           ) : products.length > 0 ? (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto no-scrollbar flex-1">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/50">
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Produk</th>
-                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Kategori</th>
-                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Rentang Harga</th>
-                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Stok</th>
-                    <th className="px-8 py-5 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Kendali</th>
+                  <tr className="bg-white/[0.03] border-b border-white/5">
+                    <th className="px-10 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">IDENTIFIER</th>
+                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">NODE</th>
+                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">VALUATION</th>
+                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">QUANTITY</th>
+                    <th className="px-10 py-8 text-right text-[11px] font-black uppercase tracking-[0.3em] text-white/20">OPERATIONS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-white/5">
                   {products.map((product) => {
                     const minPrice = Math.min(...product.variants?.map((v: any) => v.price) || [0]);
                     const maxPrice = Math.max(...product.variants?.map((v: any) => v.price) || [0]);
                     const totalStock = product.variants?.reduce((acc: number, v: any) => acc + v.stock, 0) || 0;
                     
                     return (
-                      <tr key={product.id} className="hover:bg-slate-50/50 transition-colors group">
-                        <td className="px-8 py-6">
-                          <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden border border-slate-100 flex-shrink-0">
+                      <tr key={product.id} className="hover:bg-white/[0.03] transition-all group border-l-4 border-transparent hover:border-accent font-body">
+                        <td className="px-10 py-10">
+                          <div className="flex items-center gap-6">
+                            <div className="w-16 h-16 rounded-2xl bg-white/5 overflow-hidden border border-white/10 flex-shrink-0 group-hover:scale-105 transition-transform duration-500 shadow-xl shadow-black">
                                {product.images?.[0] ? (
-                                 <img src={product.images[0].image_url} alt="" className="w-full h-full object-cover" />
+                                 <img src={product.images[0].image_url} alt="" className="w-full h-full object-cover group-hover:opacity-60 transition-opacity" />
                                ) : (
-                                 <div className="w-full h-full flex items-center justify-center text-slate-300">
-                                    <ImageIcon className="w-6 h-6" />
+                                 <div className="w-full h-full flex items-center justify-center text-white/10">
+                                    <ImageIcon className="w-8 h-8" />
                                  </div>
                                )}
                             </div>
                             <div>
-                               <h4 className="text-[13px] font-black uppercase tracking-tight text-slate-900 leading-tight mb-1">{product.name}</h4>
-                               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">SKU: {product.id.substring(0, 8).toUpperCase()}</p>
+                               <h4 className="text-sm font-black uppercase tracking-tight text-white mb-2 group-hover:text-accent transition-colors italic">{product.name}</h4>
+                               <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em] leading-none">SKU: {product.id.substring(0, 8).toUpperCase()}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-6">
-                           <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 w-fit">
-                              <Layers className="w-3.5 h-3.5 text-slate-400" />
-                              <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">{product.category?.name || 'Uncategorized'}</span>
+                        <td className="px-8 py-10">
+                           <div className="flex items-center gap-3 px-5 py-2.5 rounded-xl bg-white/5 border border-white/5 w-fit group-hover:border-accent/20 transition-all">
+                              <Layers className="w-4 h-4 text-accent" />
+                              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60">{product.category?.name || 'GENERIC'}</span>
                            </div>
                         </td>
-                        <td className="px-6 py-6">
+                        <td className="px-8 py-10">
                              <div className="flex flex-col">
-                                <span className="text-[14px] font-black text-slate-900 leading-none">
+                                <span className="text-lg font-black text-white italic group-hover:translate-x-1 transition-transform">
                                    Rp {Number(minPrice || 0).toLocaleString('id-ID')}
                                 </span>
                                 {maxPrice > minPrice && (
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5 flex items-center gap-1">
-                                   <ChevronRight className="w-3 h-3 text-slate-300" />
-                                   Hingga {Number(maxPrice || 0).toLocaleString('id-ID')}
+                                <span className="text-[10px] font-black text-white/20 uppercase tracking-widest mt-2 flex items-center gap-2">
+                                   <ArrowRight className="w-4 h-4 text-accent" />
+                                   UP TO {Number(maxPrice || 0).toLocaleString('id-ID')}
                                 </span>
                                 )}
                              </div>
                         </td>
-                        <td className="px-6 py-6">
-                           <div className="flex flex-col gap-1.5">
-                             <span className={`text-[11px] font-black uppercase tracking-widest ${totalStock < 10 ? 'text-red-500' : 'text-slate-600'}`}>
-                                {totalStock} Tersisa
+                        <td className="px-8 py-10">
+                           <div className="flex flex-col gap-3">
+                             <span className={`text-[11px] font-black uppercase tracking-widest ${totalStock < 10 ? 'text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'text-white/40'}`}>
+                                {totalStock} ACTIVE UNITS
                              </span>
-                            <div className="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                               <div className={`h-full rounded-full ${totalStock < 10 ? 'bg-red-500' : 'bg-green-500'}`} style={{ width: `${Math.min(totalStock, 100)}%` }} />
+                            <div className="w-32 h-2.5 bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5">
+                               <div className={`h-full rounded-full transition-all duration-1000 ${totalStock < 10 ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]'}`} style={{ width: `${Math.min(totalStock, 100)}%` }} />
                             </div>
                           </div>
                         </td>
-                        <td className="px-8 py-6 text-right">
-                          <div className="flex items-center justify-end gap-2 text-slate-400">
-                             <button onClick={() => handleOpenModal(product)} title="Edit Product" className="p-2.5 hover:text-blue-500 hover:bg-blue-50 rounded-xl transition-all">
-                                <Edit2 className="w-4 h-4" />
+                        <td className="px-10 py-10 text-right">
+                          <div className="flex items-center justify-end gap-3 translate-x-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
+                             <button onClick={() => handleOpenModal(product)} className="w-12 h-12 flex items-center justify-center bg-white/5 text-white hover:bg-blue-500 hover:text-white rounded-2xl transition-all border border-white/5 hover:border-blue-500 shadow-xl shadow-black">
+                                <Edit2 className="w-5 h-5" />
                              </button>
                              <button 
-                              onClick={() => handleDelete(product.id, product.name)}
-                              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
-                            >
-                                <Trash2 className="w-4 h-4" />
+                               onClick={() => handleDelete(product.id, product.name)}
+                               className="w-12 h-12 flex items-center justify-center bg-white/5 text-white hover:bg-red-600 hover:text-white rounded-2xl transition-all border border-white/5 hover:border-red-600 shadow-xl shadow-black"
+                             >
+                                <Trash2 className="w-5 h-5" />
                              </button>
                           </div>
                         </td>
@@ -345,330 +356,313 @@ const ProductManagement = () => {
               </table>
             </div>
           ) : (
-            <div className="h-96 flex flex-col items-center justify-center text-center p-10">
-               <div className="w-16 h-16 bg-slate-50 text-slate-300 rounded-[2rem] flex items-center justify-center mb-6">
-                  <Search className="w-8 h-8" />
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-20 opacity-20">
+               <div className="w-24 h-24 bg-white/5 text-white rounded-[3rem] flex items-center justify-center mb-10 border border-white/10">
+                  <Search className="w-12 h-12" />
                </div>
-               <h3 className="font-display font-black text-xl uppercase tracking-tighter mb-2">Tidak ada produk ditemukan</h3>
-               <p className="text-slate-400 text-sm max-w-xs mx-auto uppercase font-bold tracking-widest leading-relaxed">Kami tidak dapat menemukan perlengkapan yang sesuai dengan pencarian Anda.</p>
-            </div>
-          )}
+               <h3 className="font-display font-black text-3xl uppercase tracking-tighter mb-4 italic">VOID DETECTED</h3>
+               <p className="text-[12px] text-white font-black uppercase tracking-[0.4em] max-w-sm mx-auto leading-relaxed">System failed to resolve catalog data in the current sector.</p>
+             </div>
+           )}
         </div>
       </div>
 
-      {/* Product Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-             <motion.div 
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               onClick={() => setIsModalOpen(false)}
-               className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
-             />
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.98, y: 10 }}
-               animate={{ opacity: 1, scale: 1, y: 0 }}
-               exit={{ opacity: 0, scale: 0.98, y: 10 }}
-               className="bg-white rounded-[2rem] w-full max-w-4xl max-h-[75vh] overflow-hidden relative z-10 shadow-2xl flex flex-col border border-slate-100"
-             >
-                {/* Modal Header */}
-                <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                   <div>
-                      <h3 className="font-display font-black text-xl uppercase tracking-tighter italic">
-                        {editingProduct ? 'Perbarui' : 'Inisialisasi'} <span className="text-accent underline">Perlengkapan</span>
-                      </h3>
-                      <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest mt-1">Konfigurasi spesifikasi alat dan data inventori.</p>
-                   </div>
-                   <button onClick={() => setIsModalOpen(false)} className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all shadow-sm">
-                      <X className="w-5 h-5" />
-                   </button>
-                </div>
+      {/* AdminModal Hub — Viewport Fixed & Centered Portal */}
+      <AdminModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} maxWidth="max-w-6xl">
+        {/* Modal Header — Fixed Header */}
+        <div className="px-12 py-10 border-b border-white/5 flex items-center justify-between bg-[#111] shrink-0">
+           <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">System Configuration Hub</h2>
+              </div>
+              <h3 className="font-display font-black text-4xl uppercase tracking-tighter italic text-white">
+                {editingProduct ? 'UPDATE' : 'INITIALIZE'} <span className="text-accent underline decoration-4">ASSET-PROTOCOL</span>
+              </h3>
+           </div>
+           <button 
+             onClick={() => setIsModalOpen(false)} 
+             className="w-16 h-16 rounded-[2rem] bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 hover:bg-red-500/10 hover:border-red-500/20 transition-all group"
+           >
+              <X className="w-8 h-8 group-hover:rotate-90 transition-transform" />
+           </button>
+        </div>
 
-                {/* Modal Body */}
-                <div className="flex-1 overflow-y-auto p-8">
-                   <form id="productForm" onSubmit={handleSubmit} className="space-y-8">
-                      {/* Basic Info */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                         <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">
-                               <Tag className="w-3 h-3" /> Nama Produk
-                            </label>
-                            <input 
-                              type="text" 
-                              required
-                              value={formData.name}
-                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                              placeholder="e.g. Tenda Camp Pro"
-                              className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm"
-                            />
-                         </div>
-                         <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">
-                               <Layers className="w-3 h-3" /> Kategori Penjelajah
-                            </label>
+        {/* Modal Body — Fluid Focused Scroll */}
+        <div className="flex-1 overflow-y-auto p-12 space-y-16 scroll-smooth bg-[#0B0B0B] scrollbar-stealth">
+           <form id="productForm" onSubmit={handleSubmit} className="space-y-16">
+              {/* Section 1: Core Identification */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-body">
+                 <div className="lg:col-span-4">
+                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">CORE IDENT</h4>
+                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Define the primary metadata for the asset in the global catalog system.</p>
+                 </div>
+                 <div className="lg:col-span-8 space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div className="space-y-3">
+                          <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1">Asset Label Name</label>
+                          <input 
+                            type="text" 
+                            required
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black uppercase tracking-widest outline-none focus:border-accent transition-all text-white"
+                            placeholder="DESIGNATION KEY..."
+                          />
+                       </div>
+                       <div className="space-y-3">
+                          <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1">Category Hub Node</label>
+                          <div className="relative">
                             <select 
-                              required
-                              value={formData.category_id}
-                              onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                              className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm appearance-none"
+                                required
+                                value={formData.category_id}
+                                onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+                                className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black uppercase tracking-widest outline-none focus:border-accent transition-all text-white appearance-none cursor-pointer"
                             >
-                               <option value="">Pilih Kategori</option>
-                               {categories.map(cat => (
-                                 <option key={cat.id} value={cat.id}>{cat.name}</option>
-                               ))}
+                                <option value="" className="bg-[#111]">SELECT SECTOR</option>
+                                {categories.map((cat: any) => (
+                                <option key={cat.id} value={cat.id} className="bg-[#111]">{cat.name.toUpperCase()}</option>
+                                ))}
                             </select>
-                         </div>
-                         <div className="md:col-span-2 space-y-2">
-                           <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">
-                               Deskripsi
-                            </label>
-                            <textarea 
-                              rows={4}
-                              value={formData.description}
-                              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                              placeholder="Jelaskan kemampuan dan fitur alat ini..."
-                              className="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body shadow-sm resize-none"
-                            />
-                         </div>
-                      </div>
+                            <ChevronRight className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 rotate-90 text-white/20 pointer-events-none" />
+                          </div>
+                       </div>
+                    </div>
+                    <div className="space-y-3">
+                       <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1 font-bold">Asset Log Description</label>
+                       <textarea 
+                         rows={4}
+                         required
+                         value={formData.description}
+                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                         className="w-full p-8 bg-white/5 border border-white/5 rounded-[2rem] text-[12px] font-medium leading-relaxed outline-none focus:border-accent transition-all text-white/70 resize-none no-scrollbar"
+                         placeholder="ENCRYPTED ASSET DATA LOGS..."
+                       />
+                    </div>
+                 </div>
+              </div>
 
-                      {/* Variant Management */}
-                      <div className="space-y-6">
-                         <div className="flex items-center justify-between">
-                            <h4 className="text-[12px] font-black uppercase tracking-tight text-slate-900 border-l-4 border-accent pl-3 leading-none">Varian SKU & Harga</h4>
-                            <button 
-                              type="button"
-                              onClick={handleAddVariant}
-                              className="px-4 py-2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-lg"
-                            >
-                               + Tambah Alternatif
-                            </button>
-                         </div>
+              {/* Section 2: Variation Specs */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-body">
+                 <div className="lg:col-span-4">
+                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">SPEC VARIATIONS</h4>
+                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Synchronize multiple variants, pricing tiers, and stock payloads across all nodes.</p>
+                    <button 
+                      type="button"
+                      onClick={handleAddVariant}
+                      className="mt-8 w-full h-14 border-2 border-dashed border-white/10 hover:border-accent/40 hover:bg-accent/5 text-white/20 hover:text-accent rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3"
+                    >
+                       <Plus className="w-5 h-5" /> ADD OVERRIDE
+                    </button>
+                 </div>
+                 <div className="lg:col-span-8 space-y-6">
+                    {formData.variants.map((variant, idx) => (
+                       <motion.div 
+                         initial={{ opacity: 0, x: 20 }}
+                         animate={{ opacity: 1, x: 0 }}
+                         key={idx} 
+                         className="p-10 bg-white/[0.02] border border-white/5 rounded-[2.5rem] relative group/var hover:border-white/20 transition-all font-body"
+                       >
+                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                              <div className="md:col-span-2 space-y-3">
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Variant Signature</label>
+                                 <input 
+                                   type="text"
+                                   required
+                                   value={variant.name}
+                                   onChange={(e) => {
+                                      const newVariants = [...formData.variants];
+                                      newVariants[idx].name = e.target.value;
+                                      setFormData({ ...formData, variants: newVariants });
+                                   }}
+                                   className="w-full h-14 px-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black uppercase outline-none focus:border-accent text-white"
+                                   placeholder="VARIANT DESIGNATION..."
+                                 />
+                              </div>
+                              <div className="space-y-3 text-right">
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Valuation Unit</label>
+                                 <div className="relative">
+                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-accent font-black text-[10px]">RP</span>
+                                    <input 
+                                      type="number"
+                                      required
+                                      value={variant.price}
+                                      onChange={(e) => {
+                                         const newVariants = [...formData.variants];
+                                         newVariants[idx].price = Number(e.target.value);
+                                         setFormData({ ...formData, variants: newVariants });
+                                      }}
+                                      className="w-full h-14 pl-12 pr-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black outline-none focus:border-accent text-white"
+                                    />
+                                 </div>
+                              </div>
+                              <div className="space-y-3">
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Inventory Capacity</label>
+                                 <input 
+                                   type="number"
+                                   required
+                                   value={variant.stock}
+                                   onChange={(e) => {
+                                      const newVariants = [...formData.variants];
+                                      newVariants[idx].stock = Number(e.target.value);
+                                      setFormData({ ...formData, variants: newVariants });
+                                   }}
+                                   className="w-full h-14 px-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black outline-none focus:border-accent text-white"
+                                 />
+                              </div>
+                               <div className="space-y-3">
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Dimension / Size</label>
+                                 <input 
+                                   type="text"
+                                   value={variant.size || ''}
+                                   onChange={(e) => {
+                                      const newVariants = [...formData.variants];
+                                      newVariants[idx].size = e.target.value;
+                                      setFormData({ ...formData, variants: newVariants });
+                                   }}
+                                   className="w-full h-14 px-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black uppercase outline-none focus:border-accent text-white"
+                                   placeholder="SIZE (XL, 42, etc)"
+                                 />
+                              </div>
+                              <div className="space-y-3">
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Chroma Code</label>
+                                 <div className="flex gap-4">
+                                    <input 
+                                      type="text"
+                                      value={variant.color_code || ''}
+                                      onChange={(e) => {
+                                         const newVariants = [...formData.variants];
+                                         newVariants[idx].color_code = e.target.value;
+                                         setFormData({ ...formData, variants: newVariants });
+                                      }}
+                                      className="flex-1 h-14 px-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black font-mono outline-none focus:border-accent text-white"
+                                      placeholder="#HEX"
+                                    />
+                                    <div className="w-14 h-14 rounded-xl border border-white/10 shadow-inner" style={{ backgroundColor: variant.color_code || '#222' }} />
+                                 </div>
+                              </div>
+                           </div>
+                           {formData.variants.length > 1 && (
+                             <button 
+                               type="button"
+                               onClick={() => handleRemoveVariant(idx)}
+                               className="absolute -top-3 -right-3 w-10 h-10 bg-red-600 text-white rounded-xl flex items-center justify-center opacity-0 group-hover/var:opacity-100 transition-all shadow-xl shadow-red-500/20 z-10"
+                             >
+                                <X className="w-5 h-5" />
+                             </button>
+                           )}
+                       </motion.div>
+                    ))}
+                 </div>
+              </div>
 
-                         <div className="space-y-4">
-                            {formData.variants.map((variant, idx) => (
-                               <div key={idx} className="flex flex-col md:flex-row gap-4 p-6 bg-slate-50/50 border border-slate-100 rounded-3xl group/var relative">
-                                   <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                      <div className="space-y-2">
-                                         <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">Nama Tampilan Varian</label>
-                                         <div className="relative">
-                                            <Box className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-                                            <input 
-                                              type="text"
-                                              placeholder="e.g. Ukuran M / Hitam"
-                                              value={variant.name}
-                                              onChange={(e) => {
-                                                 const newVariants = [...formData.variants];
-                                                 newVariants[idx].name = e.target.value;
-                                                 setFormData({ ...formData, variants: newVariants });
-                                              }}
-                                              className="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-[12px] font-bold outline-none focus:border-accent transition-all shadow-sm"
-                                            />
-                                         </div>
-                                      </div>
-                                      <div className="space-y-2">
-                                         <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">Ukuran (Opsional)</label>
-                                         <input 
-                                           type="text"
-                                           placeholder="e.g. XL, 42, 2L"
-                                           value={variant.size || ''}
-                                           onChange={(e) => {
-                                              const newVariants = [...formData.variants];
-                                              newVariants[idx].size = e.target.value;
-                                              setFormData({ ...formData, variants: newVariants });
-                                           }}
-                                           className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-[12px] font-bold outline-none focus:border-accent transition-all shadow-sm"
-                                         />
-                                      </div>
-                                      <div className="space-y-2">
-                                         <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">Nama Warna (Opsional)</label>
-                                         <input 
-                                           type="text"
-                                           placeholder="e.g. Hitam Karbon"
-                                           value={variant.color_name || ''}
-                                           onChange={(e) => {
-                                              const newVariants = [...formData.variants];
-                                              newVariants[idx].color_name = e.target.value;
-                                              setFormData({ ...formData, variants: newVariants });
-                                           }}
-                                           className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-[12px] font-bold outline-none focus:border-accent transition-all shadow-sm"
-                                         />
-                                      </div>
-                                      <div className="space-y-2">
-                                         <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">Kode Hex Warna (Opsional)</label>
-                                         <div className="flex gap-2">
-                                            <input 
-                                              type="text"
-                                              placeholder="#000000"
-                                              value={variant.color_code || ''}
-                                              onChange={(e) => {
-                                                 const newVariants = [...formData.variants];
-                                                 newVariants[idx].color_code = e.target.value;
-                                                 setFormData({ ...formData, variants: newVariants });
-                                              }}
-                                              className="flex-1 h-11 px-4 bg-white border border-slate-200 rounded-xl text-[12px] font-bold outline-none focus:border-accent transition-all shadow-sm font-mono"
-                                            />
-                                            <div 
-                                               className="w-11 h-11 rounded-xl border border-slate-200 shadow-inner"
-                                               style={{ backgroundColor: variant.color_code || '#f8fafc' }}
-                                            />
-                                         </div>
-                                      </div>
-                                   </div>
-                                   
-                                   <div className="w-full md:w-32 space-y-2">
-                                      <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">Harga Dasar</label>
-                                      <div className="relative">
-                                         <Coins className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-                                         <input 
-                                           type="number"
-                                           value={variant.price}
-                                           onChange={(e) => {
-                                              const newVariants = [...formData.variants];
-                                              newVariants[idx].price = Number(e.target.value);
-                                              setFormData({ ...formData, variants: newVariants });
-                                           }}
-                                           className="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-[12px] font-bold outline-none focus:border-accent transition-all shadow-sm"
-                                         />
-                                      </div>
-                                   </div>
-                                   <div className="w-full md:w-24 space-y-2">
-                                      <label className="text-[8px] font-black uppercase tracking-widest text-slate-400">Stok</label>
-                                      <input 
-                                        type="number"
-                                        value={variant.stock}
-                                        onChange={(e) => {
-                                           const newVariants = [...formData.variants];
-                                           newVariants[idx].stock = Number(e.target.value);
-                                           setFormData({ ...formData, variants: newVariants });
-                                        }}
-                                        className="w-full h-11 px-4 bg-white border border-slate-200 rounded-xl text-[12px] font-bold outline-none focus:border-accent transition-all shadow-sm"
-                                      />
-                                   </div>
-                                   {formData.variants.length > 1 && (
-                                      <button 
-                                        type="button"
-                                        onClick={() => handleRemoveVariant(idx)}
-                                        className="p-2 text-slate-300 hover:text-red-500 transition-colors mt-auto md:mb-1"
-                                      >
-                                         <Trash className="w-4 h-4" />
-                                      </button>
-                                   )}
-                               </div>
-                            ))}
-                         </div>
-                      </div>
+              {/* Section 3: Asset Visuals */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-body">
+                 <div className="lg:col-span-4">
+                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">VISUAL MANIFEST</h4>
+                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Deploy visual assets to the global storefront infrastructure.</p>
+                    <button 
+                      type="button"
+                      onClick={handleAddImage}
+                      className="mt-8 w-full h-14 border-2 border-dashed border-white/10 hover:border-accent/40 hover:bg-accent/5 text-white/20 hover:text-accent rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3"
+                    >
+                       <Camera className="w-5 h-5" /> ADD MEDIA SLOT
+                    </button>
+                 </div>
+                 <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {formData.images.map((image, idx) => (
+                       <div key={idx} className="p-8 bg-white/[0.02] border border-white/5 rounded-[2.5rem] relative group/img overflow-hidden transition-all hover:border-white/20">
+                           <div className="aspect-square w-full rounded-2xl bg-black/40 border border-white/5 overflow-hidden mb-8 relative group-hover/img:border-accent/40 transition-all">
+                              {image.image_url ? (
+                                 <img src={image.image_url} alt="" className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-1000" />
+                              ) : (
+                                 <div className="absolute inset-0 flex items-center justify-center text-white/5">
+                                    <ImageIcon className="w-16 h-16" />
+                                 </div>
+                              )}
+                              {isUploading[idx] && (
+                                 <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center">
+                                    <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">UPLOADING...</span>
+                                 </div>
+                              )}
+                           </div>
+                           <div className="space-y-4">
+                              <div className="relative group/input">
+                                 <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 z-10" />
+                                 <input 
+                                    type="text"
+                                    required
+                                    value={image.image_url || ''}
+                                    onChange={(e) => {
+                                       const newImages = [...formData.images];
+                                       newImages[idx].image_url = e.target.value;
+                                       setFormData({ ...formData, images: newImages });
+                                    }}
+                                    className="w-full h-14 pl-12 pr-6 bg-black/40 border border-white/5 rounded-xl text-[10px] font-bold outline-none focus:border-accent text-white"
+                                    placeholder="MEDIA SOURCE URL..."
+                                 />
+                              </div>
+                              <div className="flex gap-3">
+                                 <label className="flex-1 h-14 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-widest cursor-pointer transition-all">
+                                    <Zap className="w-4 h-4 fill-current" /> SYNC UPLOAD
+                                    <input 
+                                       type="file" 
+                                       className="hidden" 
+                                       accept="image/*"
+                                       onChange={(e) => handleFileUpload(idx, e)}
+                                       disabled={isUploading[idx]}
+                                    />
+                                 </label>
+                                 {formData.images.length > 1 && (
+                                    <button 
+                                      type="button"
+                                      onClick={() => handleRemoveImage(idx)}
+                                      className="w-14 h-14 bg-red-600/10 border border-red-600/20 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                                    >
+                                       <Trash className="w-5 h-5" />
+                                    </button>
+                                 )}
+                              </div>
+                           </div>
+                       </div>
+                    ))}
+                 </div>
+              </div>
+           </form>
+        </div>
 
-                      {/* Image Management */}
-                      <div className="space-y-6">
-                         <div className="flex items-center justify-between">
-                            <h4 className="text-[12px] font-black uppercase tracking-tight text-slate-900 border-l-4 border-accent pl-3 leading-none">Aset Visual</h4>
-                            <button 
-                              type="button"
-                              onClick={handleAddImage}
-                              className="px-4 py-2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-lg"
-                            >
-                               + Tambah Galeri
-                            </button>
-                         </div>
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {formData.images.map((image, idx) => (
-                               <div key={idx} className="space-y-2 p-4 bg-slate-50/50 border border-slate-100 rounded-3xl relative group/card">
-                                  {formData.images.length > 1 && (
-                                     <button 
-                                       type="button"
-                                       onClick={() => handleRemoveImage(idx)}
-                                       className="absolute -top-2 -right-2 w-8 h-8 bg-white border border-slate-200 text-slate-400 hover:text-red-500 rounded-full flex items-center justify-center shadow-lg transition-colors z-20"
-                                     >
-                                        <X className="w-4 h-4" />
-                                     </button>
-                                  )}
-                                  <label className="text-[8px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                                     URL Media {idx + 1} 
-                                     {image.is_primary && <span className="px-2 py-0.5 bg-accent text-white rounded-md">Utama</span>}
-                                  </label>
-                                   <div className="relative group/field flex flex-col gap-3">
-                                      <div className="flex gap-3">
-                                         <div className="w-20 h-20 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden flex-shrink-0 flex items-center justify-center relative group-hover:border-accent/40 transition-all">
-                                            {image.image_url ? (
-                                               <img src={image.image_url} alt="" className="w-full h-full object-cover" />
-                                            ) : (
-                                               <ImageIcon className="w-6 h-6 text-slate-300" />
-                                            )}
-                                            {isUploading[idx] && (
-                                               <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-                                                  <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-                                               </div>
-                                            )}
-                                         </div>
-                                         <div className="flex-1 space-y-2">
-                                            <div className="relative h-12">
-                                               <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 z-10" />
-                                               <input 
-                                                  type="text"
-                                                  placeholder="URL Media atau Unggah File..."
-                                                  value={image.image_url || ''}
-                                                  onChange={(e) => {
-                                                     const newImages = [...formData.images];
-                                                     newImages[idx].image_url = e.target.value;
-                                                     setFormData({ ...formData, images: newImages });
-                                                  }}
-                                                  className="w-full h-full pl-10 pr-4 bg-white border border-slate-200 rounded-2xl text-[11px] font-bold outline-none focus:ring-2 focus:ring-accent/10 transition-all shadow-sm"
-                                               />
-                                            </div>
-                                            <label className="inline-flex items-center gap-2 px-6 h-9 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all cursor-pointer shadow-lg active:scale-95">
-                                               <Plus className="w-3 h-3" /> Pilih File
-                                               <input 
-                                                  type="file" 
-                                                  className="hidden" 
-                                                  accept="image/*"
-                                                  onChange={(e) => handleFileUpload(idx, e)}
-                                                  disabled={isUploading[idx]}
-                                               />
-                                            </label>
-                                         </div>
-                                      </div>
-                                   </div>
-                               </div>
-                            ))}
-                         </div>
-                      </div>
-                   </form>
-                </div>
-
-                {/* Modal Footer */}
-                <div className="px-8 py-6 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
-                   <button 
-                     type="button"
-                     onClick={() => setIsModalOpen(false)}
-                     className="px-6 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-100 transition-all"
-                   >
-                      Batalkan Perubahan
-                   </button>
-                   <button 
-                     form="productForm"
-                     type="submit"
-                     className="px-8 h-11 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition-all flex items-center gap-3"
-                   >
-                      <Save className="w-4 h-4" /> 
-                      {editingProduct ? 'Simpan' : 'Terbitkan'}
-                   </button>
-                </div>
-             </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+        {/* Modal Footer — Action Hub */}
+        <div className="px-12 py-10 border-t border-white/5 flex items-center justify-between bg-[#111] shrink-0">
+           <button 
+             type="button" 
+             onClick={() => setIsModalOpen(false)} 
+             className="h-16 px-10 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] text-white/30 hover:bg-white/5 hover:text-white transition-all border border-white/5 bg-transparent"
+           >
+              ABORT_SYNC
+           </button>
+           <button 
+              type="submit" 
+              form="productForm"
+              disabled={createProduct.isPending || updateProduct.isPending}
+              className="h-16 px-12 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] hover:bg-accent hover:text-white active:scale-95 transition-all shadow-2xl flex items-center gap-4 disabled:opacity-50 italic"
+           >
+              {(createProduct.isPending || updateProduct.isPending) ? (
+                <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+              ) : <Save className="w-5 h-5" />}
+              {editingProduct ? 'SYNC_PROTOCOL' : 'AUTHORIZE_LISTING'}
+           </button>
+        </div>
+      </AdminModal>
 
        {/* Deletion Confirmation */}
        <ConfirmModal 
          isOpen={isConfirmOpen}
          onClose={() => setIsConfirmOpen(false)}
          onConfirm={onConfirmDelete}
-         title="Pemusnahan Inventori"
-         message={`Apakah Anda yakin ingin menghapus ${deleteConfig.name}? Tindakan ini tidak dapat dibatalkan dan semua varian akan hilang.`}
-         confirmText="Hapus Permanen"
+         title="ASSET TERMINATION"
+         message={`AUTHORIZING PERMANENT DELETION OF ${deleteConfig.name.toUpperCase()}. THIS ACTION IS IRREVERSIBLE. ALL LINKED LOGS AND VARIANTS WILL BE WIPED FROM THE CORE LEDGER.`}
+         confirmText="ERASE PERMANENTLY"
          variant="danger"
        />
     </AdminLayout>

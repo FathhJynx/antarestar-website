@@ -14,7 +14,7 @@ const BirthdayDiscountModal = () => {
     if (hasSeenModal) return;
 
     // Check backend for active birthday promotion for this user
-    api.get('/promotions/birthday-check')
+    api.get('/promotions/birthday-reward')
       .then(res => {
         const data = res.data?.data;
         if (data && data.is_eligible) {

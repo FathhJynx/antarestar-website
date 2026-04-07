@@ -13,22 +13,14 @@ interface PromptModalProps {
 }
 
 const PromptModal: React.FC<PromptModalProps> = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  title,
-  subtitle,
-  userName
+  isOpen, onClose, onSubmit, title, subtitle, userName
 }) => {
   useScrollLock(isOpen);
   const [points, setPoints] = useState('');
   const [reason, setReason] = useState('');
 
   useEffect(() => {
-    if (isOpen) {
-      setPoints('');
-      setReason('');
-    }
+    if (isOpen) { setPoints(''); setReason(''); }
   }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,88 +33,88 @@ const PromptModal: React.FC<PromptModalProps> = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center px-4">
-          <motion.div 
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+            className="absolute inset-0 bg-black/60 backdrop-blur-md"
           />
-           <motion.div 
-            initial={{ opacity: 0, scale: 0.98, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: 20 }}
-            className="bg-white rounded-[2.5rem] w-full max-w-md p-10 relative z-10 shadow-2xl overflow-hidden border border-slate-100"
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 40 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 40 }}
+            transition={{ type: 'spring', damping: 30 }}
+            className="bg-[#0B0B0B] rounded-[2.5rem] w-full max-w-md relative z-10 shadow-[0_80px_160px_rgba(0,0,0,1)] border border-white/10 overflow-hidden"
           >
-            <div className="absolute top-0 right-0 p-6 z-20">
-               <button onClick={onClose} className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all">
-                  <X className="w-4 h-4" />
-               </button>
-            </div>
+            {/* Top accent */}
+            <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-accent to-transparent" />
 
-            <div className="relative z-10 mb-10">
-              <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center text-accent mb-6 border border-accent/5 shadow-sm">
-                <TrendingUp className="w-7 h-7" />
+            <div className="px-10 py-8 border-b border-white/5 bg-[#111] flex items-center justify-between">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 bg-accent/10 border border-accent/20 rounded-[1.5rem] flex items-center justify-center text-accent shadow-2xl shadow-accent/10">
+                  <TrendingUp className="w-7 h-7" />
+                </div>
+                <div>
+                  <h3 className="font-display font-black text-xl uppercase tracking-tighter italic text-white">
+                    {title} <span className="text-accent underline decoration-4">{userName}</span>
+                  </h3>
+                  <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.3em] mt-1">{subtitle}</p>
+                </div>
               </div>
-              <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-1">
-                {title} <span className="text-accent underline decoration-2 underline-offset-4">{userName}</span>
-              </h3>
-              <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em]">
-                {subtitle}
-              </p>
+              <button
+                onClick={onClose}
+                className="w-12 h-12 rounded-[1.5rem] bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 hover:bg-red-500/10 transition-all group"
+              >
+                <X className="w-6 h-6 group-hover:rotate-90 transition-transform" />
+              </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+            <form onSubmit={handleSubmit} className="p-10 space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 ml-1">
-                   <Coins className="w-3 h-3" /> Jumlah Poin AP
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2">
+                  <Coins className="w-3.5 h-3.5 text-accent" />AP_POINTS_AMOUNT
                 </label>
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   required
                   value={points}
                   onChange={(e) => setPoints(e.target.value)}
                   placeholder="e.g. 500"
-                  className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body placeholder:text-slate-300"
+                  className="w-full h-14 px-6 bg-white/5 border border-white/5 rounded-2xl text-[14px] font-black text-white outline-none focus:border-accent/40 transition-all placeholder:text-white/10"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 ml-1">
-                   <MessageSquare className="w-3 h-3" /> Justifikasi Logistik
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2">
+                  <MessageSquare className="w-3.5 h-3.5 text-accent" />JUSTIFICATION_LOG
                 </label>
-                <textarea 
+                <textarea
                   required
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  placeholder="Masukkan alasan untuk manifes audit..."
-                  className="w-full h-28 p-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all resize-none font-body placeholder:text-slate-300"
+                  placeholder="Enter reason for the audit manifest..."
+                  className="w-full h-28 p-6 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white outline-none focus:border-accent/40 transition-all resize-none placeholder:text-white/10"
                 />
               </div>
 
-              <div className="flex gap-4 pt-6">
-                <button 
+              <div className="flex gap-4 pt-2">
+                <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all font-display"
+                  className="flex-1 h-14 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white/30 border border-white/5 hover:bg-white/5 transition-all"
                 >
-                  Batalkan
+                  ABORT
                 </button>
-                <button 
+                <button
                   type="submit"
-                  className="flex-[2] h-11 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 font-display flex items-center justify-center gap-2"
+                  className="flex-[2] h-14 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-accent/80 active:scale-95 transition-all shadow-2xl shadow-accent/20 flex items-center justify-center gap-3"
                 >
-                   <Save className="w-3.5 h-3.5 text-accent" />
-                   Push Manifest
+                  <Save className="w-4 h-4" />PUSH MANIFEST
                 </button>
               </div>
             </form>
-
-            {/* Subtle Watermark */}
-            <div className="absolute -right-4 -bottom-4 opacity-[0.03] pointer-events-none">
-                <TrendingUp className="w-24 h-24" />
-            </div>
           </motion.div>
         </div>
       )}

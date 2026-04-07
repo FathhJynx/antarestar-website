@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import BirthdayDiscountModal from "./components/BirthdayDiscountModal";
+import GlobalStyler from "./components/antarestar/GlobalStyler";
 
 // --- Lazy-Loaded Application Pages ---
 const Home = React.lazy(() => import("./pages/Home"));
@@ -58,15 +59,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// A lightweight, seamless loading skeleton for route transitions
-const PageLoader = () => (
-  <div className="flex h-screen w-full items-center justify-center bg-background">
-    <div className="flex flex-col items-center gap-4">
-      <div className="h-10 w-10 border-4 border-accent border-t-transparent rounded-full animate-spin shadow-sm"></div>
-      <p className="text-xs uppercase tracking-[0.2em] font-black text-muted-foreground animate-pulse">Loading Workspace...</p>
-    </div>
-  </div>
-);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -74,53 +66,58 @@ const App = () => (
       <Toaster />
       <Sonner />
       <AuthProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <BirthdayDiscountModal />
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:id" element={<BlogPost />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/store" element={<Store />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/product/:id/reviews" element={<ProductReviews />} />
-                <Route path="/corporate" element={<Corporate />} />
-                <Route path="/affiliate" element={<Affiliate />} />
+        <GlobalStyler>
+          <CartProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <BirthdayDiscountModal />
+              <div className="cursor-none">
+                <Suspense fallback={null}>
+                  <Routes>
+                    {/* Admin Routes (Moved up to prevent * match) */}
+                    <Route path="/admin/login" element={<div className="cursor-auto"><AdminLogin /></div>} />
+                    <Route path="/admin" element={<div className="cursor-auto"><AdminRoute><AdminDashboard /></AdminRoute></div>} />
+                    <Route path="/admin/products" element={<div className="cursor-auto"><AdminRoute><ProductManagement /></AdminRoute></div>} />
+                    <Route path="/admin/categories" element={<div className="cursor-auto"><AdminRoute><CategoryManagement /></AdminRoute></div>} />
+                    <Route path="/admin/orders" element={<div className="cursor-auto"><AdminRoute><OrderManagement /></AdminRoute></div>} />
+                    <Route path="/admin/sold-products" element={<div className="cursor-auto"><AdminRoute><SoldProducts /></AdminRoute></div>} />
+                    <Route path="/admin/users" element={<div className="cursor-auto"><AdminRoute><UserManagement /></AdminRoute></div>} />
+                    <Route path="/admin/content" element={<div className="cursor-auto"><AdminRoute><ContentManagement /></AdminRoute></div>} />
+                    <Route path="/admin/discounts" element={<div className="cursor-auto"><AdminRoute><DiscountManagement /></AdminRoute></div>} />
+                    <Route path="/admin/flash-sales" element={<div className="cursor-auto"><AdminRoute><FlashSaleManagement /></AdminRoute></div>} />
 
-                {/* Protected Routes */}
-                <Route path="/member" element={<ProtectedRoute><MemberArea /></ProtectedRoute>} />
-                <Route path="/affiliate/dashboard" element={<ProtectedRoute><AffiliateDashboard /></ProtectedRoute>} />
-                <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-                <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
-                <Route path="/orders/:id/tracking" element={<ProtectedRoute><Tracking /></ProtectedRoute>} />
-                
-                {/* Admin Routes */}
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-                <Route path="/admin/products" element={<AdminRoute><ProductManagement /></AdminRoute>} />
-                <Route path="/admin/categories" element={<AdminRoute><CategoryManagement /></AdminRoute>} />
-                <Route path="/admin/orders" element={<AdminRoute><OrderManagement /></AdminRoute>} />
-                <Route path="/admin/sold-products" element={<AdminRoute><SoldProducts /></AdminRoute>} />
-                <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
-                <Route path="/admin/content" element={<AdminRoute><ContentManagement /></AdminRoute>} />
-                <Route path="/admin/discounts" element={<AdminRoute><DiscountManagement /></AdminRoute>} />
-                <Route path="/admin/flash-sales" element={<AdminRoute><FlashSaleManagement /></AdminRoute>} />
+                    {/* Public Routes */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:id" element={<BlogPost />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/store" element={<Store />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/product/:id/reviews" element={<ProductReviews />} />
+                    <Route path="/corporate" element={<Corporate />} />
+                    <Route path="/affiliate" element={<Affiliate />} />
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </CartProvider>
+                    {/* Protected Routes */}
+                    <Route path="/member" element={<ProtectedRoute><MemberArea /></ProtectedRoute>} />
+                    <Route path="/affiliate/dashboard/*" element={<ProtectedRoute><AffiliateDashboard /></ProtectedRoute>} />
+                    <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+                    <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                    <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                    <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
+                    <Route path="/orders/:id/tracking" element={<ProtectedRoute><Tracking /></ProtectedRoute>} />
+
+                    {/* Catch All */}
+                    <Route path="*" element={<div className="cursor-auto"><NotFound /></div>} />
+                  </Routes>
+                </Suspense>
+              </div>
+            </BrowserRouter>
+          </CartProvider>
+        </GlobalStyler>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

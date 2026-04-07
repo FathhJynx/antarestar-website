@@ -1,16 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertCircle } from "lucide-react";
+import { X, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const CANCEL_REASONS = [
-  "Ingin mengubah alamat pengiriman",
-  "Ingin mengubah rincian pesanan (warna, ukuran, dll)",
-  "Menemukan harga yang lebih murah di tempat lain",
-  "Berubah pikiran / Tidak ingin lagi membeli",
-  "Metode pembayaran terlalu rumit",
-  "Lainnya"
-];
 
 interface CancelModalProps {
   isOpen: boolean;
@@ -18,55 +9,113 @@ interface CancelModalProps {
   onConfirm: (reason: string) => void;
 }
 
+const CANCEL_REASONS = [
+  "Mau ganti alamat pengiriman",
+  "Mau nambah barang lagi",
+  "Berubah pikiran",
+  "Ketemu harga yang lebih murah",
+  "Lupa masukin kode promo",
+  "Alasan lainnya"
+];
+
 const CancelModal = ({ isOpen, onClose, onConfirm }: CancelModalProps) => {
-  const [selectedReason, setSelectedReason] = useState("");
+  const [reason, setReason] = useState("");
+
+  // Robust scroll lock
+  useEffect(() => {
+    if (isOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+    };
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
-          <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className="relative w-full max-w-md bg-background rounded-[2rem] shadow-2xl border border-border overflow-hidden">
-            <div className="p-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500">
-                  <AlertCircle className="w-6 h-6" />
-                </div>
-                <h3 className="font-display font-black text-xl uppercase tracking-tight leading-tight">Batalkan Pesanan?</h3>
-              </div>
-              
-              <p className="text-muted-foreground text-sm mb-6 leading-relaxed">Pilih alasan pembatalan agar kami dapat terus meningkatkan layanan Antarestar.</p>
-              
-              <div className="space-y-2 mb-8">
-                {CANCEL_REASONS.map((reason) => (
-                  <button
-                    key={reason}
-                    onClick={() => setSelectedReason(reason)}
-                    className={`w-full text-left px-5 py-4 rounded-xl border-2 transition-all flex items-center justify-between group ${
-                      selectedReason === reason 
-                      ? "border-red-500 bg-red-50/30 text-red-600" 
-                      : "border-border hover:border-red-200 hover:bg-muted/30"
-                    }`}
-                  >
-                    <span className="text-xs font-bold">{reason}</span>
-                    <div className={`w-4 h-4 rounded-full border-2 transition-all shrink-0 ${
-                      selectedReason === reason ? "border-red-500 bg-red-500" : "border-border"
-                    }`}>
-                      {selectedReason === reason && <div className="w-1.5 h-1.5 bg-white rounded-full m-auto mt-0.5" />}
-                    </div>
-                  </button>
-                ))}
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            onClick={onClose} 
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm" 
+          />
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }} 
+            animate={{ opacity: 1, scale: 1, y: 0 }} 
+            exit={{ opacity: 0, scale: 0.95, y: 20 }} 
+            className="relative w-full max-w-lg bg-[#111111] rounded-t-[2rem] sm:rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+          >
+            <div className="p-6 sm:p-8">
+              <div className="flex justify-between items-center mb-6">
+                 <div className="space-y-1">
+                    <p className="font-bold text-[9px] uppercase tracking-[0.4em] text-red-600">Protokol Batal</p>
+                    <h3 className="font-display font-bold text-xl sm:text-2xl uppercase tracking-tight text-white leading-none">Batalkan Pesanan?</h3>
+                 </div>
+                 <button onClick={onClose} className="p-2.5 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white rounded-xl transition-all active:scale-95">
+                    <X className="w-5 h-5" />
+                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-12 rounded-xl font-black uppercase text-[10px] tracking-widest border-2" onClick={onClose}>Kembali</Button>
-                <Button 
-                  disabled={!selectedReason}
-                  onClick={() => onConfirm(selectedReason)} 
-                  className="h-12 rounded-xl font-black uppercase text-[10px] tracking-widest bg-red-500 hover:bg-red-600 shadow-lg shadow-red-200"
-                >
-                  Konfirmasi Batal
-                </Button>
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start p-4 bg-red-600/5 rounded-2xl border border-red-600/10 mb-2">
+                   <AlertCircle className="w-5 h-5 text-red-600 mt-1 shrink-0" />
+                   <div className="space-y-2">
+                      <p className="text-sm font-bold text-white uppercase italic leading-tight">Yakin mau banting setir?</p>
+                      <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest leading-relaxed">
+                         Sayang banget, gear impian lo bakal ilang dari daftar pesanan nih kalau lo lanjutin proses batal.
+                      </p>
+                   </div>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="font-bold text-[9px] uppercase tracking-widest text-white/20 ml-1">Pilih Alasan Pembatalan</p>
+                  <div className="grid grid-cols-1 gap-2 max-h-[30vh] overflow-y-auto pr-2 no-scrollbar">
+                    {CANCEL_REASONS.map((r, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setReason(r)}
+                        className={`flex items-center gap-4 p-4 border rounded-xl transition-all text-left ${
+                          reason === r 
+                          ? "bg-red-600/10 border-red-600 text-white" 
+                          : "bg-white/5 border-white/5 text-white/40 hover:bg-white/10"
+                        }`}
+                      >
+                         <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                            reason === r ? "border-red-600 bg-red-600" : "border-white/20"
+                         }`}>
+                            {reason === r && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+                         </div>
+                         <span className="text-[11px] font-bold uppercase tracking-tight italic">{r}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pb-4">
+                  <Button variant="outline" className="h-14 border-white/10 hover:bg-white/5 text-white/40 hover:text-white rounded-xl font-bold uppercase text-[10px] tracking-widest transition-all" onClick={onClose}>Ga Jadi Batal</Button>
+                  <Button 
+                    disabled={!reason}
+                    onClick={() => { onConfirm(reason); }} 
+                    className="h-14 bg-red-600 disabled:opacity-30 hover:bg-red-700 text-white rounded-xl font-bold uppercase text-[10px] tracking-widest transition-all"
+                  >
+                    Ya, Batalkan
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>

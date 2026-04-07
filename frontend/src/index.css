@@ -9,51 +9,61 @@
     --font-display: 'Outfit', sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
 
-    --background: 30 15% 97%;
-    --foreground: 200 18% 16%;
+    /* Base colors - Stark Dark Mode */
+    --background: 0 0% 4.3%; /* #0B0B0B */
+    --foreground: 0 0% 100%;
 
-    --card: 30 12% 95%;
-    --card-foreground: 200 18% 16%;
+    --card: 0 0% 6.7%; /* #111111 */
+    --card-foreground: 0 0% 100%;
 
-    --popover: 30 15% 97%;
-    --popover-foreground: 200 18% 16%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 200 25% 20%;
-    --primary-foreground: 40 30% 95%;
+    /* Primary used for subtle dark fills */
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 35 20% 90%;
-    --secondary-foreground: 200 18% 16%;
+    /* Secondary / Muted */
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 90%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
-    --muted: 35 15% 92%;
-    --muted-foreground: 200 10% 45%;
-
-    --accent: 18 85% 52%;
+    /* Brand Accent - Signature Orange */
+    --accent: 25 95% 53%; /* #f97316 */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 35 15% 88%;
-    --input: 35 15% 88%;
-    --ring: 18 85% 52%;
+    /* Sharp minimal borders */
+    --border: 0 0% 12.2%; /* #1F1F1F */
+    --input: 0 0% 12.2%;
+    --ring: 25 95% 53%;
 
+    /* Brutalist sharp edges */
     --radius: 0.75rem;
 
-    --earth: 35 30% 30%;
-    --earth-foreground: 40 30% 95%;
-    --olive: 90 20% 30%;
-    --olive-foreground: 90 15% 95%;
-    --sand: 38 35% 85%;
-    --warm-gray: 30 8% 55%;
+    /* Spacing Scale Tokens */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-12: 48px;
+    --space-16: 64px;
 
-    --sidebar-background: 200 25% 15%;
-    --sidebar-foreground: 40 30% 95%;
-    --sidebar-primary: 18 85% 52%;
+    /* Sidebar overrides */
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 25 95% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 200 20% 22%;
-    --sidebar-accent-foreground: 40 30% 95%;
-    --sidebar-border: 200 15% 25%;
-    --sidebar-ring: 18 85% 52%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 25 95% 53%;
   }
 }
 
@@ -90,11 +100,15 @@
 
 @layer components {
   .section-padding {
-    @apply px-8 sm:px-8 lg:px-12 xl:px-20;
+    @apply px-4 sm:px-6 lg:px-8;
   }
 
   .section-container {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-[1280px] mx-auto w-full;
+  }
+
+  .premium-shadow {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
   }
 
   .text-gradient {
@@ -190,16 +204,39 @@
 }
 
 @layer utilities {
-  .scrollbar-hide {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-stealth {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .scrollbar-stealth::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-stealth::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-stealth::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .scrollbar-stealth:hover::-webkit-scrollbar-thumb {
+    background: rgba(234, 88, 12, 0.3);
+  }
+
+  .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  .scrollbar-hide::-webkit-scrollbar {
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
-  }
-
-  .text-balance {
-    text-wrap: balance;
   }
 }
 

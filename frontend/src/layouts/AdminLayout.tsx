@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingBag, 
-  Users, 
-  FileText, 
-  Settings, 
-  LogOut, 
-  Menu, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingBag,
+  Users,
+  FileText,
+  Settings,
+  LogOut,
+  Menu,
   X,
   ChevronRight,
   Bell,
@@ -31,7 +31,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user } = useAuth();
@@ -105,16 +105,15 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex font-body">
+    <div className="min-h-screen bg-[#0B0B0B] text-white flex font-body">
       {/* Sidebar */}
-      <aside 
-        className={`${
-          isSidebarOpen ? 'w-64' : 'w-20'
-        } fixed inset-y-0 left-0 z-50 bg-white border-r border-slate-200 transition-all duration-300 ease-in-out hidden lg:block shadow-[1px_0_10px_rgba(0,0,0,0.02)]`}
+      <aside
+        className={`${isSidebarOpen ? 'w-64' : 'w-20'
+          } fixed inset-y-0 left-0 z-50 bg-[#141414] border-r border-white/5 transition-all duration-300 ease-in-out hidden lg:block shadow-xl`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="h-20 flex items-center px-6 border-b border-slate-100">
+          <div className="h-20 flex items-center px-6 border-b border-white/5">
             <Link to="/" className="flex items-center gap-3">
               <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center text-white shadow-lg shadow-accent/20">
                 <Package className="w-6 h-6" />
@@ -128,18 +127,17 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
 
           {/* Navigation Items */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto custom-scrollbar">
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
             {menuItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
-                    isActive 
-                      ? 'bg-accent text-white shadow-md shadow-accent/20' 
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${isActive
+                      ? 'bg-accent text-white shadow-md shadow-accent/20'
+                      : 'text-white/40 hover:bg-white/5 hover:text-white'
+                    }`}
                 >
                   <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'group-hover:text-accent'} transition-colors`} />
                   {isSidebarOpen && (
@@ -158,10 +156,10 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-slate-100">
+          <div className="p-4 border-t border-white/5">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all group"
+              className="w-full flex items-center gap-3 px-4 py-3 text-white/40 hover:bg-red-500/10 hover:text-red-500 rounded-xl transition-all group"
             >
               <LogOut className="w-5 h-5 group-hover:text-red-500" />
               {isSidebarOpen && (
@@ -175,134 +173,133 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       {/* Main Content Area */}
       <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
         {/* Top Header */}
-        <header className="h-20 bg-white sticky top-0 z-[40] border-b border-slate-200 px-6 flex items-center justify-between shadow-sm">
+        <header className="h-20 bg-[#141414]/90 backdrop-blur-md sticky top-0 z-[40] border-b border-white/5 px-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 text-slate-500 hover:bg-slate-50 rounded-lg hidden lg:block"
+              className="p-2 text-white/40 hover:bg-white/5 hover:text-white rounded-lg hidden lg:block"
             >
               <Menu className="w-5 h-5" />
             </button>
             <div className="relative hidden md:block w-72">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <Search className="w-4 h-4 text-slate-400" />
+                <Search className="w-4 h-4 text-white/30" />
               </span>
-              <input 
-                type="text" 
-                placeholder="Cari apapun..." 
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs focus:ring-2 focus:ring-accent/20 transition-all outline-none"
+              <input
+                type="text"
+                placeholder="Cari apapun..."
+                className="w-full pl-10 pr-4 py-2 bg-[#0B0B0B] border border-white/10 rounded-xl text-xs text-white placeholder:text-white/20 focus:border-accent/40 focus:bg-white/5 transition-all outline-none"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-             <div className="flex items-center gap-2 p-1.5 pr-4 bg-slate-50 border border-slate-200 rounded-full">
-                <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-display font-black text-xs">
-                  {user?.name?.[0] || 'A'}
-                </div>
-                <div className="hidden sm:block">
-                  <p className="text-[10px] font-black uppercase tracking-wider text-slate-900 leading-none mb-0.5">{user?.name || 'Administrator'}</p>
-                  <p className="text-[8px] font-bold text-accent uppercase tracking-widest leading-none">Super Admin</p>
-                </div>
-             </div>
-             
-             <div className="relative" ref={dropdownRef}>
-               <button 
-                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                 className={`p-2 rounded-lg relative transition-all ${isNotificationsOpen ? 'bg-accent/10 text-accent' : 'text-slate-500 hover:bg-slate-50'}`}
-               >
-                  <Bell className="w-5 h-5" />
-                  {unreadCount > 0 && (
-                    <motion.span 
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 border-2 border-white rounded-full flex items-center justify-center text-[8px] font-black text-white"
-                    >
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </motion.span>
-                  )}
-               </button>
+            <div className="flex items-center gap-2 p-1.5 pr-4 bg-[#0B0B0B] border border-white/5 rounded-full">
+              <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-display font-black text-xs">
+                {user?.name?.[0] || 'A'}
+              </div>
+              <div className="hidden sm:block">
+                <p className="text-[10px] font-black uppercase tracking-wider text-white leading-none mb-0.5">{user?.name || 'Administrator'}</p>
+                <p className="text-[8px] font-bold text-accent uppercase tracking-widest leading-none">Super Admin</p>
+              </div>
+            </div>
 
-               <AnimatePresence>
-                 {isNotificationsOpen && (
-                   <motion.div
-                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                     className="absolute right-0 mt-3 w-80 bg-white border border-slate-200 rounded-[2rem] shadow-2xl overflow-hidden z-[100]"
-                   >
-                     <div className="p-6 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
-                        <div>
-                          <h4 className="text-[12px] font-black uppercase tracking-widest text-slate-900 leading-none">Notifikasi</h4>
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Pemberitahuan Sistem</p>
-                        </div>
-                        {unreadCount > 0 && (
-                          <button 
-                            onClick={markAllAsRead}
-                            className="text-[9px] font-black uppercase tracking-widest text-accent hover:underline"
-                          >
-                             Tandai Semua
-                          </button>
-                        )}
-                     </div>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className={`p-2 rounded-lg relative transition-all ${isNotificationsOpen ? 'bg-accent/10 text-accent' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
+              >
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 border-2 border-[#141414] rounded-full flex items-center justify-center text-[8px] font-black text-white"
+                  >
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </motion.span>
+                )}
+              </button>
 
-                     <div className="max-h-[360px] overflow-y-auto custom-scrollbar">
-                        {notifications.length > 0 ? (
-                          <div className="divide-y divide-slate-50">
-                             {notifications.map((notif) => (
-                               <div 
-                                 key={notif.id} 
-                                 onClick={() => markAsRead(notif.id)}
-                                 className={`p-5 flex gap-4 transition-colors cursor-pointer group hover:bg-slate-50 ${!notif.is_read ? 'bg-accent/5' : ''}`}
-                               >
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                                    notif.title.includes('Pesanan') ? 'bg-blue-100 text-blue-600' :
-                                    notif.title.includes('Stok') ? 'bg-amber-100 text-amber-600' :
-                                    'bg-slate-100 text-slate-600'
-                                  }`}>
-                                     {notif.title.includes('Pesanan') ? <ShoppingBag className="w-5 h-5" /> : 
-                                      notif.title.includes('Stok') ? <AlertTriangle className="w-5 h-5" /> :
-                                      <Bell className="w-5 h-5" />}
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center justify-between gap-2 mb-1">
-                                      <h5 className={`text-[11px] font-black uppercase tracking-tight truncate ${!notif.is_read ? 'text-slate-900' : 'text-slate-500'}`}>
-                                        {notif.title}
-                                      </h5>
-                                      {!notif.is_read && <span className="w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />}
-                                    </div>
-                                    <p className="text-[11px] text-slate-500 font-bold line-clamp-2 leading-relaxed mb-2 italic">
-                                      {notif.message}
-                                    </p>
-                                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-slate-400">
-                                       <Clock className="w-3 h-3" />
-                                       {new Date(notif.created_at).toLocaleDateString()} {new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </div>
-                                  </div>
-                               </div>
-                             ))}
-                          </div>
-                        ) : (
-                          <div className="py-12 flex flex-col items-center justify-center opacity-30 italic">
-                             <CheckCircle2 className="w-8 h-8 mb-2" />
-                             <p className="text-[9px] font-black uppercase tracking-[0.2em]">Semua laporan bersih</p>
-                          </div>
-                        )}
-                     </div>
-                     
-                     <div className="p-4 bg-slate-50/50 border-t border-slate-100">
-                        <Link 
-                          to="/admin/orders" 
-                          onClick={() => setIsNotificationsOpen(false)}
-                          className="w-full py-3 bg-white border border-slate-200 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-accent hover:border-accent/40 transition-all shadow-sm"
+              <AnimatePresence>
+                {isNotificationsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute right-0 mt-3 w-80 bg-[#1a1a1a] border border-white/10 rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.5)] overflow-hidden z-[100]"
+                  >
+                    <div className="p-6 bg-[#141414] border-b border-white/5 flex items-center justify-between">
+                      <div>
+                        <h4 className="text-[12px] font-black uppercase tracking-widest text-white leading-none">Notifikasi</h4>
+                        <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest mt-1">Pemberitahuan Sistem</p>
+                      </div>
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={markAllAsRead}
+                          className="text-[9px] font-black uppercase tracking-widest text-accent hover:underline"
                         >
-                           Lihat Semua Aktivitas
-                        </Link>
-                     </div>
-                   </motion.div>
-                 )}
-               </AnimatePresence>
-             </div>
+                          Tandai Semua
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="max-h-[360px] overflow-y-auto no-scrollbar">
+                      {notifications.length > 0 ? (
+                        <div className="divide-y divide-white/5">
+                          {notifications.map((notif) => (
+                            <div
+                              key={notif.id}
+                              onClick={() => markAsRead(notif.id)}
+                              className={`p-5 flex gap-4 transition-colors cursor-pointer group hover:bg-white/5 ${!notif.is_read ? 'bg-accent/5' : ''}`}
+                            >
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${notif.title.includes('Pesanan') ? 'bg-blue-500/10 text-blue-500' :
+                                  notif.title.includes('Stok') ? 'bg-amber-500/10 text-amber-500' :
+                                    'bg-white/5 text-white/60'
+                                }`}>
+                                {notif.title.includes('Pesanan') ? <ShoppingBag className="w-5 h-5" /> :
+                                  notif.title.includes('Stok') ? <AlertTriangle className="w-5 h-5" /> :
+                                    <Bell className="w-5 h-5" />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2 mb-1">
+                                  <h5 className={`text-[11px] font-black uppercase tracking-tight truncate ${!notif.is_read ? 'text-white' : 'text-white/50'}`}>
+                                    {notif.title}
+                                  </h5>
+                                  {!notif.is_read && <span className="w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />}
+                                </div>
+                                <p className="text-[11px] text-white/50 font-bold line-clamp-2 leading-relaxed mb-2 italic">
+                                  {notif.message}
+                                </p>
+                                <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-white/30">
+                                  <Clock className="w-3 h-3" />
+                                  {new Date(notif.created_at).toLocaleDateString()} {new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="py-12 flex flex-col items-center justify-center opacity-30 italic">
+                          <CheckCircle2 className="w-8 h-8 mb-2" />
+                          <p className="text-[9px] font-black uppercase tracking-[0.2em]">Semua laporan bersih</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-4 bg-[#141414] border-t border-white/5">
+                      <Link
+                        to="/admin/orders"
+                        onClick={() => setIsNotificationsOpen(false)}
+                        className="w-full py-3 bg-[#0B0B0B] border border-white/10 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-white hover:border-accent/40 transition-all shadow-sm"
+                      >
+                        Lihat Semua Aktivitas
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </header>
 

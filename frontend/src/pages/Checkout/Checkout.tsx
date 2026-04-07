@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { 
-  ChevronLeft, ShoppingBag, Truck, CreditCard, 
-  Search, Clock, TicketPercent, Check, Building, Wallet, Smartphone
+  Plus, Check, ChevronRight, Truck, 
+  CreditCard, Wallet, Landmark, Info, 
+  TicketPercent, ArrowRight, X, Phone, 
+  User, MapPin, Search, ShoppingBag, ChevronLeft, Building, Smartphone, StickyNote, ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -13,18 +15,23 @@ import { rp } from "@/utils/formatters";
 import api from "@/lib/api";
 
 // Checkout Components
-import Modal from "./components/Modal";
+import CheckoutLayout from "./components/CheckoutLayout";
+import CheckoutForm, { CheckoutSection, CheckoutInput } from "./components/CheckoutForm";
+import CheckoutModal from "./components/CheckoutModal";
 import AddressSection from "./components/AddressSection";
 import ProductSection from "./components/ProductSection";
+import ShippingSection from "./components/ShippingSection";
 import PaymentSection from "./components/PaymentSection";
 import OrderSummary from "./components/OrderSummary";
 import AddressForm from "./components/AddressForm";
+import { Reveal } from "@/components/AnimationPrimitives";
+import CustomModal from "./components/Modal"; // Renamed existing Modal for standard address picking
 
 // --- Mock Data ---
 const SHIPPING_METHODS = [
-  { id: 'reg', name: 'Reguler', courier: 'SiCepat / J&T', price: 15000, eta: '2 - 4 Apr' },
-  { id: 'hem', name: 'Hemat', courier: 'JNE Ekonomi', price: 9000, eta: '5 - 8 Apr' },
-  { id: 'kargo', name: 'Kargo', courier: 'JNE Trucking', price: 45000, eta: '6 - 10 Apr' },
+  { id: 'reg', name: 'Reguler', courier: 'SiCepat / J&T', price: 15000, eta: '2 - 4 Hari' },
+  { id: 'hem', name: 'Hemat', courier: 'JNE Ekonomi', price: 9000, eta: '5 - 8 Hari' },
+  { id: 'kargo', name: 'Kargo', courier: 'JNE Trucking', price: 45000, eta: '6 - 10 Hari' },
   { id: 'inst', name: 'Instan', courier: 'Grab/Gojek', price: 25000, eta: '2 Jam' },
 ];
 
@@ -38,10 +45,8 @@ const PAYMENT_METHODS = [
   { id: 'cod', name: 'Bayar Di Tempat (COD)', type: 'Lainnya', icon: Smartphone, color: 'text-orange-500', bg: 'bg-orange-50' },
 ];
 
-// All addresses and vouchers are fetched from backend API
-
 const Checkout = () => {
-  const { items, clearCart } = useCart();
+  const { items, clearCart, refreshCart } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
   const buyNowItem = location.state?.buyNowItem;
@@ -58,8 +63,18 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [appliedVoucher, setAppliedVoucher] = useState<any | null>(null);
   const [voucherInput, setVoucherInput] = useState('');
+  const [noteInput, setNoteInput] = useState('');
 
-  // Modal States
+  // UI Modal States
+  const [uiModal, setUiModal] = useState<{
+     isOpen: boolean;
+     type: 'success' | 'error' | 'confirmation' | 'loading';
+     title?: string;
+     message?: string;
+     onConfirm?: () => void;
+  }>({ isOpen: false, type: 'confirmation' });
+
+  // Functional Modal States
   const [showShippingModal, setShowShippingModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showVoucherModal, setShowVoucherModal] = useState(false);
@@ -76,32 +91,26 @@ const Checkout = () => {
       }
       return [];
     } catch (err) {
-      console.warn("Failed to fetch addresses");
       return [];
     }
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Force sync cart to ensure accuracy
+    if (!buyNowItem) refreshCart();
+
     fetchAddresses().then(userAddresses => {
        if (userAddresses && userAddresses.length > 0) {
            setSelectedAddress(userAddresses.find((a: any) => a.is_default) || userAddresses[0]);
-       } else {
-           setAddresses([]);
-           setSelectedAddress(null);
        }
-    }).catch(() => {
-       setAddresses([]);
-       setSelectedAddress(null);
     });
     
     api.get("/promotions/coupons").then(res => {
        const userCoupons = res.data?.data || [];
        if (userCoupons.length > 0) {
            setVouchers(userCoupons.map((c: any) => ({
-             id: c.id,
-             code: c.code,
-             name: c.description || c.code,
+             id: c.id, code: c.code, name: c.description || c.code,
              disc: c.type === 'percentage' ? c.value / 100 : c.value,
              type: c.type === 'shipping' ? 'shipping' : 'discount',
              minSpend: c.min_purchase || 0
@@ -117,22 +126,73 @@ const Checkout = () => {
   const discount = appliedVoucher 
     ? (appliedVoucher.type === 'shipping' ? 0 : (appliedVoucher.disc < 1 ? subtotal * appliedVoucher.disc : appliedVoucher.disc)) 
     : 0;
-  
   const shippingDiscount = (appliedVoucher?.type === 'shipping') 
     ? Math.min(selectedShipping.price, appliedVoucher.disc < 1 ? selectedShipping.price : appliedVoucher.disc) 
     : 0;
-
   const total = subtotal + selectedShipping.price + insuranceFee + serviceFee - discount - shippingDiscount;
 
-  const handlePlaceOrder = async () => {
+  const handleApplyPromo = (code: string) => {
+     const upper = code.toUpperCase().trim();
+     const voucher = vouchers.find(v => v.code === upper);
+     if (voucher) {
+        if (subtotal < voucher.minSpend) {
+           toast.error(`Duh! Belanjaan lo kurang dikit lagi nih (${rp(voucher.minSpend)} min. belanja) 😅`);
+           return;
+        }
+        setAppliedVoucher(voucher);
+        setVoucherInput("");
+        setShowVoucherModal(false);
+        toast.success(`VOILA! Voucher ${upper} Berhasil Dipasang 👌`);
+     } else {
+        toast.error("Waduh, kode vouchernya gak valid nih 😅");
+     }
+  };
+
+  const handlePlaceOrder = () => {
+    // Thorough Validation Protocol
     if (!selectedAddress) {
-      toast.error("Alamat belum dipilih", {
-        description: "Silakan tambahkan alamat pengiriman terlebih dahulu."
-      });
-      return;
+       setUiModal({
+          isOpen: true,
+          type: 'error',
+          title: 'Alamat Hilang 📍',
+          message: 'Duh, unit logistik kami bingung nih mau kirim kemana. Isi dulu alamat pengiriman lo!'
+       });
+       return;
     }
 
+    if (!selectedShipping) {
+       setUiModal({
+          isOpen: true,
+          type: 'error',
+          title: 'Kurir Gabut 🚚',
+          message: 'Pilih dulu layanan kurir yang lo mau biar barang lo cepet sampe ke basecamp!'
+       });
+       return;
+    }
+
+    if (!selectedPayment) {
+       setUiModal({
+          isOpen: true,
+          type: 'error',
+          title: 'Bensin Abis 💳',
+          message: 'Lengkapi metode pembayaran biar kita bisa langsung proses gear impian lo!'
+       });
+       return;
+    }
+
+    setUiModal({
+       isOpen: true,
+       type: 'confirmation',
+       title: 'PROTOKOL AKHIR 🔥',
+       message: 'Semua gear dan koordinat pengiriman udah dicek? Kalau udah gas bayar sekarang!',
+       onConfirm: finalizeCheckout
+    });
+  };
+
+  const finalizeCheckout = async () => {
+    setUiModal({ isOpen: true, type: 'loading' });
     setIsProcessing(true);
+    
     try {
       if (buyNowItem) {
         await api.post("/cart/items", { 
@@ -141,111 +201,112 @@ const Checkout = () => {
         });
       }
 
-      const orderResponse = await api.post("/orders", { 
-         address_id: selectedAddress.id, 
-         payment_method: selectedPayment.id,
-         shipping_courier: selectedShipping.courier,
-         shipping_service: selectedShipping.name,
-         shipping_cost: selectedShipping.price,
-         coupon_code: appliedVoucher?.code || null
+      const res = await api.post("/orders", { 
+         address_id: selectedAddress.id, payment_method: selectedPayment.id,
+         shipping_courier: selectedShipping.courier, shipping_service: selectedShipping.name,
+         shipping_cost: selectedShipping.price, coupon_code: appliedVoucher?.code || null,
+         notes: noteInput || null
       });
 
-      const newOrder = orderResponse.data.data;
+      const newOrder = res.data.data;
+      if (!buyNowItem) await clearCart();
 
-      setIsProcessing(false);
-      toast.success("Pesanan Berhasil Dibuat!", {
-        description: `Nomor Pesanan: ${newOrder.id.substring(0, 8).toUpperCase()}.`,
+      setUiModal({
+         isOpen: true,
+         type: 'success',
+         title: 'Berhasil Cak! 🚀',
+         message: `Gear lo lagi diproses. Pantau terus status pengirimannya di log pesanan lo ya!`,
+         onConfirm: () => navigate("/orders/" + (newOrder.id || newOrder.order_number))
       });
-      
-      if (!buyNowItem) {
-        clearCart();
-      }
-      
-      navigate("/member");
     } catch(err: any) {
       setIsProcessing(false);
-      const errorData = err.response?.data;
-      if (errorData?.errors) {
-        const firstError = Object.values(errorData.errors)[0] as string[];
-        toast.error("Validasi Gagal", {
-           description: firstError[0]
-        });
-      } else {
-        toast.error(errorData?.message || "Terjadi kesalahan saat membuat pesanan.");
-      }
+      setUiModal({
+         isOpen: true,
+         type: 'error',
+         title: 'Waduh, Gagal 😅',
+         message: err.response?.data?.message || 'Terjadi gangguan koneksi atau data belom lengkap. Cek lagi ya!'
+      });
     }
   };
 
   if (checkoutItems.length === 0) {
     return (
-      <div className="min-h-screen bg-muted/30 flex flex-col">
+      <div className="min-h-screen bg-[#0B0B0B] text-white flex flex-col items-center justify-center p-6 text-center">
         <Navbar />
-        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-800">
-          <div className="w-24 h-24 bg-accent/10 rounded-full flex items-center justify-center mb-6">
-            <ShoppingBag className="w-12 h-12 text-accent" />
-          </div>
-          <h1 className="font-display font-black text-3xl uppercase mb-3">Checkout Kosong</h1>
-          <p className="text-muted-foreground mb-8 max-w-sm font-body font-medium">Keranjang belanja Anda kosong. Yuk, tambahkan gear favoritmu dulu!</p>
-          <Button asChild size="lg" className="rounded-xl px-10 h-14 uppercase tracking-widest font-black text-xs shadow-xl shadow-accent/20"><Link to="/store">Belanja Sekarang</Link></Button>
+        <div className="w-24 h-24 bg-orange-600/10 rounded-full flex items-center justify-center mb-8">
+          <ShoppingBag className="w-12 h-12 text-orange-600" />
         </div>
-        <Footer />
+        <h1 className="font-display font-bold text-3xl uppercase mb-4 tracking-tight">Checkout Kosong</h1>
+        <p className="text-white/40 mb-10 max-w-sm font-bold text-[10px] uppercase tracking-widest leading-relaxed">Yuk, balik ke store dan ambil gear favorit lo dulu!</p>
+        <Button asChild className="bg-orange-600 hover:bg-white hover:text-orange-600 text-white rounded-xl h-16 px-10 font-bold uppercase text-xs tracking-widest">
+           <Link to="/store">Gas Belanja</Link>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col font-body">
-      <Navbar />
-      
-      <main className="flex-1 pt-24 md:pt-32 pb-20">
-        <div className="section-container max-w-6xl">
-          <div className="flex items-center gap-4 mb-10">
-            <Link to="/cart" className="p-2 hover:bg-white rounded-full transition-colors">
-              <ChevronLeft className="w-6 h-6 text-foreground" />
-            </Link>
-            <h1 className="font-display font-black text-2xl md:text-3xl uppercase tracking-tight">Checkout</h1>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-8 space-y-4 text-slate-800">
-              <AddressSection 
-                selectedAddress={selectedAddress} 
-                onEdit={() => setShowAddressModal(true)} 
-              />
-              <ProductSection 
-                checkoutItems={checkoutItems} 
-                selectedShipping={selectedShipping} 
-                onOpenShippingModal={() => setShowShippingModal(true)} 
-              />
-              <PaymentSection 
-                paymentMethods={PAYMENT_METHODS} 
-                selectedPayment={selectedPayment} 
-                onSelect={(pm) => setSelectedPayment(pm)} 
-                onShowAll={() => setShowPaymentModal(true)} 
-              />
-            </div>
-
-            <OrderSummary 
-              checkoutItemsCount={checkoutItems.length}
-              subtotal={subtotal}
-              shippingPrice={selectedShipping.price}
-              shippingDiscount={shippingDiscount}
-              insuranceFee={insuranceFee}
-              serviceFee={serviceFee}
-              discount={discount}
-              total={total}
-              isProcessing={isProcessing}
-              onPlaceOrder={handlePlaceOrder}
-              appliedVoucher={appliedVoucher}
-              onShowVoucherModal={() => setShowVoucherModal(true)}
-            />
-          </div>
+    <CheckoutLayout 
+      summary={
+        <OrderSummary 
+           checkoutItemsCount={checkoutItems.length}
+           subtotal={subtotal} shippingPrice={selectedShipping.price}
+           shippingDiscount={shippingDiscount} insuranceFee={insuranceFee}
+           serviceFee={serviceFee} discount={discount}
+           total={total} isProcessing={isProcessing}
+           onPlaceOrder={handlePlaceOrder} appliedVoucher={appliedVoucher}
+           onShowVoucherModal={() => setShowVoucherModal(true)}
+        />
+      }
+      stickyBottom={
+        <div className="bg-[#111111] border-t border-white/10 p-6 flex items-center justify-between gap-6">
+           <div className="space-y-1">
+              <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Total Bayar</p>
+              <p className="text-xl font-bold text-white leading-none">{rp(total)}</p>
+           </div>
+           <Button 
+              onClick={handlePlaceOrder}
+              className="flex-1 h-14 bg-orange-600 text-white rounded-xl font-bold uppercase text-[12px] tracking-widest active:scale-95"
+           >
+              Gas Bayar <ArrowRight className="ml-2 w-4 h-4" />
+           </Button>
         </div>
-      </main>
+      }
+    >
+      <CheckoutForm>
+        <Reveal direction="up" delay={0.1}>
+           <AddressSection selectedAddress={selectedAddress} onEdit={() => setShowAddressModal(true)} />
+        </Reveal>
+        
+        <Reveal direction="up" delay={0.2}>
+           <ShippingSection selectedShipping={selectedShipping} onOpenShippingModal={() => setShowShippingModal(true)} />
+        </Reveal>
 
-      {/* --- MODALS --- */}
-      
-      <Modal 
+        <Reveal direction="up" delay={0.3}>
+           <PaymentSection selectedPayment={selectedPayment} onOpenPaymentModal={() => setShowPaymentModal(true)} />
+        </Reveal>
+
+        <Reveal direction="up" delay={0.4}>
+           <ProductSection 
+             checkoutItems={checkoutItems} 
+             selectedShipping={selectedShipping} 
+             onOpenShippingModal={() => setShowShippingModal(true)} 
+           />
+        </Reveal>
+
+        <Reveal direction="up" delay={0.5}>
+           <CheckoutSection title="Catatan Pesanan" subtitle="Sampaikan pesan buat paket lo" icon={<StickyNote className="w-5 h-5" />}>
+              <CheckoutInput 
+                 placeholder="Contoh: Titipin ke satpam depan ya bang (biar ga nyasar 😄)"
+                 value={noteInput}
+                 onChange={(e: any) => setNoteInput(e.target.value)}
+              />
+           </CheckoutSection>
+        </Reveal>
+      </CheckoutForm>
+
+      {/* Standard Address Picking Modal */}
+      <CustomModal 
         isOpen={showAddressModal} 
         onClose={() => { setShowAddressModal(false); setShowAddAddressForm(false); }} 
         title={showAddAddressForm ? "Tambah Alamat Baru" : "Pilih Alamat Pengiriman"}
@@ -255,7 +316,6 @@ const Checkout = () => {
             onCancel={() => setShowAddAddressForm(false)}
             onSuccess={async (newAddr) => {
                const freshAddresses = await fetchAddresses();
-               // Find the address from fresh list to get all relations (city/province names)
                const matched = freshAddresses.find((a: any) => a.id === newAddr.id) || newAddr;
                setSelectedAddress(matched);
                setShowAddAddressForm(false);
@@ -263,188 +323,182 @@ const Checkout = () => {
             }}
           />
         ) : (
-          <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+          <div className="space-y-4">
             {addresses.map((addr) => (
               <button
                 key={addr.id}
                 onClick={() => { setSelectedAddress(addr); setShowAddressModal(false); }}
-                className={`w-full text-left p-5 rounded-2xl border-2 transition-all group ${
-                  selectedAddress?.id === addr.id ? "border-accent bg-accent/5" : "border-border/50 hover:border-accent/40"
+                className={`w-full text-left p-5 rounded-2xl border-2 transition-all ${
+                  selectedAddress?.id === addr.id ? "border-orange-600 bg-orange-600/5" : "border-white/5 hover:border-orange-600/40 bg-black/50"
                 }`}
               >
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex items-center gap-3">
-                    <span className="font-display font-black text-sm uppercase">{addr.recipient_name}</span>
-                    <span className="text-[10px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded uppercase tracking-wider">{addr.label || 'Alamat'}</span>
-                  </div>
-                  {selectedAddress?.id === addr.id && <Check className="w-5 h-5 text-accent" />}
-                </div>
-                <p className="text-xs text-muted-foreground font-body leading-relaxed">{addr.phone}</p>
-                <p className="text-xs text-foreground/80 font-body leading-relaxed mt-1">{addr.address}</p>
+                 <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-3">
+                       <span className="font-display font-bold text-sm uppercase text-white tracking-wide">{addr.recipient_name}</span>
+                       <span className="text-[9px] font-bold text-orange-600 bg-orange-600/10 px-2 py-0.5 rounded uppercase tracking-wider">{addr.label || 'Alamat'}</span>
+                    </div>
+                    {selectedAddress?.id === addr.id && <Check className="w-4 h-4 text-orange-600" />}
+                 </div>
+                 <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">{addr.phone}</p>
+                 <p className="text-xs text-white/60 font-bold uppercase leading-relaxed mt-2">{addr.address}</p>
               </button>
             ))}
-            {addresses.length === 0 && (
-              <p className="text-center py-10 text-muted-foreground text-sm">Belum ada alamat tersimpan.</p>
-            )}
             <Button 
-              variant="outline" 
-              onClick={() => setShowAddAddressForm(true)}
-              className="w-full h-12 rounded-xl border-dashed border-2 hover:bg-accent/5 gap-2 group mt-2"
+               variant="outline" 
+               onClick={() => setShowAddAddressForm(true)} 
+               className="w-full h-16 rounded-2xl border-dashed border-white/10 hover:border-orange-600 hover:text-white hover:bg-orange-600/5 text-white/30 font-bold uppercase text-[10px] tracking-[0.2em] gap-3 group transition-all"
             >
-              <span className="text-xs font-black uppercase tracking-widest">Tambah Alamat Baru</span>
+               <div className="w-8 h-8 rounded-full border border-current flex items-center justify-center group-hover:scale-110 transition-transform"><Plus className="w-4 h-4" /></div>
+               Tambah Alamat Baru
             </Button>
           </div>
         )}
-      </Modal>
+      </CustomModal>
 
-      <Modal 
-        isOpen={showShippingModal} 
-        onClose={() => setShowShippingModal(false)} 
-        title="Pilih Pengiriman"
-      >
-        <div className="space-y-3">
-          {SHIPPING_METHODS.map((sm) => (
-            <button
-              key={sm.id}
-              onClick={() => { setSelectedShipping(sm); setShowShippingModal(false); }}
-              className={`w-full text-left p-5 rounded-2xl border-2 transition-all flex items-center justify-between ${
-                selectedShipping.id === sm.id ? "border-accent bg-accent/5" : "border-border/50 hover:border-accent/40"
-              }`}
-            >
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-display font-black text-sm uppercase">{sm.name}</span>
-                  <span className={`text-[10px] font-black px-2 py-0.5 rounded uppercase ${sm.id === 'inst' ? 'bg-orange-100 text-orange-600' : 'bg-muted text-muted-foreground'}`}>
-                    {sm.courier}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                   <Clock className="w-3.5 h-3.5" />
-                   <span>Estimasi tiba {sm.eta}</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="font-display font-black text-sm text-accent">{rp(sm.price)}</p>
-                {selectedShipping.id === sm.id && <div className="mt-1 flex justify-end"><Check className="w-4 h-4 text-accent" /></div>}
-              </div>
-            </button>
-          ))}
-        </div>
-      </Modal>
-
-      <Modal 
-        isOpen={showPaymentModal} 
-        onClose={() => setShowPaymentModal(false)} 
-        title="Metode Pembayaran"
-      >
-        <div className="space-y-6">
-          {['E-Wallet', 'Transfer Bank', 'Lainnya'].map((group) => (
-            <div key={group} className="space-y-3">
-              <h4 className="font-display font-black text-[10px] uppercase tracking-widest text-muted-foreground ml-1">{group}</h4>
-              <div className="grid grid-cols-1 gap-2">
-                {PAYMENT_METHODS.filter(p => p.type === group).map((pm) => (
-                  <button
-                    key={pm.id}
-                    onClick={() => { setSelectedPayment(pm); setShowPaymentModal(false); }}
-                    className={`w-full text-left p-4 rounded-xl border-2 transition-all flex items-center justify-between ${
-                      selectedPayment.id === pm.id ? "border-accent bg-accent/5 shadow-sm" : "border-border/50 hover:border-accent/40 bg-muted/5"
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`p-2 rounded-lg ${pm.bg} ${pm.color}`}>
-                        <pm.icon className="w-5 h-5" />
-                      </div>
-                      <span className="text-xs font-black uppercase tracking-wide">{pm.name}</span>
-                    </div>
-                    {selectedPayment.id === pm.id && <Check className="w-5 h-5 text-accent" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Modal>
-
-      <Modal 
-        isOpen={showVoucherModal} 
-        onClose={() => setShowVoucherModal(false)} 
-        title="Voucher Belanja"
-      >
-        <div className="space-y-6">
-          <div className="flex gap-2">
-             <div className="relative flex-1">
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-               <input 
-                 placeholder="Ketik kode voucher..." 
-                 value={voucherInput}
-                 onChange={e => setVoucherInput(e.target.value)}
-                 className="w-full bg-muted/30 border border-border rounded-xl pl-10 pr-4 py-3 text-sm font-body font-medium outline-none focus:ring-2 focus:ring-accent/20"
-               />
-             </div>
-             <Button 
-                onClick={async () => {
-                   if (!voucherInput) return;
-                   const params = { code: voucherInput, order_amount: subtotal };
-                   try {
-                     const res = await api.post('/promotions/coupons/validate', params);
-                     if (res.data?.success) {
-                       const c = res.data.data;
-                       setAppliedVoucher({
-                          id: c.id, code: c.code, name: c.description || c.code,
-                          disc: c.type === 'percentage' ? c.value / 100 : c.value,
-                          type: c.type === 'shipping' ? 'shipping' : 'discount'
-                       });
-                       toast.success("Voucher berhasil digunakan!");
-                       setShowVoucherModal(false);
-                     } else {
-                       toast.error(res.data?.message || "Voucher tidak valid");
-                     }
-                   } catch(err: any) {
-                     toast.error(err.response?.data?.message || "Gagal validasi voucher");
-                   }
-                }}
-                className="rounded-xl px-6 font-black uppercase text-xs"
-             >
-                Cek
-             </Button>
-          </div>
-
-          <div className="space-y-4">
-             <h4 className="font-display font-black text-[10px] uppercase tracking-widest text-muted-foreground ml-1">Voucher Tersedia</h4>
-             {vouchers.map((v) => {
-               const isEligible = !v.minSpend || subtotal >= v.minSpend;
-               return (
-                 <button
-                   key={v.id}
-                   disabled={!isEligible}
-                   onClick={() => { setAppliedVoucher(v); setShowVoucherModal(false); toast.success(`Voucher ${v.code} terpasang`); }}
-                   className={`w-full text-left overflow-hidden rounded-2xl border-2 transition-all flex h-24 ${
-                     appliedVoucher?.id === v.id 
-                       ? "border-accent bg-accent/5" 
-                       : isEligible ? "border-border/50 hover:border-accent/40" : "border-border/20 opacity-50 grayscale"
-                   }`}
-                 >
-                   <div className={`w-24 flex flex-col items-center justify-center border-r border-dashed border-border/60 ${v.type === 'shipping' ? 'bg-blue-500' : 'bg-accent'} text-white p-2`}>
-                      <TicketPercent className="w-8 h-8 mb-1" />
-                      <span className="text-[8px] font-black uppercase tracking-tighter text-center leading-none">{v.type === 'shipping' ? 'Gratis Ongkir' : 'Diskon'}</span>
-                   </div>
-                   <div className="flex-1 p-4 flex flex-col justify-center">
-                     <p className="font-display font-black text-xs uppercase mb-0.5">{v.name}</p>
-                     <p className="text-[10px] text-muted-foreground font-body font-medium">Min. Belanja {rp(v.minSpend || 0)}</p>
-                     <div className="mt-2 flex items-center justify-between">
-                        <span className="text-[9px] font-body text-accent bg-accent/10 px-2 py-0.5 rounded border border-accent/20">Aktif</span>
-                        {appliedVoucher?.id === v.id && <Check className="w-4 h-4 text-accent" />}
+      {/* Shipping Selection Modal */}
+      <CustomModal isOpen={showShippingModal} onClose={() => setShowShippingModal(false)} title="Pilih Pengiriman">
+         <div className="space-y-4 pb-10">
+            {SHIPPING_METHODS.map((sm) => (
+               <button
+                 key={sm.id}
+                 onClick={() => { setSelectedShipping(sm); setShowShippingModal(false); }}
+                 className={`group relative text-left p-6 rounded-2xl border-2 transition-all flex items-center justify-between overflow-hidden ${
+                   selectedShipping.id === sm.id 
+                   ? "border-orange-600 bg-orange-600/5 shadow-[0_0_20px_rgba(234,88,12,0.1)]" 
+                   : "border-white/5 hover:border-orange-600/40 bg-black/40"
+                 }`}
+               >
+                  <div className="flex items-center gap-6 relative z-10">
+                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${
+                        selectedShipping.id === sm.id ? 'bg-orange-600 text-white' : 'bg-white/5 text-white/30 group-hover:text-white'
+                     }`}>
+                        <Truck className="w-6 h-6" />
                      </div>
-                   </div>
-                 </button>
-               );
-             })}
-          </div>
-        </div>
-      </Modal>
+                     <div className="space-y-1">
+                        <span className="block font-bold text-base text-white uppercase tracking-tight italic leading-none">{sm.name}</span>
+                        <div className="flex items-center gap-2">
+                           <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">{sm.courier}</span>
+                           <div className="w-1 h-1 rounded-full bg-white/10" />
+                           <span className="text-[9px] font-black text-orange-600 uppercase tracking-[0.2em]">{sm.eta}</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div className="text-right flex flex-col items-end relative z-10">
+                     <span className="font-display font-black text-lg text-white leading-none mb-1">{rp(sm.price)}</span>
+                     <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.2em]">Estimasi Biaya</span>
+                  </div>
+               </button>
+            ))}
+         </div>
+      </CustomModal>
 
-      <Footer />
-    </div>
+      {/* Payment Selection Modal */}
+      <CustomModal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)} title="Metode Pembayaran">
+         <div className="space-y-10 pb-10">
+            {['E-Wallet', 'Transfer Bank', 'Lainnya'].map((group) => {
+              const methods = PAYMENT_METHODS.filter(p => p.type === group);
+              if (methods.length === 0) return null;
+              
+              return (
+                <div key={group} className="space-y-4">
+                   <div className="flex items-center gap-3 ml-2">
+                      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">{group}</p>
+                      <div className="h-px flex-1 bg-white/5" />
+                   </div>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {methods.map((pm) => (
+                        <button
+                          key={pm.id}
+                          onClick={() => { setSelectedPayment(pm); setShowPaymentModal(false); }}
+                          className={`group relative text-left p-5 rounded-2xl border-2 transition-all overflow-hidden ${
+                            selectedPayment.id === pm.id 
+                            ? "border-orange-600 bg-orange-600/5" 
+                            : "border-white/5 hover:border-orange-600/40 bg-black/40"
+                          }`}
+                        >
+                           <div className="flex items-center justify-between relative z-10">
+                              <div className="flex items-center gap-4">
+                                 <div className={`p-3 rounded-xl transition-colors ${selectedPayment.id === pm.id ? 'bg-orange-600 text-white' : 'bg-white/5 text-white/30 group-hover:text-white'}`}>
+                                    <pm.icon className="w-5 h-5" />
+                                 </div>
+                                 <div>
+                                    <span className="block font-bold text-xs text-white uppercase tracking-widest leading-none mb-1">{pm.name}</span>
+                                    <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.2em]">{pm.type}</span>
+                                 </div>
+                              </div>
+                              {selectedPayment.id === pm.id && <Check className="w-4 h-4 text-orange-600" />}
+                           </div>
+                        </button>
+                      ))}
+                   </div>
+                </div>
+              );
+            })}
+         </div>
+      </CustomModal>
+
+      {/* Voucher Modal */}
+      <CustomModal isOpen={showVoucherModal} onClose={() => setShowVoucherModal(false)} title="Voucher Belanja">
+         <div className="space-y-10 pb-10">
+            <div className="relative group">
+               <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+                  <TicketPercent className="w-5 h-5 text-white/20 group-focus-within:text-orange-600 transition-colors" />
+               </div>
+               <input 
+                 placeholder="MASUKKAN KODE VOUCHER" 
+                 value={voucherInput} onChange={e => setVoucherInput(e.target.value)}
+                 className="w-full bg-white/5 border border-white/10 rounded-2xl pl-14 pr-32 py-5 text-sm font-bold text-white uppercase outline-none focus:border-orange-600 focus:bg-orange-600/5 transition-all placeholder:text-white/10 italic"
+               />
+               <button 
+                  onClick={() => handleApplyPromo(voucherInput)}
+                  className="absolute right-2 top-2 bottom-2 px-6 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-orange-600 hover:text-white transition-all active:scale-95"
+               >
+                  KLAIM
+               </button>
+            </div>
+
+            <div className="space-y-4">
+               <div className="flex items-center gap-3">
+                  <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 ml-2">Voucher Tersedia</p>
+                  <div className="h-px flex-1 bg-white/5" />
+               </div>
+               <div className="grid grid-cols-1 gap-4">
+                  {vouchers.map(v => (
+                    <button 
+                      key={v.id} 
+                      onClick={() => { setAppliedVoucher(v); setShowVoucherModal(false); }} 
+                      className="group relative w-full h-28 bg-black border-2 border-white/5 hover:border-orange-600 rounded-2xl flex items-center p-6 transition-all overflow-hidden"
+                    >
+                       <div className="absolute top-0 right-0 w-32 h-full bg-orange-600/5 -skew-x-12 translate-x-8 group-hover:translate-x-4 transition-transform" />
+                       <div className="w-16 h-16 bg-white/5 rounded-xl flex items-center justify-center text-white/30 group-hover:bg-orange-600 group-hover:text-white transition-all shrink-0">
+                          <TicketPercent className="w-8 h-8" />
+                       </div>
+                       <div className="ml-6 text-left space-y-1 relative z-10">
+                          <p className="font-display font-black text-lg text-white uppercase tracking-tighter italic">{v.name}</p>
+                          <div className="flex items-center gap-2">
+                             <span className="text-[9px] font-black text-orange-600 uppercase tracking-widest">KODE: {v.code}</span>
+                             <div className="w-1 h-1 rounded-full bg-white/10" />
+                             <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest leading-none">Min. Belanja {rp(v.minSpend)}</p>
+                          </div>
+                       </div>
+                       <ArrowRight className="ml-auto w-5 h-5 text-white/10 group-hover:text-orange-600 transition-all group-hover:translate-x-1" />
+                    </button>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </CustomModal>
+
+      {/* FEEDBACK MODALS */}
+      <CheckoutModal 
+        isOpen={uiModal.isOpen}
+        onClose={() => setUiModal(prev => ({ ...prev, isOpen: false }))}
+        type={uiModal.type}
+        title={uiModal.title}
+        message={uiModal.message}
+        onConfirm={uiModal.onConfirm}
+      />
+    </CheckoutLayout>
   );
 };
 

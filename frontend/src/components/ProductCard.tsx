@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Heart, Star, ShoppingCart, ArrowRight } from "lucide-react";
+import { ShoppingBag, Heart, Star, ShoppingCart, ArrowRight, Zap } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
@@ -18,21 +18,20 @@ const formatPrice = (price: number) =>
 
 const StarRow = ({ rating = 0, reviewCount = 0 }: { rating?: number; reviewCount?: number }) => {
   if (reviewCount === 0) {
-    return <span className="text-[10px] text-muted-foreground font-body italic italic">Belum ada ulasan</span>;
+    return <span className="text-[10px] text-muted-foreground font-display font-black uppercase tracking-widest italic">New Arrival</span>;
   }
   const full = Math.floor(rating);
   return (
-    <div className="flex items-center gap-1" aria-label={`Rating ${rating.toFixed(1)} bintang`}>
-      <div className="flex items-center">
+    <div className="flex items-center gap-1.5" aria-label={`Rating ${rating.toFixed(1)} bintang`}>
+      <div className="flex items-center gap-0.5">
         {[1, 2, 3, 4, 5].map((i) => (
           <Star
             key={i}
-            className={`w-3 h-3 ${i <= full ? "fill-amber-400 text-amber-400" : i - 0.5 <= rating ? "fill-amber-200 text-amber-400" : "text-muted-foreground/30"}`}
+            className={`w-2.5 h-2.5 ${i <= full ? "fill-white text-white" : "text-white/10"}`}
           />
         ))}
       </div>
-      <span className="text-[10px] text-foreground font-black ml-0.5">{rating.toFixed(1)}</span>
-      <span className="text-[9px] text-muted-foreground font-body ml-0.5">({reviewCount})</span>
+      <span className="text-[10px] text-white font-black font-display tracking-widest ml-1">{rating.toFixed(1)}</span>
     </div>
   );
 };
@@ -54,14 +53,12 @@ const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     e.preventDefault();
     e.stopPropagation();
     
-    // If onQuickAdd is passed, delegate to the parent
     if (product.variants && product.variants.length > 0 && onQuickAdd) {
       onQuickAdd(product);
       return;
     }
 
     setIsAdding(true);
-    
     addToCart({
       productId: product.id,
       name: product.name,
@@ -73,10 +70,7 @@ const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     
     setTimeout(() => {
       setIsAdding(false);
-      toast.success(`${product.name} ditambahkan ke keranjang`, {
-        description: "Barang sudah siap untuk di-checkout.",
-        duration: 2000,
-      });
+      toast.success(`${product.name} ditambahkan ke keranjang`);
     }, 500);
   };
 
@@ -90,7 +84,6 @@ const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     }
 
     setIsBuying(true);
-    
     const buyNowItem = {
       productId: product.id,
       name: product.name,
@@ -108,137 +101,74 @@ const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(4px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.7, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className="group cursor-pointer flex flex-col h-full bg-white rounded-2xl p-1.5 sm:p-3 transition-all duration-500 hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 1, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      className="group cursor-pointer flex flex-col h-full bg-transparent rounded-none"
     >
-      {/* Image Container */}
-      <div className="relative aspect-square rounded-xl overflow-hidden bg-white mb-3 flex items-center justify-center transition-all duration-500 group">
-        <Link to={`/product/${product.id}`} className="w-full h-full">
+      <div className="relative aspect-[3/4] bg-muted/5 dark:bg-white/[0.02] rounded-none overflow-hidden mb-4 transition-all duration-700">
+        <Link to={`/product/${product.id}`} className="absolute inset-0 block">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover transition-all duration-700 ease-out-expo group-hover:scale-[1.1]"
+            className="w-full h-full object-contain grayscale-[15%] group-hover:grayscale-0 transition-all duration-[1s] ease-out group-hover:scale-105"
             loading="lazy"
           />
         </Link>
 
-        {/* Badges - Standardized & Compact */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1 items-start max-w-[calc(100%-16px)]">
+        {/* Badges */}
+        <div className="absolute top-4 left-4 flex flex-col gap-1 items-start z-10">
           {product.badge && (
-            <span className="bg-accent text-accent-foreground text-[8px] sm:text-[9px] font-black px-2 py-0.5 rounded-sm font-display uppercase tracking-wide shadow-sm backdrop-blur-[2px] truncate max-w-[80px] sm:max-w-[120px]">
+            <span className="bg-white text-black font-display text-[9px] font-black px-2.5 py-1 uppercase tracking-[0.2em] rounded-none">
               {product.badge}
             </span>
           )}
           {discountPct > 0 && (
-            <span className="bg-red-500 text-white text-[8px] sm:text-[9px] font-black px-2 py-0.5 rounded-sm font-display shadow-sm backdrop-blur-[2px]">
+            <span className="bg-orange-500 text-white font-display text-[9px] font-black px-2.5 py-1 uppercase tracking-[0.2em] rounded-none">
               -{discountPct}%
             </span>
           )}
         </div>
 
-        {/* Wishlist - Premium glass pill */}
-        <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 sm:translate-x-2 sm:group-hover:translate-x-0 transition-all duration-300">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="w-8 h-8 rounded-full glass-light flex items-center justify-center border border-white/20 shadow-sm hover:bg-white transition-colors"
-          >
-            <Heart className="w-3.5 h-3.5 text-foreground" />
-          </motion.button>
-        </div>
-
-        {/* Mobile Quick Add Icon - Premium floating action */}
-        <button 
-          onClick={handleAddToCart}
-          disabled={isAdding}
-          className="absolute bottom-2 right-2 sm:hidden p-2 bg-accent text-white rounded-xl shadow-lg active:scale-95 transition-all"
-        >
-          {isAdding ? (
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <ShoppingCart className="w-4 h-4" />
-          )}
-        </button>
-
-        {/* Hover Action Bar (Desktop) - Improved accessibility & UX */}
-        <div className="hidden sm:block absolute inset-x-2 bottom-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out-expo">
-          <div className="flex gap-2 w-full">
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding || isBuying}
-              className="flex items-center justify-center w-11 h-11 rounded-xl bg-muted text-foreground border border-border/50 hover:bg-white hover:shadow-lg transition-all duration-300 shadow-sm relative group/btn shrink-0"
-              title="Tambah ke Keranjang"
-            >
-              {isAdding ? (
-                <div className="w-4 h-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
-              ) : (
-                <ShoppingCart className="w-4 h-4 group-hover/btn:scale-110 transition-transform" /> 
-              )}
-            </button>
+        {/* Actions Hover */}
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out-expo flex flex-col gap-1 z-20 pointer-events-none">
+          <div className="flex flex-col gap-1 pointer-events-auto">
             <button
               onClick={handleBuyNow}
-              disabled={isAdding || isBuying}
-              className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl bg-foreground text-background font-body text-[10px] font-black tracking-[0.15em] uppercase hover:bg-accent hover:text-accent-foreground transition-all duration-300 shadow-xl overflow-hidden relative group/buy"
+              className="w-full h-12 bg-black dark:bg-white text-white dark:text-black font-display text-[10px] font-black tracking-[0.3em] uppercase hover:bg-orange-600 hover:text-white transition-colors duration-500 flex items-center justify-center gap-2 rounded-none"
             >
-              {isBuying ? (
-                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover/buy:translate-x-1 transition-transform" /> 
-                  <span>Beli Sekarang</span>
-                </>
-              )}
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/buy:opacity-100 transition-opacity" />
+               <Zap className="w-4 h-4" /> Instant Buy
+            </button>
+            <button
+              onClick={handleAddToCart}
+              className="w-full h-12 bg-white/10 backdrop-blur-md text-white font-display text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-colors duration-500 flex items-center justify-center gap-2 rounded-none"
+            >
+               <ShoppingBag className="w-4 h-4" /> Add to Arsenal
             </button>
           </div>
         </div>
+
+        <button className="absolute top-4 right-4 text-white/20 hover:text-orange-500 transition-colors z-30">
+          <Heart className="w-5 h-5" />
+        </button>
       </div>
 
-      {/* Info Section */}
-      <div className="flex-1 px-1 flex flex-col pb-1 overflow-hidden">
-        <div className="flex items-center justify-between gap-2 mb-1">
-          <p className="text-[9px] text-muted-foreground tracking-[0.1em] uppercase font-display font-medium">
-            {product.category}
-          </p>
-          {/* Mobile StarRow */}
-          <div className="sm:hidden">
-            <StarRow rating={product.rating} reviewCount={product.reviewCount} />
-          </div>
-        </div>
+      <div className="flex flex-col flex-1 px-1">
+        <p className="font-display text-[8px] text-white/40 uppercase tracking-[0.4em] font-black mb-1">
+          {product.category}
+        </p>
         
-        <h3 className="font-display font-bold text-[13px] sm:text-sm md:text-[15px] text-foreground leading-snug mb-2 group-hover:text-accent transition-colors duration-300 line-clamp-2 overflow-hidden min-h-[2.4rem] sm:min-h-[2.6rem]">
-          <Link to={`/product/${product.id}`} className="block">{product.name}</Link>
+        <h3 className="font-display font-black text-sm text-white uppercase leading-tight tracking-tighter mb-3 group-hover:text-orange-500 transition-colors duration-500 line-clamp-2">
+          <Link to={`/product/${product.id}`}>{product.name}</Link>
         </h3>
 
-        {/* Rating Row (Desktop Only) */}
-        <div className="hidden sm:flex items-center justify-between gap-1 mb-2">
-          <StarRow rating={product.rating} reviewCount={product.reviewCount} />
-          {product.sold_count && product.sold_count > 0 && (
-            <span className="text-[10px] font-black font-display uppercase tracking-wider text-accent drop-shadow-sm">
-              {product.sold_count > 1000 ? `${(product.sold_count / 1000).toFixed(1)}k+` : product.sold_count}+ Terjual
-            </span>
-          )}
-        </div>
-
-        {/* Sold info for mobile */}
-        {product.sold_count && product.sold_count > 0 && (
-          <div className="sm:hidden mb-2">
-            <span className="text-[9px] font-black font-display uppercase tracking-widest text-accent/80">
-              {product.sold_count}+ Terjual
-            </span>
-          </div>
-        )}
-
-        {/* Price row - Cleaner typography */}
-        <div className="mt-auto flex flex-wrap items-baseline gap-1 sm:gap-2">
-          <span className="font-display font-black text-foreground text-sm sm:text-base tracking-tight whitespace-nowrap">
+        <div className="mt-auto pt-4 flex items-baseline gap-4 border-t border-white/5">
+          <span className="font-display font-black text-white text-base tracking-tighter">
             {formatPrice(effectivePrice)}
           </span>
-          {product.originalPrice && product.originalPrice !== effectivePrice && (
-            <span className="text-muted-foreground/60 text-[10px] sm:text-xs line-through font-medium">
+          {product.originalPrice && product.originalPrice > effectivePrice && (
+            <span className="font-display text-white/20 text-[10px] line-through tracking-widest">
               {formatPrice(product.originalPrice)}
             </span>
           )}
@@ -267,7 +197,6 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     }
 
     setIsAdding(true);
-    
     addToCart({
       productId: product.id,
       name: product.name,
@@ -279,10 +208,7 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     
     setTimeout(() => {
       setIsAdding(false);
-      toast.success(`${product.name} ditambahkan ke keranjang`, {
-        description: "Lihat keranjang untuk checkout.",
-        duration: 2000,
-      });
+      toast.success(`${product.name} ditambahkan ke keranjang`);
     }, 500);
   };
 
@@ -296,7 +222,6 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     }
 
     setIsBuying(true);
-    
     const buyNowItem = {
       productId: product.id,
       name: product.name,
@@ -317,95 +242,57 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
-      className="group cursor-pointer flex gap-4 sm:gap-6 p-3 sm:p-4 rounded-2xl bg-white border border-border/40 hover:border-border hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hover:-translate-y-0.5"
+      transition={{ duration: 0.8, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      className="group cursor-pointer flex gap-10 p-8 rounded-none bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500"
     >
-      {/* Image */}
-      <div className="relative w-28 sm:w-36 md:w-44 aspect-square rounded-xl overflow-hidden flex-shrink-0 bg-white border border-border/50 group-hover:border-transparent transition-colors">
+      <div className="relative w-48 aspect-square rounded-none overflow-hidden flex-shrink-0 bg-white/[0.03]">
         <Link to={`/product/${product.id}`} className="w-full h-full flex items-center justify-center">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.1]"
+            className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-[1.1]"
             loading="lazy"
           />
         </Link>
         {product.badge && (
-          <span className="absolute top-2 left-2 bg-accent text-accent-foreground text-[8px] sm:text-[9px] font-black px-2 py-0.5 rounded-sm font-display uppercase tracking-wide shadow-sm backdrop-blur-[2px] truncate max-w-[60px] sm:max-w-[100px]">
+          <span className="absolute top-0 left-0 bg-white text-black font-display text-[9px] font-black px-2 py-1 uppercase tracking-widest rounded-none">
             {product.badge}
           </span>
         )}
       </div>
 
-      {/* Info */}
-      <div className="flex flex-col justify-between flex-1 min-w-0 py-1">
-        <div>
-          <div className="flex items-start justify-between gap-2 mb-1.5">
-            <p className="text-[10px] text-muted-foreground tracking-[0.1em] uppercase font-display font-medium">{product.category}</p>
-            <span className="text-[8px] sm:text-[9px] text-muted-foreground font-display font-bold uppercase tracking-wide bg-muted px-2 py-0.5 rounded-sm shrink-0">{product.activity}</span>
-          </div>
-          <Link to={`/product/${product.id}`} className="block overflow-hidden">
-            <h3 className="font-display font-bold text-sm sm:text-base md:text-[18px] text-foreground leading-snug mb-2 group-hover:text-accent transition-colors duration-300 line-clamp-2 overflow-hidden">
+      <div className="flex flex-col justify-between flex-1 py-1">
+        <div className="space-y-4">
+          <p className="font-display text-[10px] text-white/40 tracking-[0.4em] uppercase font-black">{product.category}</p>
+          <Link to={`/product/${product.id}`} className="block">
+            <h3 className="font-display font-black text-3xl text-white leading-none uppercase tracking-tighter group-hover:text-orange-500 transition-colors duration-500">
               {product.name}
             </h3>
           </Link>
-          {/* Rating & sold */}
-          <div className="flex items-center gap-3 mb-3">
-            <StarRow rating={product.rating} reviewCount={product.reviewCount} />
-            {product.sold_count && product.sold_count > 0 && (
-              <div className="flex items-center gap-2 px-2 py-0.5 bg-accent/5 rounded-full border border-accent/10">
-                <div className="w-1 h-1 rounded-full bg-accent animate-pulse" />
-                <span className="text-[10px] font-black font-display uppercase tracking-widest text-accent">
-                  {product.sold_count}+ Sold
-                </span>
-              </div>
-            )}
-          </div>
+          <StarRow rating={product.rating} reviewCount={product.reviewCount} />
         </div>
 
-        <div className="flex items-end justify-between gap-3 flex-wrap">
-          <div className="flex flex-col">
+        <div className="flex items-end justify-between gap-6 pt-10 border-t border-white/5">
+          <div className="flex flex-col gap-1">
             {product.originalPrice && product.originalPrice !== effectivePrice && (
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-muted-foreground/60 text-xs line-through font-medium">
-                  {formatPrice(product.originalPrice)}
-                </span>
-                <span className="text-red-500 text-[10px] font-black font-display uppercase">
-                  -{(product.originalPrice && product.originalPrice > 0) ? Math.round(((product.originalPrice - effectivePrice) / product.originalPrice) * 100) : 0}%
-                </span>
-              </div>
+              <span className="text-white/20 text-[12px] line-through font-display font-black uppercase tracking-widest">
+                {formatPrice(product.originalPrice)}
+              </span>
             )}
-            <span className="font-display font-black text-foreground text-lg sm:text-xl tracking-tight">
+            <span className="font-display font-black text-white text-3xl tracking-tighter">
               {formatPrice(effectivePrice)}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-10 h-10 rounded-xl border border-border flex items-center justify-center hover:bg-white hover:shadow-md transition-all font-display"
-            >
-              <Heart className="w-4 h-4 text-foreground" />
-            </motion.button>
+          <div className="flex items-center gap-4">
             <button
-              onClick={handleBuyNow}
-              disabled={isAdding || isBuying}
+               onClick={handleAddToCart}
+               className="h-16 px-10 bg-white text-black font-display text-[11px] font-black uppercase tracking-[0.3em] hover:bg-orange-600 hover:text-white transition-all rounded-none"
             >
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="h-10 px-5 rounded-xl bg-foreground text-background font-body text-[11px] font-black tracking-widest uppercase flex items-center gap-2 hover:bg-accent hover:text-white transition-all shadow-sm"
-              >
-                {isBuying ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <ShoppingCart className="w-4 h-4" />
-                    <span>Beli</span>
-                  </>
-                )}
-              </motion.div>
+               Add to Arsenal
+            </button>
+            <button className="w-16 h-16 bg-white/5 flex items-center justify-center hover:bg-red-600 transition-all rounded-none">
+              <Heart className="w-5 h-5 text-white" />
             </button>
           </div>
         </div>
@@ -414,7 +301,6 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
   );
 };
 
-/* ─── Main export ─────────────────────────────────────────── */
 const ProductCard = ({ product, index = 0, viewMode = "grid", onQuickAdd }: ProductCardProps) => {
   if (viewMode === "list") return <ListCard product={product} index={index} onQuickAdd={onQuickAdd} />;
   return <GridCard product={product} index={index} onQuickAdd={onQuickAdd} />;

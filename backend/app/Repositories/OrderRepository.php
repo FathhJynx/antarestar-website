@@ -84,7 +84,7 @@ class OrderRepository extends BaseRepository
 
     public function getAllOrders(int $perPage = 15, ?string $search = null, ?string $status = null): LengthAwarePaginator
     {
-        $query = $this->model->with(['user', 'items.productVariant.product.primaryImage', 'address']);
+        $query = $this->model->with(['user', 'items.productVariant.product.primaryImage', 'address.city']);
 
         if ($search) {
             $query->where(function ($q) use ($search) {

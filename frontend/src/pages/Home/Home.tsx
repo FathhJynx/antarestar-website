@@ -124,21 +124,22 @@ interface CatCardProps {
 const CategoryCardUI = ({ cat, big = false, desktopFill = false }: CatCardProps) => (
   <Link
     to={cat.href}
-    className={`group relative flex flex-col justify-end rounded-2xl overflow-hidden w-full
-      ${desktopFill ? "h-full" : big ? "aspect-[16/7]" : "aspect-[4/3]"}`}
+    className={`group relative flex flex-col justify-end overflow-hidden w-full bg-[#111111]
+      ${desktopFill ? "h-full" : big ? "aspect-[16/7]" : "aspect-[4/5] sm:aspect-[4/3]"} 
+      transition-all duration-500`}
   >
     <img src={cat.img} alt={cat.name} loading="lazy"
-      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.05]" />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-    {/* hover caret */}
-    <div className="absolute top-3 right-3 w-8 h-8 bg-accent rounded-full flex items-center justify-center
-                    opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300">
-      <ArrowRight className="w-4 h-4 text-white" />
+      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-[1.5s] ease-out group-hover:scale-105 opacity-60 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-80" />
+    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-500" />
+    
+    <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
+      <ArrowRight className="w-6 h-6 text-white" />
     </div>
-    <div className="relative p-4 md:p-5">
-      <p className="font-body text-[10px] text-white/50 uppercase tracking-[0.2em] mb-1">{cat.count} produk</p>
-      <h3 className={`font-display font-black text-white uppercase leading-none
-        ${big ? "text-2xl sm:text-3xl" : "text-lg sm:text-xl md:text-2xl"}`}>
+    
+    <div className="relative p-6 md:p-8">
+      <p className="font-body text-[10px] text-white/60 font-bold uppercase tracking-[0.3em] mb-2">{String(cat.count).padStart(2, '0')} — Produk</p>
+      <h3 className={`font-display font-black text-white uppercase tracking-tighter
+        ${big ? "text-5xl sm:text-7xl leading-none" : "text-3xl sm:text-4xl leading-none"}`}>
         {cat.name}
       </h3>
     </div>
@@ -170,18 +171,18 @@ const ShopCategories = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-transparent border-t border-white/5 relative z-10">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
         {/* Header */}
         <InView className="mb-10 md:mb-12">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-2">Koleksi Lengkap</p>
-              <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl text-foreground uppercase leading-none tracking-tight">
+              <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-2">Pilih Gear Sesuai Kebutuhan Lo</p>
+              <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white uppercase leading-none tracking-tight">
                 Kategori Pilihan
               </h2>
             </div>
-            <Link to="/store" className="flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wider text-muted-foreground hover:text-accent transition-colors shrink-0">
+            <Link to="/store" className="inline-flex items-center gap-2 h-11 px-6 border border-white/20 text-white font-display font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white/5 transition-colors shrink-0">
               Lihat Semua <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -263,10 +264,9 @@ const BestSellers = () => {
           price: Number(activeVariant?.price || 0),
           originalPrice: isOnFlashSale ? Number(activeVariant.price) : undefined,
           flashSalePrice: isOnFlashSale ? Number(activeVariant.flash_sale_price) : undefined,
-          rating: p.reviews?.length > 0 
-            ? p.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / p.reviews.length 
-            : 0,
-          reviewCount: p.reviews?.length || 0,
+          rating: p.reviews_avg_rating || p.rating || (p.reviews?.length > 0 ? p.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / p.reviews.length : 0),
+          reviewCount: p.reviews_count || p.reviewCount || p.reviews?.length || 0,
+          sold_count: p.sold_count || 0,
           category: p.category?.name || "Perlengkapan"
         };
       });
@@ -277,12 +277,12 @@ const BestSellers = () => {
   const BEST = popular;
 
   return (
-    <section className="pt-2 pb-16 md:pb-24 bg-background border-b border-border">
+    <section className="pt-2 pb-16 md:pb-24 bg-transparent border-b border-white/5">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
         <InView className="mb-8 md:mb-10">
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-border" />
-            <span className="font-display font-black text-xs uppercase tracking-[0.3em] text-muted-foreground">Produk Terlaris</span>
+            <span className="font-display font-black text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Paling Banyak Dicari</span>
             <div className="flex-1 h-px bg-border" />
           </div>
         </InView>
@@ -361,12 +361,12 @@ const FlashSaleSection = () => {
 
   if (!isLoading && !activeCampaign) return null;
   return (
-    <section className="py-16 md:py-24 bg-primary relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-transparent relative overflow-hidden border-t border-white/5">
       {/* dot grid */}
       <div className="absolute inset-0 opacity-[0.04]"
         style={{ backgroundImage: "radial-gradient(circle at 2px 2px,white 1px,transparent 0)", backgroundSize: "28px 28px" }} />
       {/* glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-red-600/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-orange-600/15 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Header row */}
@@ -374,15 +374,15 @@ const FlashSaleSection = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <motion.div animate={{ scale: [1, 1.15, 1] }} transition={{ repeat: Infinity, duration: 1 }}
-                className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center shadow-[0_0_24px_rgba(220,38,38,0.5)]">
+                className="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center shadow-[0_0_24px_rgba(234,88,12,0.4)]">
                 <Zap className="w-6 h-6 text-white fill-current" />
               </motion.div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Flame className="w-3.5 h-3.5 text-orange-400 animate-pulse" />
-                  <span className="font-body text-[10px] font-bold uppercase tracking-[0.25em] text-orange-400">Stok Terbatas</span>
+                  <span className="font-body text-[10px] font-bold uppercase tracking-[0.25em] text-orange-400">Siapa Cepat Dia Dapat</span>
                 </div>
-                <h2 className="font-display font-black text-2xl sm:text-3xl md:text-4xl uppercase text-white tracking-tight">Promo Kilat</h2>
+                <h2 className="font-display font-black text-2xl sm:text-3xl md:text-4xl uppercase text-white tracking-tight">Diskon Kilat</h2>
               </div>
             </div>
             {/* Countdown */}
@@ -391,8 +391,8 @@ const FlashSaleSection = () => {
               <div className="flex items-center gap-1.5 font-display font-black text-xl sm:text-2xl">
                 {[h, m, s].map((u, i) => (
                   <React.Fragment key={i}>
-                    <span className="bg-red-600 text-white px-2.5 py-1 rounded-xl min-w-[44px] text-center shadow">{u}</span>
-                    {i < 2 && <span className="text-red-500 text-lg">:</span>}
+                    <span className="bg-orange-500 text-white px-2.5 py-1 rounded-xl min-w-[44px] text-center shadow">{u}</span>
+                    {i < 2 && <span className="text-orange-400 text-lg">:</span>}
                   </React.Fragment>
                 ))}
               </div>
@@ -415,47 +415,50 @@ const FlashSaleSection = () => {
             const stock = p.saleStock || 0;
             const isLowStock = stock < 10;
             return (
-              <motion.div key={p.id} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+              <motion.div key={p.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1, ease }}
-                className="bg-white rounded-2xl overflow-hidden group shrink-0 w-[280px] sm:w-auto snap-start shadow-sm border border-white/5 sm:shadow-none"
+                className="group shrink-0 w-[280px] sm:w-auto snap-start flex flex-col h-full bg-transparent"
               >
                 {/* image */}
-                <Link to={`/product/${p.id}`} className="relative block aspect-square bg-muted overflow-hidden">
-                  <img src={p.image} alt={p.name} loading="lazy"
-                    className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105" />
-                  <span className="absolute top-3 left-3 bg-red-600 text-white font-display font-black text-base px-2.5 py-1 rounded-lg" style={{ transform: "rotate(-3deg)" }}>
-                    -{pct}%
-                  </span>
-                  {isLowStock && stock > 0 && (
-                    <span className="absolute bottom-3 left-3 flex items-center gap-1 bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase">
-                      <Flame className="w-3 h-3" /> Hampir Habis
+                <div className="relative block aspect-[4/5] bg-[#111111] overflow-hidden mb-4">
+                  <Link to={`/product/${p.id}`} className="absolute inset-0 block">
+                    <img src={p.image} alt={p.name} loading="lazy"
+                      className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal opacity-80 group-hover:opacity-100 transition-all duration-[1.2s] group-hover:scale-105" />
+                  </Link>
+                  <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
+                    <span className="bg-orange-500 text-white font-display font-black text-[10px] px-2 py-1 uppercase tracking-widest leading-none">
+                      -{pct}%
                     </span>
-                  )}
-                </Link>
+                    {isLowStock && stock > 0 && (
+                      <span className="bg-red-600 text-white font-display font-black text-[9px] px-2 py-1 uppercase tracking-widest leading-none mt-1">
+                        Hampir Habis
+                      </span>
+                    )}
+                  </div>
+                  
+                  {/* Minimalist Add to Cart on Image Hover */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 flex pointer-events-none">
+                    <Link to={`/product/${p.id}`} className="pointer-events-auto flex-1 h-12 bg-white text-black hover:bg-orange-500 hover:text-white font-display font-black text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center justify-center shadow-xl">
+                      Ambil Gear
+                    </Link>
+                  </div>
+                </div>
+
                 {/* info */}
-                <div className="p-4">
+                <div className="flex flex-col flex-1 px-1">
                   <Link to={`/product/${p.id}`}>
-                    <h3 className="font-display font-bold text-sm leading-snug line-clamp-2 mb-2 hover:text-red-600 transition-colors">{p.name}</h3>
+                    <h3 className="font-display font-black text-sm uppercase leading-snug tracking-tight mb-2 text-white group-hover:text-orange-500 transition-colors line-clamp-2">{p.name}</h3>
                   </Link>
-                  <div className="flex items-end gap-2 mb-3">
-                    <span className="font-display font-black text-xl text-red-600">{rp(flash)}</span>
-                    <span className="font-body text-xs text-gray-400 line-through pb-0.5">{rp(orig)}</span>
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="font-display font-black text-lg text-white">{rp(flash)}</span>
+                    <span className="font-display font-bold text-[10px] text-white/30 line-through tracking-wider">{rp(orig)}</span>
                   </div>
-                  {/* stock bar */}
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-[10px] font-bold font-body text-gray-500">
-                      <span>Stok tersisa</span><span className="text-red-500">{stock} unit</span>
-                    </div>
-                    <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <motion.div initial={{ width: 0 }} whileInView={{ width: `${Math.min(100, (stock / 100) * 100)}%` }} // normalized for demo
-                        viewport={{ once: true }} transition={{ duration: 1.2, delay: 0.3 + i * 0.15 }}
-                        className="h-full bg-red-500 rounded-full" />
+                  {/* sleek stock indicator */}
+                  <div className="mt-auto space-y-2 pt-3 border-t border-white/10">
+                    <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest font-display text-white/50">
+                      <span>Sisa Stok</span><span className="text-orange-500">{stock}</span>
                     </div>
                   </div>
-                  <Link to={`/product/${p.id}`}
-                    className="mt-3 flex items-center justify-center gap-2 h-9 bg-red-600 hover:bg-red-700 text-white font-display font-bold text-xs uppercase tracking-wider rounded-xl transition-colors">
-                    <ShoppingBag className="w-3.5 h-3.5" /> Ambil Sekarang
-                  </Link>
                 </div>
               </motion.div>
             );
@@ -463,8 +466,8 @@ const FlashSaleSection = () => {
         </div>
 
         <InView delay={0.3} className="mt-8 text-center">
-          <Link to="/store" className="inline-flex items-center gap-2 h-11 px-8 border border-white/20 text-white font-display font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white/5 transition-colors">
-            Lihat Semua Sale <ArrowRight className="w-4 h-4" />
+          <Link to="/store" className="inline-flex items-center gap-2 h-14 px-8 border border-white/20 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl hover:bg-white/5 transition-colors">
+            Cek Semua Promo <ArrowRight className="w-4 h-4" />
           </Link>
         </InView>
       </div>
@@ -476,60 +479,63 @@ const FlashSaleSection = () => {
 const MegaSaleCTA = () => {
   const { h, m, s } = useCountdown(12 * 3600 + 45 * 60);
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-transparent border-t border-white/5 relative z-10">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="relative bg-primary rounded-3xl overflow-hidden px-6 py-12 md:px-14 md:py-16">
-          {/* bg texture */}
-          <div className="absolute inset-0 opacity-[0.05]"
-            style={{ backgroundImage: "radial-gradient(circle at 2px 2px,white 1px,transparent 0)", backgroundSize: "24px 24px" }} />
-          <div className="absolute -top-32 -right-32 w-80 h-80 bg-accent/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="relative bg-[#111111] overflow-hidden px-6 py-16 md:px-20 md:py-24 border-y border-white/[0.04]">
+          {/* bg abstract structure */}
+          <div className="absolute inset-0 opacity-[0.2]"
+            style={{ backgroundImage: "linear-gradient(#f97316 1px, transparent 1px), linear-gradient(90deg, #f97316 1px, transparent 1px)", backgroundSize: "4rem 4rem" }} />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-orange-500/20 to-transparent pointer-events-none mix-blend-screen" />
 
-          <div className="relative z-10 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div className="relative z-10 grid md:grid-cols-2 gap-12 md:gap-20 items-center">
             <InView>
-              <p className="font-body text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Mega Sale — Hari ini saja</p>
-              <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl text-white uppercase leading-tight tracking-tight mb-5">
-                Hemat<br /><span className="text-accent">Hingga<br />50% OFF</span>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-8 h-1 bg-accent" />
+                <p className="font-display text-xs font-black uppercase tracking-[0.3em] text-accent">DISKON GEDE // 24 JAM</p>
+              </div>
+              <h2 className="font-display font-black text-5xl sm:text-6xl md:text-[5.5rem] text-white uppercase leading-[0.88] tracking-tighter mb-6">
+                Hemat<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">Mulai<br />DARI 50%</span>
               </h2>
-              <p className="font-body text-white/60 text-sm md:text-base leading-relaxed mb-7 max-w-md">
-                Lebih dari <strong className="text-white">10.000 adventurer</strong> sudah memilih Antarestar. Jangan jadi yang terakhir — stok terbatas untuk setiap item.
+              <p className="font-body text-white/50 text-base md:text-lg leading-relaxed mb-10 max-w-md italic">
+                Stok terakhir musim ini nih. Jangan sampe gear premium incaran lo keburu diambil penjelajah lain.
               </p>
-              {/* Countdown */}
-              <div className="flex items-center gap-3 mb-8">
-                <Timer className="w-4 h-4 text-white/40" />
-                <p className="font-body text-xs text-white/40 uppercase tracking-widest">Promo berakhir dalam</p>
-                <div className="flex items-center gap-1.5 font-display font-black text-xl">
+              {/* Serious Countdown */}
+              <div className="mb-10">
+                <p className="font-display text-[10px] text-white/30 uppercase tracking-[0.4em] font-black mb-3">Waktu Tersisa</p>
+                <div className="flex items-end gap-3 font-display font-black text-4xl sm:text-5xl text-white tracking-widest">
                   {[h, m, s].map((u, i) => (
-                    <span key={i} className="flex items-center gap-1.5">
-                      <span className="bg-accent/20 border border-accent/30 text-accent px-2.5 py-0.5 rounded-lg">{u}</span>
-                      {i < 2 && <span className="text-white/30">:</span>}
-                    </span>
+                    <React.Fragment key={i}>
+                      <div className="flex flex-col">
+                        <span>{u}</span>
+                      </div>
+                      {i < 2 && <span className="text-white/20 pb-1">:</span>}
+                    </React.Fragment>
                   ))}
                 </div>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link to="/store?sort=Popular"
-                  className="group inline-flex items-center gap-2 h-12 px-7 bg-accent hover:bg-accent/90 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_0_28px_hsl(18_85%_52%/0.35)]">
-                  <ShoppingBag className="w-4 h-4" /> Belanja Sekarang <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                <Link to="/store"
+                  className="group inline-flex items-center gap-3 h-14 px-8 bg-accent hover:bg-accent/90 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_0_28px_rgba(234,88,12,0.35)]">
+                  <ShoppingBag className="w-4 h-4" /> Gas Belanja <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link to="/store" className="inline-flex items-center gap-2 h-12 px-7 border border-white/20 text-white hover:bg-white/5 font-display font-bold text-sm uppercase tracking-wider rounded-xl transition-colors">
-                  Katalog Sale
+                <Link to="/store" className="inline-flex items-center gap-2 h-14 px-8 border border-white/20 text-white hover:bg-white/5 font-display font-black text-[10px] uppercase tracking-widest rounded-xl transition-colors">
+                  Katalog Diskon
                 </Link>
               </div>
             </InView>
 
-            {/* Social proof stats */}
+            {/* High-End Stats / Proof */}
             <InView delay={0.15}>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-0 border-t border-l border-white/[0.06]">
                 {[
-                  { icon: Star,        n: "4.8/5",   l: "Rating rata-rata dari 20rb+ ulasan" },
-                  { icon: Users,       n: "50rb+",    l: "Pembeli aktif bulan ini" },
-                  { icon: ShieldCheck, n: "100%",    l: "Produk bergaransi resmi" },
-                  { icon: Truck,       n: "1–3 Hari",l: "Estimasi pengiriman nasional" },
+                  { icon: Star,        n: "4.8/5",   l: "RATING RATA-RATA" },
+                  { icon: Users,       n: "50K+",    l: "PENJELAJAH AKTIF" },
+                  { icon: ShieldCheck, n: "100%",    l: "TERJAMIN AMAN" },
+                  { icon: Truck,       n: "3 HARI",  l: "PENGIRIMAN CEPAT" },
                 ].map((s, i) => (
-                  <div key={s.l} className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                    <s.icon className="w-5 h-5 text-accent mx-auto mb-2" />
-                    <p className="font-display font-black text-xl md:text-2xl text-white">{s.n}</p>
-                    <p className="font-body text-[11px] text-white/50 leading-snug mt-1">{s.l}</p>
+                  <div key={s.l} className="p-8 border-b border-r border-white/[0.06] bg-black/20 flex flex-col items-start gap-4">
+                    <h3 className="font-display font-black text-3xl md:text-4xl text-white tracking-tighter">{s.n}</h3>
+                    <p className="font-display text-[9px] text-white/40 leading-snug uppercase tracking-[0.2em] font-bold">{s.l}</p>
                   </div>
                 ))}
               </div>
@@ -543,66 +549,81 @@ const MegaSaleCTA = () => {
 
 // ─── 6. Business CTA Strip ──────────────────────────────────
 const BizStrip = () => (
-  <section className="py-16 md:py-24 bg-primary">
-    <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
-      <InView className="mb-10 md:mb-12 text-center">
-        <p className="font-body text-xs font-bold uppercase tracking-[0.3em] text-accent mb-3">Lebih dari sekadar toko</p>
-        <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white uppercase leading-tight tracking-tight">
-          Ekosistem Antarestar
-        </h2>
+  <section className="py-24 md:py-32 bg-[#050505] relative z-10 border-t border-white/[0.04]">
+    <div className="max-w-screen-xl mx-auto px-6 lg:px-12">
+      <InView className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-6">
+        <div>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-8 h-1 bg-orange-500" />
+            <p className="font-display text-[10px] font-black uppercase tracking-[0.4em] text-orange-500">Beyond Commerce</p>
+          </div>
+          <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white uppercase leading-[0.9] tracking-tighter max-w-2xl">
+            Ekosistem<br />Antarestar
+          </h2>
+        </div>
+        <p className="font-body text-sm text-white/50 max-w-xs md:text-right uppercase tracking-widest font-bold">
+          Platform terpadu untuk pendakian, bisnis, dan kemitraan tanpa batas.
+        </p>
       </InView>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        {/* Corporate */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-white/[0.08] border border-white/[0.08]">
         {[
           {
             to: "/corporate",
             icon: Building2,
-            title: "Pesanan Perusahaan",
-            desc: "Seragam tim, merchandise event, perlengkapan lapangan. Mulai 10 pcs dengan harga grosir & logo custom.",
-            points: ["Harga grosir mulai 10 pcs", "Custom bordir logo", "Pengiriman ke 34 provinsi"],
-            cta: "Konsultasi Gratis",
-            dark: false,
+            title: "Pesanan\nPerusahaan",
+            desc: "Seragam tim, merchandise event & perlengkapan lapangan.",
+            points: ["Harga grosir", "Custom bordir", "Kirim Nasional"],
+            cta: "Konsultasi",
           },
           {
             to: "/affiliate",
             icon: Award,
-            title: "Program Afiliasi",
-            desc: "Share link produk favorit dan earn komisi hingga 15% per transaksi. Daftar gratis, tanpa target.",
-            points: ["Komisi 15% per sale", "Daftar 100% gratis", "Dashboard real-time"],
-            cta: "Daftar Affiliate",
-            dark: true,
+            title: "Program\nAfiliasi",
+            desc: "Bagikan link produk dan dapatkan komisi hingga 15% per transaksi.",
+            points: ["Komisi 15%", "Daftar Gratis", "Dashboard Real-time"],
+            cta: "Join Sekarang",
           },
           {
             to: "/member",
             icon: Gift,
-            title: "Klub Member",
-            desc: "Kumpulkan poin dari setiap pembelian, naik tier Explorer → Summit, dan nikmati keuntungan eksklusif.",
-            points: ["Poin dari setiap transaksi", "Diskon tier eksklusif", "Hadiah ulang tahun"],
-            cta: "Gabung Sekarang",
-            dark: true,
+            title: "Klub\nMember",
+            desc: "Pengumpulan poin dan keuntungan eksklusif tier Explorer hingga Summit.",
+            points: ["Earn Points", "Diskon Tier", "Hadiah Ulang Tahun"],
+            cta: "Gabung",
           },
         ].map((card, i) => (
-          <motion.div key={card.title} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.65, delay: i * 0.1, ease }}>
-            <Link to={card.to} className={`group flex flex-col h-full rounded-3xl p-6 md:p-8 border-2 transition-all duration-300 hover:border-accent/50
-              ${card.dark ? "bg-white/5 border-white/10" : "bg-background border-border hover:shadow-lg hover:shadow-black/20"}`}>
-              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center mb-5 transition-colors
-                ${card.dark ? "bg-accent/20 border border-accent/30" : "bg-accent/10 border border-accent/20 group-hover:bg-accent"}`}>
-                <card.icon className={`w-5 h-5 transition-colors ${card.dark ? "text-accent" : "text-accent group-hover:text-white"}`} />
+          <motion.div key={card.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.1, ease }}>
+            <Link to={card.to} className="group relative flex flex-col h-full bg-black hover:bg-white p-8 md:p-12 transition-colors duration-500 overflow-hidden">
+              
+              {/* Massive background index */}
+              <div className="absolute -bottom-10 -right-4 font-display font-black text-[12rem] leading-none text-white/[0.02] group-hover:text-black/[0.03] transition-colors duration-500 pointer-events-none tracking-tighter">
+                0{i + 1}
               </div>
-              <h3 className={`font-display font-black text-xl uppercase tracking-tight mb-3 ${card.dark ? "text-white" : "text-foreground"}`}>{card.title}</h3>
-              <p className={`font-body text-sm leading-relaxed mb-5 flex-1 ${card.dark ? "text-white/60" : "text-muted-foreground"}`}>{card.desc}</p>
-              <ul className="space-y-2 mb-6">
+
+              <div className="w-12 h-12 flex items-center justify-center mb-10 bg-white/5 group-hover:bg-black/5 transition-colors duration-500">
+                <card.icon className="w-6 h-6 text-white group-hover:text-black transition-colors duration-500" />
+              </div>
+              
+              <h3 className="font-display font-black text-3xl md:text-4xl uppercase tracking-tighter mb-4 text-white group-hover:text-black transition-colors duration-500 whitespace-pre-line leading-[0.9]">
+                {card.title}
+              </h3>
+              
+              <p className="font-body text-xs leading-relaxed mb-10 flex-1 text-white/50 group-hover:text-black/60 transition-colors duration-500 font-bold uppercase tracking-widest">
+                {card.desc}
+              </p>
+              
+              <ul className="space-y-3 mb-10 border-t border-white/10 group-hover:border-black/10 pt-6 transition-colors duration-500">
                 {card.points.map(pt => (
-                  <li key={pt} className={`flex items-center gap-2.5 font-body text-xs ${card.dark ? "text-white/70" : "text-muted-foreground"}`}>
-                    <Check className="w-3.5 h-3.5 text-accent shrink-0" />{pt}
+                  <li key={pt} className="flex items-center gap-3 font-display text-[10px] uppercase font-black tracking-widest text-white/70 group-hover:text-black/70 transition-colors duration-500">
+                    <Check className="w-4 h-4 text-orange-500" />{pt}
                   </li>
                 ))}
               </ul>
-              <div className={`flex items-center gap-2 font-display font-bold text-sm uppercase tracking-wider
-                text-accent group-hover:gap-3 transition-all duration-300`}>
-                {card.cta} <ArrowRight className="w-4 h-4" />
+              
+              <div className="flex items-center mt-auto gap-4 text-orange-500 font-display font-black text-xs uppercase tracking-[0.2em] group-hover:gap-6 transition-all duration-500">
+                {card.cta} <ArrowRight className="w-5 h-5 text-white group-hover:text-black transition-colors duration-500" />
               </div>
             </Link>
           </motion.div>
@@ -620,16 +641,16 @@ const NewsletterStrip = () => {
     <section className="py-16 md:py-20 bg-primary border-t border-white/10">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12">
         <InView className="max-w-2xl mx-auto text-center">
-          <p className="font-body text-xs font-bold uppercase tracking-[0.3em] text-accent mb-3">Tetap Terhubung</p>
+          <p className="font-body text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-3">Dapetin Infonya Duluan</p>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-white uppercase mb-4 tracking-tight">
-            Jangan Ketinggalan<br />Promo Eksklusif
+            Jangan Ketinggalan<br />Promo Eksklusif Kami
           </h2>
-          <p className="font-body text-sm text-white/50 mb-8">Subscribe dan dapatkan notifikasi flash sale, produk baru, dan kode diskon langsung ke email kamu.</p>
+          <p className="font-body text-sm text-white/50 mb-8 lowercase tracking-wide font-medium italic">Subscribe dan dapatkan notifikasi diskon kilat, produk baru, dan kode voucher langsung ke email lo.</p>
           <AnimatePresence mode="wait">
             {sent ? (
               <motion.div key="ok" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                 className="flex items-center justify-center gap-2 h-12 text-accent font-display font-bold">
-                <Check className="w-5 h-5" /> Terima kasih! Kamu sudah terdaftar.
+                <Check className="w-5 h-5" /> Mantap! Kamu sudah terdaftar.
               </motion.div>
             ) : (
               <motion.form key="form" initial={{ opacity: 1 }}
@@ -637,10 +658,10 @@ const NewsletterStrip = () => {
                 className="flex gap-3 max-w-md mx-auto">
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="nama@email.com" required
-                  className="flex-1 h-12 px-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-body text-sm focus:outline-none focus:border-accent transition-colors" />
+                  className="flex-1 h-14 px-5 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/30 font-body text-sm focus:outline-none focus:border-accent transition-colors" />
                 <button type="submit"
-                  className="h-12 px-6 bg-accent hover:bg-accent/90 text-white font-display font-bold text-sm uppercase tracking-wider rounded-xl transition-colors shrink-0">
-                  Berlangganan
+                  className="h-14 px-8 bg-accent hover:bg-accent/90 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_0_28px_rgba(234,88,12,0.35)] shrink-0">
+                  Gaskeun
                 </button>
               </motion.form>
             )}
@@ -651,36 +672,59 @@ const NewsletterStrip = () => {
   );
 };
 
+import SequenceScroll    from "@/components/antarestar/SequenceScroll";
+import TextReveal        from "@/components/antarestar/TextReveal";
+import BentoGrid         from "@/components/antarestar/BentoGrid";
+import Stats             from "@/components/antarestar/Stats";
+import TestimonialSlider from "@/components/antarestar/TestimonialSlider";
+import CTASection        from "@/components/antarestar/CTASection";
+
 // ─── Main Page ──────────────────────────────────────────────
-const HomePage = () => (
-  <div className="min-h-screen bg-background overflow-x-hidden">
-    <Navbar />
-    <main>
-      {/* 1. Hero */}
-      <HeroSection />
-      {/* 2. Stats — dark */}
-      <StatsStrip />
-      {/* 3. Marquee — dark band */}
-      <MarqueeBanner />
-      {/* 4. Categories — light */}
-      <ShopCategories />
-      {/* 5. Bestsellers — light */}
-      <BestSellers />
-      {/* 6. Flash Sale — dark */}
-      <FlashSaleSection />
-      {/* 7. Brand Story — light */}
-      <BrandStory />
-      {/* 8. Mega Sale CTA — light wrapper / dark card */}
-      <MegaSaleCTA />
-      {/* 9. Biz Strip — dark */}
-      <BizStrip />
-      {/* 10. Community — light */}
-      <CommunityGallery />
-      {/* 11. Newsletter — dark */}
-      <NewsletterStrip />
-    </main>
-    <Footer />
-  </div>
-);
+const HomePage = () => {
+
+  return (
+    <div className="dark bg-black text-white min-h-screen selection:bg-orange-500/30 selection:text-orange-200 cursor-none" style={{ overflowX: 'clip' }}>
+      <Navbar />
+      <main>
+        {/* Cinematic Hero — 500vh scroll-driven canvas sequence */}
+        <SequenceScroll />
+
+        {/* About — Word-by-word text reveal */}
+        <TextReveal />
+
+        {/* Product DNA — Bento grid showcase */}
+        <BentoGrid />
+
+        {/* By The Numbers — Animated stats */}
+        <Stats />
+
+        {/* Shop by Category — existing e-commerce section */}
+        <ShopCategories />
+
+        {/* Bestsellers — existing e-commerce section */}
+        <BestSellers />
+
+        {/* Flash Sale — existing urgency section */}
+        <FlashSaleSection />
+
+        {/* Social Proof — Testimonial slider */}
+        <TestimonialSlider />
+
+        {/* Mega Sale CTA */}
+        <MegaSaleCTA />
+
+        {/* Ecosystem — Corporate / Affiliate / Member */}
+        <BizStrip />
+
+        {/* Community Gallery */}
+        <CommunityGallery />
+
+        {/* Final CTA — conversion close */}
+        <CTASection />
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
 export default HomePage;

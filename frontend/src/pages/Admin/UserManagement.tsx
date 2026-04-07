@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
+import { AdminModal } from '@/components/Admin/AdminModal';
 import ConfirmModal from '@/components/Admin/ConfirmModal';
 import PromptModal from '@/components/Admin/PromptModal';
 import { useScrollLock } from '@/hooks/useScrollLock';
@@ -146,246 +147,210 @@ const UserManagement = () => {
 
   return (
     <AdminLayout>
-       <div className="space-y-8 pb-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="space-y-12">
+        {/* Command Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-white/5">
           <div>
-            <h1 className="font-display font-black text-3xl uppercase tracking-tighter mb-2 italic">
-              Daftar <span className="text-accent text-lg">Penjelajah</span>
+            <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic">
+              MEMBER <span className="text-accent underline decoration-4 underline-offset-8">REGISTRY</span>
             </h1>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Pantau komunitas penjelajah Antarestar dan sistem poin.</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Explorer Network Monitoring & Authorization Hub</p>
           </div>
-          <div className="flex gap-4">
-             <div className="flex bg-white border border-slate-200 p-1.5 rounded-2xl shadow-sm">
-                <button 
-                  onClick={() => setActiveTab('registry')}
-                  className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'registry' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}
-                >
-                  Registry
-                </button>
-                <button 
-                  onClick={() => setActiveTab('leaderboard')}
-                  className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'leaderboard' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900'}`}
-                >
-                  Leaderboard
-                </button>
-             </div>
-             <div className="bg-white border border-slate-200 rounded-2xl px-6 py-3 flex items-center gap-6 shadow-sm">
-                <div className="text-center">
-                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Total Members</p>
-                   <p className="text-sm font-black text-slate-900">{users.length}</p>
-                </div>
-                <div className="w-px h-6 bg-slate-100" />
-                <div className="text-center">
-                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Top Hunter</p>
-                   <p className="text-sm font-black text-accent">{leaderboard[0]?.name || '--'}</p>
-                </div>
-             </div>
+          <div className="flex items-center gap-4">
+            {/* Tab Switcher */}
+            <div className="flex bg-white/[0.03] border border-white/5 rounded-2xl p-1.5 gap-1">
+              <button
+                onClick={() => setActiveTab('registry')}
+                className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'registry' ? 'bg-accent text-white shadow-lg shadow-accent/20' : 'text-white/30 hover:text-white'}`}
+              >REGISTRY</button>
+              <button
+                onClick={() => setActiveTab('leaderboard')}
+                className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'leaderboard' ? 'bg-accent text-white shadow-lg shadow-accent/20' : 'text-white/30 hover:text-white'}`}
+              >LEADERBOARD</button>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-2xl px-6 h-16 flex items-center gap-5">
+              <div className="text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-1">TOTAL NODES</p>
+                <p className="text-lg font-black text-accent italic">{users.length}</p>
+              </div>
+              <div className="w-px h-6 bg-white/5" />
+              <div className="text-center">
+                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-1">TOP HUNTER</p>
+                <p className="text-[11px] font-black text-white uppercase italic">{leaderboard[0]?.name || '--'}</p>
+              </div>
+            </div>
           </div>
         </div>
 
         {activeTab === 'registry' ? (
           <>
-        {/* Search */}
-        <div className="max-w-md group">
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="w-4 h-4 text-slate-400 group-focus-within:text-accent transition-colors" />
-            </span>
-            <input 
-              type="text" 
-              placeholder="Search members by name or email..." 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-[1.25rem] text-[13px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all shadow-sm"
-            />
-          </div>
-        </div>
+            {/* Search Bar */}
+            <div className="relative group max-w-2xl">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-accent transition-colors" />
+              <input
+                type="text"
+                placeholder="SEARCH MEMBER IDENTITY OR COMMS_LINK..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full h-16 pl-16 pr-8 bg-white/[0.02] border border-white/5 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] outline-none focus:border-accent/40 transition-all text-white placeholder:text-white/10"
+              />
+            </div>
 
-        {/* Users Table */}
-        <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
-          {isLoading ? (
-            <div className="h-96 flex flex-col items-center justify-center opacity-40 italic">
-               <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
-               <p className="text-[10px] uppercase font-black tracking-[0.2em]">Accessing encrypted explorer logs...</p>
-               <p className="text-[10px] uppercase font-black tracking-[0.2em]">Mengakses log penjelajah terenkripsi...</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50/50">
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Info Anggota</th>
-                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Level / Status</th>
-                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Poin AP</th>
-                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Tgl Bergabung</th>
-                    <th className="px-8 py-5 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Kendali</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {users.map((user, idx) => (
-                    <motion.tr 
-                      key={user.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: idx * 0.03 }}
-                      className="hover:bg-slate-50/50 transition-colors group"
-                    >
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-2xl bg-accent/5 border border-accent/10 flex items-center justify-center text-accent font-display font-black text-sm">
-                             {user.name?.[0].toUpperCase()}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2 mb-0.5">
-                               <h4 className="text-[13px] font-black uppercase tracking-tight text-slate-900 leading-tight">{user.name}</h4>
-                               {user.role === 'admin' && (
-                                  <Shield className="w-3.5 h-3.5 text-blue-500" />
-                               )}
-                            </div>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">{user.email}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-6">
-                         <div className="flex items-center gap-2 mb-1.5">
-                            <Award className={`w-3.5 h-3.5 ${user.membership?.tier?.name === 'Elite' ? 'text-accent' : 'text-slate-400'}`} />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Anggota {user.membership?.tier?.name || 'Bronze'}</span>
-                         </div>
-                         <div className="flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                            <span className="text-[8px] font-bold uppercase tracking-widest text-slate-400 italic">Akun Aktif</span>
-                         </div>
-                      </td>
-                      <td className="px-6 py-6 text-[11px] font-black text-slate-900">
-                        {user.total_points || 0} AP
-                      </td>
-                      <td className="px-6 py-6 text-[11px] font-black text-slate-900">
-                        {new Date(user.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-8 py-6 text-right">
-                        <div className="flex items-center justify-end gap-2 text-slate-400">
-                           <button 
-                             onClick={() => handleOpenView(user.id)}
-                             title="Detailed Manifest" 
-                             className="p-2.5 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
-                           >
-                               <Eye className="w-4 h-4" />
-                            </button>
-                            <button 
-                             onClick={() => handleOpenEdit(user)}
-                             title="Refine Profile" 
-                             className="p-2.5 hover:text-blue-500 hover:bg-blue-50 rounded-xl transition-all"
-                           >
-                               <Edit className="w-4 h-4" />
-                            </button>
-                           <button 
-                             onClick={() => handleAdjustPoints(user.id, user.name)}
-                             title="Adjust Points" 
-                             className="p-2.5 hover:text-accent hover:bg-accent/5 rounded-xl transition-all"
-                           >
-                              <TrendingUp className="w-4 h-4" />
-                           </button>
-                           <button 
-                             onClick={() => handleUpdateRole(user.id, user.role, user.name)}
-                             title="Manage Role" 
-                             className={`p-2.5 rounded-xl transition-all ${user.role === 'admin' ? 'text-blue-500 bg-blue-50' : 'text-slate-400 hover:text-blue-500 hover:bg-blue-50'}`}
-                           >
-                              <Shield className="w-4 h-4" />
-                           </button>
-                           <button 
-                              onClick={() => navigate(`/admin/orders?user_id=${user.id}`)}
-                              title="View Order History" 
-                              className="p-2.5 text-slate-400 hover:text-accent hover:bg-accent/5 rounded-xl transition-all"
-                            >
-                               <Users className="w-4 h-4" />
-                            </button>
-                        </div>
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-        </>
-        ) : (
-          /* Leaderboard Tab */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden h-fit">
-               <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-                        <Trophy className="w-5 h-5" />
-                     </div>
-                     <h3 className="font-display font-black text-lg uppercase tracking-tight italic">Peringkat <span className="text-accent underline">Hunter</span> Terbaik</h3>
-                  </div>
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Urutkan berdasar Vol. Pesanan</span>
-               </div>
-               
-               <div className="divide-y divide-slate-100">
-                  {isLeaderboardLoading ? (
-                     <div className="p-20 text-center animate-pulse opacity-40">
-                        <Trophy className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                        <p className="text-[10px] font-black uppercase tracking-widest">Menghitung ulang peringkat penjelajah...</p>
-                     </div>
-                  ) : leaderboard.length === 0 ? (
-                     <div className="p-20 text-center opacity-40">
-                        <Users className="w-12 h-12 text-slate-100 mx-auto mb-4" />
-                        <p className="text-[10px] font-black uppercase tracking-widest">Tidak ada data operasional ditemukan.</p>
-                     </div>
-                  ) : leaderboard.map((item, idx) => (
-                     <div key={item.id} className="px-8 py-5 flex items-center justify-between group hover:bg-slate-50/50 transition-all">
-                        <div className="flex items-center gap-6">
-                           <div className="relative">
-                              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-display font-black text-sm border ${
-                                 idx === 0 ? 'bg-accent text-white border-accent shadow-lg shadow-accent/25' :
-                                 idx === 1 ? 'bg-slate-900 text-white border-slate-900 shadow-lg' :
-                                 idx === 2 ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-slate-50 text-slate-400 border-slate-100'
-                              }`}>
-                                 {idx + 1}
+            {/* Member Registry Table */}
+            <div className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.4)]">
+              {isLoading ? (
+                <div className="h-96 flex flex-col items-center justify-center opacity-20">
+                  <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mb-6" />
+                  <p className="text-[10px] uppercase font-black tracking-[0.4em]">Decrypting member database...</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/5 bg-white/[0.02]">
+                        <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">MEMBER ID</th>
+                        <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">CLEARANCE / STATUS</th>
+                        <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">AP SCORE</th>
+                        <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">ENROLLED</th>
+                        <th className="px-10 py-6 text-right text-[10px] font-black uppercase tracking-[0.3em] text-white/20">CONTROLS</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.03]">
+                      {users.map((user, idx) => (
+                        <motion.tr
+                          key={user.id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                          className="hover:bg-white/[0.03] transition-colors group"
+                        >
+                          <td className="px-10 py-7">
+                            <div className="flex items-center gap-5">
+                              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-display font-black text-lg group-hover:scale-110 transition-transform duration-500">
+                                {user.name?.[0].toUpperCase()}
                               </div>
-                              {idx < 3 && (
-                                 <motion.div 
-                                    initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                    className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md border border-slate-100"
-                                 >
-                                    <Award className={`w-3.5 h-3.5 ${idx === 0 ? 'text-accent' : idx === 1 ? 'text-slate-900' : 'text-blue-500'}`} />
-                                 </motion.div>
-                              )}
-                           </div>
-                           <div>
-                              <h4 className="text-[13px] font-black uppercase tracking-tight text-slate-900 group-hover:text-accent transition-colors">{item.name}</h4>
-                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Penjelajah {item.membership?.tier?.name || 'Bronze'}</p>
-                           </div>
-                        </div>
-                        <div className="text-right">
-                           <p className="text-[14px] font-display font-black text-slate-900 leading-none">{item.orders_count}</p>
-                           <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mt-1">Pesanan Selesai</p>
-                        </div>
-                     </div>
-                  ))}
-               </div>
+                              <div>
+                                <div className="flex items-center gap-3 mb-1">
+                                  <h4 className="text-[13px] font-black uppercase tracking-tight text-white group-hover:text-accent transition-colors italic">{user.name}</h4>
+                                  {user.role === 'admin' && <Shield className="w-4 h-4 text-blue-400" />}
+                                </div>
+                                <p className="text-[10px] text-white/30 font-black uppercase tracking-widest">{user.email}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-7">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Award className={`w-4 h-4 ${user.membership?.tier?.name === 'Elite' ? 'text-accent' : 'text-white/20'}`} />
+                              <span className="text-[10px] font-black uppercase tracking-widest text-white/60">{user.membership?.tier?.name || 'Bronze'}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
+                              <span className="text-[9px] font-black uppercase tracking-widest text-white/20">ONLINE</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-7">
+                            <span className="text-lg font-black text-accent italic">{user.total_points || 0}</span>
+                            <span className="text-[10px] font-black text-white/20 ml-1 uppercase tracking-widest">AP</span>
+                          </td>
+                          <td className="px-6 py-7 text-[11px] font-black text-white/40 uppercase tracking-wider italic">
+                            {new Date(user.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                          </td>
+                          <td className="px-10 py-7 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button onClick={() => handleOpenView(user.id)} title="View Profile" className="w-10 h-10 bg-white/5 border border-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-white hover:bg-white/10 transition-all">
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleOpenEdit(user)} title="Edit Profile" className="w-10 h-10 bg-white/5 border border-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-blue-400 hover:bg-blue-400/10 transition-all">
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleAdjustPoints(user.id, user.name)} title="Adjust Points" className="w-10 h-10 bg-white/5 border border-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-accent hover:bg-accent/10 transition-all">
+                                <TrendingUp className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleUpdateRole(user.id, user.role, user.name)} title="Manage Role" className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all border ${user.role === 'admin' ? 'text-blue-400 bg-blue-400/10 border-blue-400/20' : 'bg-white/5 border-white/5 text-white/20 hover:text-blue-400 hover:bg-blue-400/10'}`}>
+                                <Shield className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => navigate(`/admin/orders?user_id=${user.id}`)} title="Order History" className="w-10 h-10 bg-white/5 border border-white/5 rounded-xl flex items-center justify-center text-white/20 hover:text-accent hover:bg-accent/10 transition-all">
+                                <ArrowUpRight className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </motion.tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
-
-            {/* Sidebar Stats */}
-            <div className="space-y-6">
-               <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
-                  <Users className="w-8 h-8 text-accent mb-6" />
-                  <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-4 leading-none">Dominasi <span className="text-accent underline">Operasional</span></h3>
-                  <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest leading-relaxed mb-8">Visualisasi pemburu paling aktif di jaringan Antarestar.</p>
-                  <div className="grid grid-cols-2 gap-4">
-                     <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
-                        <p className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1.5">Avg Vol Pesanan</p>
-                        <p className="text-xl font-display font-black">12.4</p>
-                     </div>
-                     <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
-                        <p className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1.5">Tingkat Retensi</p>
-                        <p className="text-xl font-display font-black text-accent">94%</p>
-                     </div>
+          </>
+        ) : (
+          /* Leaderboard */
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2 bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.4)]">
+              <div className="px-10 py-8 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
+                <div className="flex items-center gap-5">
+                  <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent border border-accent/20">
+                    <Trophy className="w-6 h-6" />
                   </div>
-               </div>
+                  <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic">HUNTER <span className="text-accent underline decoration-4">LEADERBOARD</span></h3>
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">ORDER VOLUME RANKING</span>
+              </div>
+              <div className="divide-y divide-white/[0.03]">
+                {isLeaderboardLoading ? (
+                  <div className="p-20 text-center opacity-20">
+                    <Trophy className="w-12 h-12 text-white/10 mx-auto mb-6" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em]">Computing rankings...</p>
+                  </div>
+                ) : leaderboard.length === 0 ? (
+                  <div className="p-20 text-center opacity-20">
+                    <Users className="w-12 h-12 mx-auto mb-6" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em]">No data found.</p>
+                  </div>
+                ) : leaderboard.map((item, idx) => (
+                  <div key={item.id} className="px-10 py-6 flex items-center justify-between group hover:bg-white/[0.03] transition-all">
+                    <div className="flex items-center gap-8">
+                      <div className="relative">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-display font-black text-lg border ${
+                          idx === 0 ? 'bg-accent text-white border-accent shadow-lg shadow-accent/30' :
+                          idx === 1 ? 'bg-white/10 text-white border-white/10' :
+                          idx === 2 ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'bg-white/5 text-white/20 border-white/5'
+                        }`}>{idx + 1}</div>
+                        {idx < 3 && (
+                          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-2 -right-2 w-6 h-6 bg-[#111] rounded-full flex items-center justify-center border border-white/10">
+                            <Award className={`w-3.5 h-3.5 ${idx === 0 ? 'text-accent' : idx === 1 ? 'text-white/60' : 'text-blue-400'}`} />
+                          </motion.div>
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="text-[14px] font-black uppercase tracking-tight text-white group-hover:text-accent transition-colors italic">{item.name}</h4>
+                        <p className="text-[10px] text-white/30 font-black uppercase tracking-widest mt-1">{item.membership?.tier?.name || 'Bronze'} TIER</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-3xl font-display font-black text-white italic leading-none">{item.orders_count}</p>
+                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mt-2">COMPLETED</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-8">
+              <div className="bg-[#111] border border-white/10 rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-accent/10 blur-[80px] -mr-10 -mt-10 rounded-full" />
+                <Users className="w-10 h-10 text-accent mb-8 relative z-10" />
+                <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-4 leading-none relative z-10">NETWORK <span className="text-accent underline">STATS</span></h3>
+                <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.3em] leading-relaxed mb-10 relative z-10">Active hunter metrics across the Antarestar network.</p>
+                <div className="grid grid-cols-2 gap-4 relative z-10">
+                  <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
+                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-3">AVG ORDERS</p>
+                    <p className="text-2xl font-display font-black italic">12.4</p>
+                  </div>
+                  <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
+                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-3">RETENTION</p>
+                    <p className="text-2xl font-display font-black italic text-accent">94%</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -394,277 +359,167 @@ const UserManagement = () => {
       {/* View Modal */}
       <AnimatePresence>
         {isViewOpen && selectedUser && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsViewOpen(false)} className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" />
-             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-white rounded-[3rem] w-full max-w-4xl max-h-[90vh] overflow-hidden relative z-10 shadow-2xl flex flex-col">
-                <div className="px-10 py-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                   <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center text-accent font-display font-black text-xl">
+          <AdminModal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} maxWidth="max-w-6xl">
+                <div className="px-12 py-10 border-b border-white/5 bg-[#111] flex items-center justify-between shrink-0">
+                   <div className="flex items-center gap-8">
+                      <div className="w-20 h-20 bg-accent rounded-[2rem] flex items-center justify-center text-white font-display font-black text-3xl shadow-2xl shadow-accent/20">
                          {selectedUser.name?.[0]}
                       </div>
                       <div>
-                         <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic leading-none">{selectedUser.name}</h3>
-                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">ID Penjelajah:</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-accent bg-accent/5 px-2 py-0.5 rounded-md">#{selectedUser.id.substring(0, 8)}</span>
+                         <div className="flex items-center gap-3 mb-2">
+                            <div className="w-2 h-2 bg-accent rounded-full animate-pulse shadow-[0_0_10px_rgba(251,133,0,0.6)]" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 italic">Member Profile</span>
                          </div>
+                         <h3 className="font-display font-black text-4xl uppercase tracking-tighter italic text-white">{selectedUser.name}</h3>
+                         <p className="text-accent font-black text-[10px] uppercase tracking-[0.3em] mt-1">NODE: {selectedUser.id.substring(0, 16)}</p>
                       </div>
                    </div>
-                   <button onClick={() => setIsViewOpen(false)} className="w-12 h-12 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-center text-slate-400">
-                      <X className="w-6 h-6 text-red-500" />
+                   <button onClick={() => setIsViewOpen(false)} className="w-14 h-14 rounded-[2rem] bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 hover:bg-red-500/10 transition-all group">
+                      <X className="w-7 h-7 group-hover:rotate-90 transition-transform" />
                    </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                      {/* Personal Info */}
-                      <div className="space-y-6">
-                         <div>
-                            <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                               <Users className="w-3.5 h-3.5" /> Data Identitas
-                            </h4>
+                <div className="flex-1 overflow-y-auto p-12 space-y-12 bg-[#0B0B0B] scrollbar-stealth">
+                   <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+                      {/* Identity Column */}
+                      <div className="md:col-span-4 space-y-6">
+                         <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 flex items-center gap-3"><Users className="w-4 h-4 text-accent" />IDENTITY_LEAK</h4>
                             <div className="space-y-4">
-                               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mb-1">Protokol Email</p>
-                                  <p className="text-[13px] font-bold text-slate-900 flex items-center gap-2"><Mail className="w-3 h-3 text-accent" /> {selectedUser.email}</p>
+                               <div className="p-5 bg-black/40 border border-white/5 rounded-2xl">
+                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-2">COMMS_LINK</p>
+                                  <p className="text-[12px] font-black text-white/70 flex items-center gap-3"><Mail className="w-4 h-4 text-accent" />{selectedUser.email}</p>
                                </div>
-                               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mb-1">Kontak</p>
-                                  <p className="text-[13px] font-bold text-slate-900 flex items-center gap-2"><Phone className="w-3 h-3 text-accent" /> {selectedUser.phone || 'Tidak Ada Kontak Terhubung'}</p>
+                               <div className="p-5 bg-black/40 border border-white/5 rounded-2xl">
+                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-2">CONTACT_NODE</p>
+                                  <p className="text-[12px] font-black text-white/70 flex items-center gap-3"><Phone className="w-4 h-4 text-accent" />{selectedUser.phone || 'NO LINK CONFIGURED'}</p>
                                </div>
-                               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mb-1">Bergabung Sejak</p>
-                                  <p className="text-[13px] font-bold text-slate-900 flex items-center gap-2"><Calendar className="w-3 h-3 text-accent" /> {new Date(selectedUser.created_at).toLocaleDateString()}</p>
+                               <div className="p-5 bg-black/40 border border-white/5 rounded-2xl">
+                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-2">ENROLLED</p>
+                                  <p className="text-[12px] font-black text-white/70 flex items-center gap-3"><Calendar className="w-4 h-4 text-accent" />{new Date(selectedUser.created_at).toLocaleDateString()}</p>
                                </div>
                             </div>
                          </div>
-
-                         <div>
-                            <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                               <MapPin className="w-3.5 h-3.5" /> Lokasi Basis
-                            </h4>
+                         <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-6 flex items-center gap-3"><MapPin className="w-4 h-4 text-accent" />COORDINATES</h4>
                             <div className="space-y-3">
                                {selectedUser.addresses?.length > 0 ? selectedUser.addresses.slice(0, 2).map((addr: any) => (
-                                  <div key={addr.id} className="p-4 border border-slate-100 rounded-2xl text-[11px] font-bold text-slate-600 bg-slate-50/50">
-                                     {addr.address_line}, {addr.city?.name}
-                                  </div>
-                               )) : (
-                                  <p className="text-[11px] italic text-slate-400 p-2">Tidak ada koordinat logistik aktif.</p>
-                               )}
+                                  <div key={addr.id} className="p-4 bg-black/40 border border-white/5 rounded-2xl text-[11px] font-bold text-white/40 italic">{addr.address_line}, {addr.city?.name}</div>
+                               )) : (<p className="text-[11px] italic text-white/20 p-2">No active coordinates.</p>)}
                             </div>
                          </div>
                       </div>
 
-                      {/* Bio & Stats */}
-                      <div className="md:col-span-2 space-y-8">
+                      {/* Stats & Activity Column */}
+                      <div className="md:col-span-8 space-y-8">
                          <div className="grid grid-cols-3 gap-4">
-                            {/* AP Points Card */}
-                            <div className="bg-slate-900 rounded-[2.5rem] p-8 text-center relative overflow-hidden group border border-white/5 shadow-2xl">
-                               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
-                               <div className="relative z-10">
-                                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2">Total Kekuatan</p>
-                                  <h3 className="text-5xl font-display font-black text-accent tracking-tighter leading-none mb-2 italic">
-                                     {selectedUser.total_points || 0}
-                                  </h3>
-                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Poin AP</p>
-                               </div>
+                            <div className="bg-[#111] border border-white/10 rounded-[2rem] p-8 text-center relative overflow-hidden">
+                               <div className="absolute inset-0 bg-accent/5" />
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-4 relative z-10">AP SCORE</p>
+                               <h3 className="text-5xl font-display font-black text-accent tracking-tighter leading-none mb-2 italic relative z-10 [text-shadow:0_0_30px_rgba(251,133,0,0.4)]">{selectedUser.total_points || 0}</h3>
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 relative z-10">POINTS</p>
                             </div>
-
-                            {/* Operations Vol Card */}
-                            <div className="bg-white rounded-[2.5rem] p-8 text-center border border-slate-100 shadow-sm relative overflow-hidden group">
-                               <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2" />
-                               <div className="relative z-10">
-                                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Vol. Operasi</p>
-                                  <h3 className="text-5xl font-display font-black text-slate-900 tracking-tighter leading-none mb-2 italic">
-                                     {selectedUser.orders_count || 0}
-                                  </h3>
-                                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Pesanan Selesai</p>
-                               </div>
+                            <div className="bg-white/[0.03] border border-white/5 rounded-[2rem] p-8 text-center">
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-4">OPS_VOL</p>
+                               <h3 className="text-5xl font-display font-black text-white tracking-tighter leading-none mb-2 italic">{selectedUser.orders_count || 0}</h3>
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">COMPLETED</p>
                             </div>
-
-                            {/* Authority Level Card */}
-                            <div className={`rounded-[2.5rem] p-8 text-center border relative overflow-hidden transition-all duration-500 shadow-sm ${
-                               selectedUser.role === 'admin' 
-                                 ? 'bg-slate-900 border-slate-800 text-white' 
-                                 : 'bg-white border-slate-100 text-slate-900'
-                            }`}>
-                               <div className="relative z-10">
-                                  <p className={`text-[10px] font-black uppercase tracking-[0.2em] mb-2 ${
-                                     selectedUser.role === 'admin' ? 'text-slate-500' : 'text-slate-400'
-                                  }`}>Level Otoritas</p>
-                                  <h3 className={`text-3xl font-display font-black uppercase italic leading-none mb-2 tracking-tighter ${
-                                     selectedUser.role === 'admin' ? 'text-accent' : 'text-slate-900'
-                                  }`}>
-                                     {selectedUser.role === 'admin' ? 'Komandan' : 'Penjelajah'}
-                                  </h3>
-                                  <p className={`text-[9px] font-black uppercase tracking-[0.3em] ${
-                                     selectedUser.role === 'admin' ? 'text-slate-500' : 'text-slate-400'
-                                  }`}>Akses Protokol</p>
-                               </div>
-                               {/* Watermark Icon */}
-                               <div className="absolute -right-4 -bottom-4 opacity-[0.03] scale-150">
-                                  {selectedUser.role === 'admin' ? (
-                                     <Shield className="w-24 h-24" />
-                                  ) : (
-                                     <Star className="w-24 h-24" />
-                                  )}
-                               </div>
+                            <div className={`rounded-[2rem] p-8 text-center border relative overflow-hidden ${selectedUser.role === 'admin' ? 'bg-blue-500/10 border-blue-500/20' : 'bg-white/[0.02] border-white/5'}`}>
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-4">AUTHORITY</p>
+                               <h3 className={`text-2xl font-display font-black uppercase italic leading-none mb-2 tracking-tighter ${selectedUser.role === 'admin' ? 'text-blue-400' : 'text-white/40'}`}>{selectedUser.role === 'admin' ? 'ADMIN' : 'MEMBER'}</h3>
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">CLEARANCE</p>
                             </div>
                          </div>
-
-                         <div>
-                            <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                               <Award className="w-3.5 h-3.5" /> Biografi Penjelajah
-                            </h4>
-                            <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
-                               <p className="text-[13px] font-medium text-slate-600 leading-relaxed italic overflow-hidden">
-                                  {selectedUser.bio || "Tidak ada pernyataan misi yang ditentukan oleh penjelajah ini."}
-                               </p>
-                            </div>
+                         <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-6 flex items-center gap-3"><Award className="w-4 h-4 text-accent" />MISSION_STATEMENT</h4>
+                            <p className="text-[13px] font-medium text-white/30 leading-relaxed italic">{selectedUser.bio || "No mission statement defined by this explorer."}</p>
                          </div>
-
-                         <div>
-                            <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                               <History className="w-3.5 h-3.5" /> Log Logistik
-                            </h4>
-                            <div className="space-y-3">
+                         <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 flex items-center gap-3"><History className="w-4 h-4 text-accent" />RECENT_OPS</h4>
+                            <div className="space-y-4">
                                 {selectedUser.orders?.slice(0, 3).map((order: any) => (
-                                   <div key={order.id} className="group relative pr-4">
-                                      <div className="flex items-center justify-between p-5 bg-slate-50/50 border border-slate-100 rounded-3xl transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 hover:-translate-y-1">
-                                         <div className="flex items-center gap-5">
-                                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
-                                               <ShoppingBag className="w-5 h-5 text-slate-400 group-hover:text-accent transition-colors" />
-                                            </div>
-                                            <div>
-                                               <p className="text-[13px] font-display font-black uppercase text-slate-900 leading-none mb-1.5 tracking-tight italic">
-                                                  #{order.id.substring(0, 8).toUpperCase()}
-                                               </p>
-                                               <p className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                                                  <Calendar className="w-3 h-3 text-slate-300" />
-                                                  {new Date(order.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                               </p>
-                                            </div>
+                                   <div key={order.id} className="flex items-center justify-between p-5 bg-black/40 border border-white/5 rounded-2xl hover:border-accent/20 transition-all group/ord">
+                                      <div className="flex items-center gap-5">
+                                         <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/5 group-hover/ord:text-accent text-white/20 transition-colors"><ShoppingBag className="w-5 h-5" /></div>
+                                         <div>
+                                            <p className="text-[13px] font-display font-black uppercase text-white italic group-hover/ord:text-accent transition-colors">#{order.id.substring(0, 8).toUpperCase()}</p>
+                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] flex items-center gap-2 mt-1"><Calendar className="w-3 h-3" />{new Date(order.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
                                          </div>
-                                         <div className="text-right">
-                                            <div className="flex items-center justify-end gap-1 mb-1.5 leading-none">
-                                               <span className="text-[9px] font-black text-slate-300">Rp</span>
-                                               <span className="text-[15px] font-display font-black text-slate-900 tracking-tighter italic">
-                                                  {Number(order.total_price || 0).toLocaleString('id-ID')}
-                                               </span>
-                                            </div>
-                                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border transition-colors ${
-                                               order.status === 'completed' 
-                                                 ? 'bg-green-500 border-green-400 text-white shadow-lg shadow-green-100' 
-                                                 : 'bg-white border-slate-200 text-slate-400'
-                                            }`}>
-                                               <div className={`w-1 h-1 rounded-full ${order.status === 'completed' ? 'bg-white' : 'bg-slate-300'}`} />
-                                               {order.status === 'completed' ? 'Selesai' : order.status}
-                                            </span>
-                                         </div>
+                                      </div>
+                                      <div className="text-right">
+                                         <p className="text-[15px] font-display font-black text-white italic">Rp {Number(order.total_price || 0).toLocaleString('id-ID')}</p>
+                                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest mt-1 ${order.status === 'completed' ? 'bg-green-500/20 text-green-400 border border-green-500/20' : 'bg-white/5 text-white/20 border border-white/5'}`}>
+                                            <div className={`w-1 h-1 rounded-full ${order.status === 'completed' ? 'bg-green-400' : 'bg-white/20'}`} />
+                                            {order.status}
+                                         </span>
                                       </div>
                                    </div>
                                 ))}
-                               {selectedUser.orders?.length === 0 && <p className="text-[11px] italic text-slate-400">Tidak ada riwayat logistik tercatat.</p>}
+                               {selectedUser.orders?.length === 0 && <p className="text-[11px] italic text-white/20">No operation logs found.</p>}
                             </div>
                          </div>
                       </div>
                    </div>
                 </div>
-             </motion.div>
-          </div>
+
+                <div className="px-12 py-10 border-t border-white/5 bg-[#111] flex items-center justify-end shrink-0">
+                   <button onClick={() => setIsViewOpen(false)} className="h-16 px-12 bg-white text-black font-black uppercase text-[11px] tracking-[0.3em] rounded-2xl hover:bg-accent hover:text-white transition-all italic">CLOSE_PROFILE</button>
+                </div>
+          </AdminModal>
         )}
       </AnimatePresence>
 
       {/* Edit Modal */}
       <AnimatePresence>
         {isEditOpen && selectedUser && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsEditOpen(false)} className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" />
-             <motion.div initial={{ scale: 0.98, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.98, opacity: 0, y: 10 }} className="bg-white rounded-[2.5rem] w-full max-w-md p-10 relative z-10 shadow-2xl border border-slate-100 overflow-hidden">
-                {/* Visual Backdrop Accent */}
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-accent to-accent/20" />
-                
-                <div className="mb-10 text-center">
-                   <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-accent mx-auto mb-6 shadow-sm border border-accent/5">
+          <AdminModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} maxWidth="max-w-2xl">
+                <div className="px-10 py-8 border-b border-white/5 bg-[#111] flex items-center gap-6 shrink-0">
+                   <div className="w-14 h-14 bg-accent rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shadow-accent/20">
                       <Edit className="w-7 h-7" />
                    </div>
-                   <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic mb-1">Profil <span className="text-accent underline">Override</span></h3>
-                   <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em]">Modifikasi manifes logistik dan tingkat otoritas.</p>
+                   <div className="flex-1">
+                      <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic text-white">PROFILE <span className="text-accent underline decoration-4">OVERRIDE</span></h3>
+                      <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.3em] mt-1">Modify explorer manifest & authority level.</p>
+                   </div>
+                   <button onClick={() => setIsEditOpen(false)} className="w-12 h-12 rounded-[1.5rem] bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 hover:bg-red-500/10 transition-all group">
+                      <X className="w-6 h-6 group-hover:rotate-90 transition-transform" />
+                   </button>
                 </div>
 
-                <form onSubmit={handleEditSubmit} className="space-y-6">
-                   <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
-                         <Users className="w-3 h-3" /> Nama Lengkap
-                      </label>
-                      <input 
-                        type="text" 
-                        required
-                        value={editFormData.name}
-                        onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body"
-                      />
-                   </div>
-                   <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
-                         <Mail className="w-3 h-3" /> Protokol Email
-                      </label>
-                      <input 
-                        type="email" 
-                        required
-                        value={editFormData.email}
-                        onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
-                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body"
-                      />
-                   </div>
-                   <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
-                         <Phone className="w-3 h-3" /> Kontak Aktif
-                      </label>
-                      <input 
-                        type="text" 
-                        value={editFormData.phone}
-                        onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
-                        placeholder="e.g. +628123456789"
-                        className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all font-body"
-                      />
-                   </div>
-                   <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-1">
-                         <Shield className="w-3 h-3" /> Izin Otoritas (Role)
-                      </label>
-                      <div className="relative">
-                        <select 
-                           value={editFormData.role}
-                           onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
-                           className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-xl text-[12px] font-bold outline-none focus:ring-4 focus:ring-accent/10 transition-all appearance-none cursor-pointer"
-                        >
-                           <option value="user">Penjelajah (Basic Access)</option>
-                           <option value="admin">Komandan (Full Protocol Control)</option>
-                        </select>
-                        <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 rotate-90 text-slate-400 pointer-events-none" />
+                <div className="flex-1 overflow-y-auto p-12 space-y-8 bg-[#0B0B0B] scrollbar-stealth">
+                   <form id="editUserForm" onSubmit={handleEditSubmit} className="space-y-8">
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2"><Users className="w-3 h-3 text-accent" />FULL NAME</label>
+                         <input type="text" required value={editFormData.name} onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })} className="w-full h-14 px-6 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white uppercase tracking-wider outline-none focus:border-accent/40 transition-all" />
                       </div>
-                   </div>
-                   
-                   <div className="flex gap-4 pt-6">
-                      <button 
-                        type="button" 
-                        onClick={() => setIsEditOpen(false)} 
-                        className="flex-1 h-11 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"
-                      >
-                         Batalkan
-                      </button>
-                      <button 
-                        type="submit" 
-                        className="flex-[2] h-11 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10 flex items-center justify-center gap-2"
-                      >
-                         <Save className="w-3.5 h-3.5 text-accent" />
-                         Sync Profile
-                      </button>
-                   </div>
-                </form>
-             </motion.div>
-          </div>
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2"><Mail className="w-3 h-3 text-accent" />COMMS_LINK</label>
+                         <input type="email" required value={editFormData.email} onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })} className="w-full h-14 px-6 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white outline-none focus:border-accent/40 transition-all" />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2"><Phone className="w-3 h-3 text-accent" />CONTACT_NODE</label>
+                         <input type="text" value={editFormData.phone} onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })} placeholder="+628123456789" className="w-full h-14 px-6 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white outline-none focus:border-accent/40 transition-all placeholder:text-white/10" />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2"><Shield className="w-3 h-3 text-accent" />AUTHORITY_LEVEL</label>
+                         <div className="relative">
+                           <select value={editFormData.role} onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })} className="w-full h-14 px-6 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white/60 uppercase tracking-wider outline-none focus:border-accent/40 transition-all appearance-none cursor-pointer">
+                              <option value="user" className="bg-[#111]">MEMBER (Basic Access)</option>
+                              <option value="admin" className="bg-[#111]">COMMANDER (Full Control)</option>
+                           </select>
+                           <ChevronRight className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 rotate-90 text-white/20 pointer-events-none" />
+                         </div>
+                      </div>
+                   </form>
+                </div>
+
+                <div className="px-10 py-8 border-t border-white/5 bg-[#111] flex items-center shrink-0 gap-4">
+                   <button type="button" onClick={() => setIsEditOpen(false)} className="flex-1 h-14 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white/30 border border-white/5 hover:text-white hover:bg-white/5 transition-all">ABORT</button>
+                   <button type="submit" form="editUserForm" className="flex-[2] h-14 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-accent/80 active:scale-95 transition-all shadow-2xl shadow-accent/20 flex items-center justify-center gap-3">
+                      <Save className="w-4 h-4" />SYNC PROFILE
+                   </button>
+                </div>
+          </AdminModal>
         )}
       </AnimatePresence>
 

@@ -30,116 +30,117 @@ const StoreFilterSidebar = ({
   onPriceMaxChange,
 }: StoreFilterSidebarProps) => {
   return (
-    <div>
+    <div className="flex flex-col gap-12 pr-6">
       {/* ── Category ── */}
-      <div className="mb-8">
-        <h3 className="font-display font-semibold text-xs tracking-[0.2em] uppercase mb-4 text-muted-foreground">
-          Kategori
+      <div>
+        <h3 className="font-display font-black text-xs tracking-[0.3em] uppercase mb-6 text-white/40 border-b border-white/10 pb-4">
+          Label Kategori
         </h3>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           {categories.map((cat) => (
             <motion.button
               key={cat}
               whileTap={{ scale: 0.98 }}
               onClick={() => onCategoryChange(cat)}
-              className={`text-left font-body text-sm py-2 px-3.5 rounded-lg transition-all duration-300 flex items-center justify-between group ${
+              className={`text-left font-display text-[11px] py-4 border-b border-white/5 uppercase tracking-[0.2em] font-black transition-all duration-300 flex items-center justify-between group ${
                 selectedCategory === cat
-                  ? "bg-accent text-accent-foreground font-medium shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-card"
+                  ? "text-orange-500"
+                  : "text-white/60 hover:text-white hover:bg-white/[0.02]"
               }`}
             >
               {cat}
-              <span
-                className={`text-[10px] font-bold rounded-full transition-all ${
-                  selectedCategory === cat
-                    ? "bg-accent-foreground/20 text-accent-foreground"
-                    : "bg-muted text-muted-foreground group-hover:bg-card"
-                }`}
-              >
-              </span>
+              <div className={`w-1.5 h-1.5 rounded-none transition-all ${
+                selectedCategory === cat ? "bg-orange-500" : "bg-transparent group-hover:bg-white/20"
+              }`} />
             </motion.button>
           ))}
         </div>
       </div>
 
       {/* ── Activity ── */}
-      <div className="mb-8">
-        <h3 className="font-display font-semibold text-xs tracking-[0.2em] uppercase mb-4 text-muted-foreground">
-          Aktivitas
+      <div>
+        <h3 className="font-display font-black text-xs tracking-[0.3em] uppercase mb-6 text-white/40 border-b border-white/10 pb-4">
+          Medan Aktivitas
         </h3>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           {activities.map((act) => (
             <motion.button
               key={act}
               whileTap={{ scale: 0.98 }}
               onClick={() => onActivityChange(act)}
-              className={`text-left font-body text-sm py-2 px-3.5 rounded-lg transition-all duration-300 ${
-                selectedActivity === act
-                  ? "bg-accent text-accent-foreground font-medium shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-card"
+              className={`text-left font-display text-[11px] py-4 border-b border-white/5 uppercase tracking-[0.2em] font-black transition-all duration-300 flex items-center justify-between group ${
+                selectedCategory === act || selectedActivity === act
+                  ? "text-orange-500"
+                  : "text-white/60 hover:text-white hover:bg-white/[0.02]"
               }`}
             >
               {act}
+              <div className={`w-1.5 h-1.5 rounded-none transition-all ${
+                selectedActivity === act ? "bg-orange-500" : "bg-transparent group-hover:bg-white/20"
+              }`} />
             </motion.button>
           ))}
         </div>
       </div>
 
       {/* ── Price Range ── */}
-      <div className="mb-8">
-        <h3 className="font-display font-semibold text-xs tracking-[0.2em] uppercase mb-4 text-muted-foreground">
-          Harga
+      <div>
+        <h3 className="font-display font-black text-xs tracking-[0.3em] uppercase mb-6 text-white/40 border-b border-white/10 pb-4">
+          Rentang Harga
         </h3>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs font-body text-muted-foreground">
-            <span className="bg-card border border-border rounded-lg px-2 py-1">Rp {fmtK(priceMin)}</span>
-            <span className="text-muted-foreground/40">—</span>
-            <span className="bg-card border border-border rounded-lg px-2 py-1">Rp {fmtK(priceMax)}</span>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between font-display font-black text-[10px] tracking-widest text-white/60">
+            <span className="bg-[#111111] border border-white/10 px-3 py-1.5">RP {fmtK(priceMin)}</span>
+            <span className="text-white/20">—</span>
+            <span className="bg-[#111111] border border-white/10 px-3 py-1.5">RP {fmtK(priceMax)}</span>
           </div>
-          <div className="space-y-2">
-            <input
-              type="range"
-              min={MIN_PRICE}
-              max={MAX_PRICE}
-              step={5000}
-              value={priceMin}
-              onChange={(e) => {
-                const v = Number(e.target.value);
-                if (v < priceMax) onPriceMinChange(v);
-              }}
-              className="w-full h-1.5 rounded-full accent-[hsl(var(--accent))] cursor-pointer"
-            />
-            <input
-              type="range"
-              min={MIN_PRICE}
-              max={MAX_PRICE}
-              step={5000}
-              value={priceMax}
-              onChange={(e) => {
-                const v = Number(e.target.value);
-                if (v > priceMin) onPriceMaxChange(v);
-              }}
-              className="w-full h-1.5 rounded-full accent-[hsl(var(--accent))] cursor-pointer"
-            />
+          <div className="space-y-4">
+            <div className="group relative h-2 bg-white/10 rounded-none cursor-pointer flex items-center">
+              <input
+                type="range"
+                min={MIN_PRICE}
+                max={MAX_PRICE}
+                step={5000}
+                value={priceMin}
+                onChange={(e) => {
+                  const v = Number(e.target.value);
+                  if (v < priceMax) onPriceMinChange(v);
+                }}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+              />
+              <div className="absolute left-0 h-full bg-orange-500 pointer-events-none" style={{ width: `${(priceMin / MAX_PRICE) * 100}%` }} />
+            </div>
+            
+            <div className="group relative h-2 bg-white/10 rounded-none cursor-pointer flex items-center">
+              <input
+                type="range"
+                min={MIN_PRICE}
+                max={MAX_PRICE}
+                step={5000}
+                value={priceMax}
+                onChange={(e) => {
+                  const v = Number(e.target.value);
+                  if (v > priceMin) onPriceMaxChange(v);
+                }}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+              />
+              <div className="absolute left-0 h-full bg-orange-500 pointer-events-none" style={{ width: `${(priceMax / MAX_PRICE) * 100}%` }} />
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Promo banner ── */}
-      <div className="relative rounded-2xl overflow-hidden aspect-[3/4] hidden lg:block group">
+      <div className="relative overflow-hidden aspect-[4/5] hidden lg:block group bg-[#111111] border border-white/5">
         <img
           src={heroImg}
           alt="Adventure promo"
-          className="img-cover transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-40 transition-transform duration-[1.5s] group-hover:scale-105 group-hover:opacity-60 group-hover:mix-blend-normal"
         />
-        <div className="absolute inset-0 overlay-gradient" />
-        <div className="absolute bottom-5 left-5 right-5">
-          <div className="flex items-center gap-1.5 mb-1">
-            <Flame className="w-3.5 h-3.5 text-accent" />
-            <p className="font-body text-[10px] tracking-widest uppercase text-accent">Terlaris</p>
-          </div>
-          <p className="font-display font-bold text-primary-foreground text-sm mb-0.5">Musim Baru</p>
-          <p className="font-body text-[11px] text-primary-foreground/60">Jelajahi koleksi terbaru</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
+        <div className="absolute bottom-6 left-6 right-6">
+          <p className="font-display font-black text-xs uppercase tracking-[0.3em] text-orange-500 mb-2">Terlaris Musim Ini</p>
+          <p className="font-display font-black text-2xl uppercase tracking-tight text-white leading-[1.1]">Eksplorasi<br/>Tanpa Batas</p>
         </div>
       </div>
     </div>

@@ -40,36 +40,94 @@ const FlashSaleSection = () => {
   if (!flashSales.length) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-primary relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.04]"
-        style={{ backgroundImage: "radial-gradient(circle at 2px 2px,white 1px,transparent 0)", backgroundSize: "28px 28px" }} />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-red-600/20 rounded-full blur-[100px] pointer-events-none" />
+    <section className="py-20 md:py-32 relative overflow-hidden bg-[#050505]">
+      {/* Cinematic Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-red-600/20 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[50%] bg-orange-600/10 blur-[100px] rounded-full" />
+        <div className="absolute inset-0 opacity-[0.03] grain" />
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
+          backgroundSize: '40px 40px' 
+        }} />
+      </div>
 
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-        <FadeIn className="mb-10 md:mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <motion.div animate={{ scale: [1, 1.15, 1] }} transition={{ repeat: Infinity, duration: 1 }}
-                className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center shadow-[0_0_24px_rgba(220,38,38,0.5)]">
-                <Zap className="w-6 h-6 text-white fill-current" />
+        <FadeIn className="mb-14 md:mb-20">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+            <div className="relative group">
+              {/* Floating Badge */}
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/20 mb-6"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                </span>
+                <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-red-500">Live Now</span>
               </motion.div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <Flame className="w-3.5 h-3.5 text-orange-400 animate-pulse" />
-                  <span className="font-body text-[10px] font-bold uppercase tracking-[0.25em] text-orange-400">Stok Terbatas</span>
+
+              <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
+                <div className="relative">
+                  <motion.div 
+                    animate={{ 
+                      rotate: [0, 5, -5, 0],
+                      scale: [1, 1.05, 1]
+                    }} 
+                    transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                    className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-red-600 to-orange-600 rounded-[2rem] flex items-center justify-center shadow-[0_20px_50px_rgba(220,38,38,0.3)] relative z-10"
+                  >
+                    <Zap className="w-10 h-10 md:w-12 md:h-12 text-white fill-current" />
+                  </motion.div>
+                  {/* Decorative glow behind icon */}
+                  <div className="absolute inset-0 bg-red-600 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity" />
                 </div>
-                <h2 className="font-display font-black text-2xl sm:text-3xl md:text-4xl uppercase text-white tracking-tight">Flash Sale</h2>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="h-px w-8 bg-red-600/50" />
+                    <span className="font-body text-[11px] font-bold uppercase tracking-[0.3em] text-orange-400">Limited Collection</span>
+                  </div>
+                  <h2 className="font-display font-black text-5xl md:text-7xl lg:text-8xl uppercase text-white tracking-tighter leading-[0.9] flex flex-col">
+                    <span className="text-white">Flash</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500 italic -mt-2">Sale</span>
+                  </h2>
+                </div>
               </div>
             </div>
-            <div>
-              <p className="font-body text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1.5 text-right">Berakhir dalam</p>
-              <div className="flex items-center gap-1.5 font-display font-black text-xl sm:text-2xl">
-                {[h, m, s].map((u, i) => (
-                  <React.Fragment key={i}>
-                    <span className="bg-red-600 text-white px-2.5 py-1 rounded-xl min-w-[44px] text-center shadow">{u}</span>
-                    {i < 2 && <span className="text-red-500 text-lg">:</span>}
-                  </React.Fragment>
-                ))}
+
+            <div className="lg:mb-4">
+              <div className="glass p-6 md:p-8 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden group/timer">
+                {/* Background glow in timer */}
+                <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-red-600/10 blur-2xl rounded-full group-hover/timer:bg-red-600/20 transition-colors" />
+                
+                <p className="font-body text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-5 flex items-center gap-2">
+                  <Flame className="w-3 h-3 text-orange-500" /> Offer Ends In
+                </p>
+                
+                <div className="flex items-end gap-4">
+                  {[
+                    { val: h, label: "Hours" },
+                    { val: m, label: "Mins" },
+                    { val: s, label: "Secs" }
+                  ].map((item, i) => (
+                    <React.Fragment key={i}>
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="relative">
+                          <span className="font-display font-black text-4xl md:text-5xl text-white min-w-[60px] md:min-w-[70px] text-center block tracking-tighter">
+                            {item.val}
+                          </span>
+                        </div>
+                        <span className="font-body text-[8px] font-bold uppercase tracking-widest text-white/30">{item.label}</span>
+                      </div>
+                      {i < 2 && (
+                        <span className="font-display font-black text-2xl text-red-600/50 mb-6 animate-pulse">:</span>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -121,9 +179,12 @@ const FlashSaleSection = () => {
           })}
         </div>
 
-        <FadeIn delay={0.3} className="mt-8 text-center">
-          <Link to="/store" className="inline-flex items-center gap-2 h-11 px-8 border border-white/20 text-white font-display font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white/5 transition-colors">
-            Lihat Semua Sale <ArrowRight className="w-4 h-4" />
+        <FadeIn delay={0.3} className="mt-16 text-center">
+          <Link to="/store" className="inline-flex items-center gap-4 group/btn">
+            <span className="font-display font-black text-lg uppercase tracking-tighter text-white/60 group-hover/btn:text-white transition-colors">Lihat Semua Sale</span>
+            <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover/btn:border-red-600/50 group-hover/btn:bg-red-600 transition-all duration-500">
+              <ArrowRight className="w-6 h-6 text-white group-hover/btn:translate-x-1 transition-transform" />
+            </div>
           </Link>
         </FadeIn>
       </div>

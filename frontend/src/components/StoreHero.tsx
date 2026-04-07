@@ -46,10 +46,10 @@ const StoreHero = ({ selectedCategory, onCategoryChange }: StoreHeroProps) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease }}
-              className="mb-4"
+              className="mb-6"
             >
-              <span className="font-body text-[10px] tracking-[0.3em] font-bold uppercase text-accent bg-accent/10 px-3 py-1.5 rounded-sm">
-                Katalog Resmi
+              <span className="font-display text-[9px] tracking-[0.5em] font-black uppercase text-accent bg-accent/5 border border-accent/20 px-4 py-2">
+                KATALOG RESMI
               </span>
             </motion.div>
 
@@ -76,9 +76,9 @@ const StoreHero = ({ selectedCategory, onCategoryChange }: StoreHeroProps) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease }}
-              className="font-body text-white/70 text-sm sm:text-base leading-relaxed font-medium max-w-sm border-l-2 border-accent/50 pl-4"
+              className="font-display text-white/50 text-xs sm:text-sm leading-relaxed font-black uppercase tracking-[0.2em] max-w-sm border-l-4 border-accent pl-6"
             >
-              Setiap potongan dirancang untuk performa, daya tahan, dan utilitas maksimal di medan tersulit sekalipun.
+              PERFORMA TANPA BATAS. DIRANCANG UNTUK EKSPLORASI TERJAUH DI MEDAN TERGANAS.
             </motion.p>
           </div>
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ShoppingBag, Search, ChevronRight, 
+  ShoppingBag, Search, 
   Package, Truck, CheckCircle2, 
   Clock, XCircle
 } from "lucide-react";
@@ -12,7 +12,8 @@ import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { rp } from "@/utils/formatters";
 import api from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Reveal, StaggerContainer } from "@/components/AnimationPrimitives";
 
 // Orders Components
 import OrderCard from "./components/OrderCard";
@@ -21,32 +22,35 @@ import RatingModal from "./components/RatingModal";
 
 // Order status configuration
 const ORDER_STATUSES = [
-  { id: 'all', label: 'Semua' },
-  { id: 'unpaid', label: 'Belum Bayar' },
-  { id: 'processing', label: 'Dikemas' },
-  { id: 'shipping', label: 'Dikirim' },
-  { id: 'completed', label: 'Selesai' },
-  { id: 'cancelled', label: 'Dibatalkan' },
+  { id: 'all', label: 'SEMUA' },
+  { id: 'pending', label: 'PENDING' },
+  { id: 'unpaid', label: 'BELUM BAYAR' },
+  { id: 'processing', label: 'DIPROSES' },
+  { id: 'shipped', label: 'DIKIRIM' },
+  { id: 'completed', label: 'SELESAI' },
+  { id: 'cancelled', label: 'BATAL' },
 ];
 
-
-
 const statusConfig: any = {
-  unpaid: { icon: Clock, color: "text-orange-500", bg: "bg-orange-50", label: "Belum Bayar" },
-  processing: { icon: Package, color: "text-blue-500", bg: "bg-blue-50", label: "Sedang Dikemas" },
-  shipping: { icon: Truck, color: "text-purple-500", bg: "bg-purple-50", label: "Dalam Pengiriman" },
-  completed: { icon: CheckCircle2, color: "text-green-600", bg: "bg-green-50", label: "Selesai" },
-  cancelled: { icon: XCircle, color: "text-red-500", bg: "bg-red-50", label: "Dibatalkan" },
+  pending: { icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10", label: "PENDING" },
+  unpaid: { icon: Clock, color: "text-orange-600", bg: "bg-orange-600/10", label: "BELUM BAYAR" },
+  verified: { icon: CheckCircle2, color: "text-cyan-500", bg: "bg-cyan-500/10", label: "TERVERIFIKASI" },
+  processing: { icon: Package, color: "text-blue-600", bg: "bg-blue-600/10", label: "DIPROSES" },
+  packed: { icon: Package, color: "text-indigo-500", bg: "bg-indigo-500/10", label: "DIKEMAS" },
+  shipped: { icon: Truck, color: "text-purple-600", bg: "bg-purple-600/10", label: "DIKIRIM" },
+  shipping: { icon: Truck, color: "text-purple-600", bg: "bg-purple-600/10", label: "DIKIRIM" },
+  completed: { icon: CheckCircle2, color: "text-green-600", bg: "bg-green-600/10", label: "SELESAI" },
+  cancelled: { icon: XCircle, color: "text-red-600", bg: "bg-red-600/10", label: "BATAL" },
 };
 
 const Orders = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [orders, setOrders] = useState<any[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const { isLoading, data: apiOrders = [] } = useQuery({
     queryKey: ['orders'],
@@ -54,32 +58,31 @@ const Orders = () => {
       const res = await api.get('/orders');
       return res.data?.data?.data || res.data?.data || [];
     },
-    refetchInterval: 10000, // Background poll every 10 seconds for real-time order status updates
+    refetchInterval: 30000,
   });
 
-  useEffect(() => {
-    if (apiOrders && Array.isArray(apiOrders)) {
-      setOrders(apiOrders.map((o: any) => ({
-        id: o.order_number || ("ANT-" + String(o.id).slice(0, 8).toUpperCase()),
-        rawId: o.id,
-        date: new Date(o.created_at).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' }),
-        status: o.status,
-        total: parseFloat(o.total_price || 0),
-        isRated: (o.reviews && o.reviews.length > 0),
-        cancelReason: "",
-        items: o.items?.map((i: any) => ({
-           id: i.id,
-           productId: i.product_variant?.product_id || i.product_variant?.product?.id,
-           name: i.product_variant?.product?.name || "Produk Antarestar",
-           image: i.product_variant?.product?.primary_image?.image_url || i.product_variant?.product?.images?.[0]?.image_url || "https://via.placeholder.com/300",
-           price: parseFloat(i.price || 0),
-           qty: i.quantity,
-           variant: i.product_variant?.name ? i.product_variant.name : (i.product_variant?.color_name ? `${i.product_variant.color_name}${i.product_variant.size ? ' / ' + i.product_variant.size : ''}` : "-")
-        })) || []
-      })));
-    }
+  const orders = React.useMemo(() => {
+    if (!apiOrders || !Array.isArray(apiOrders)) return [];
+    
+    return apiOrders.map((o: any) => ({
+      id: o.order_number || ("ANT-" + String(o.id).slice(0, 8).toUpperCase()),
+      rawId: o.id,
+      date: new Date(o.created_at).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' }),
+      status: o.status,
+      total: parseFloat(o.total_price || 0),
+      isRated: (o.reviews && o.reviews.length > 0),
+      cancelReason: "",
+      items: o.items?.map((i: any) => ({
+         id: i.id,
+         productId: i.product_variant?.product_id || i.product_variant?.product?.id,
+         name: i.product_variant?.product?.name || "ANTARESTAR GEAR",
+         image: i.product_variant?.product?.primary_image?.image_url || i.product_variant?.product?.images?.[0]?.image_url || "https://via.placeholder.com/300",
+         price: parseFloat(i.price || 0),
+         qty: i.quantity,
+         variant: i.product_variant?.name ? i.product_variant.name : (i.product_variant?.color_name ? `${i.product_variant.color_name}${i.product_variant.size ? ' / ' + i.product_variant.size : ''}` : "-")
+      })) || []
+    }));
   }, [apiOrders]);
-
 
   const filteredOrders = orders.filter(order => {
     const matchesTab = activeTab === "all" || order.status === activeTab;
@@ -100,30 +103,28 @@ const Orders = () => {
     
     try {
       await api.put(`/orders/${order.rawId}/status`, { status: 'cancelled', cancel_reason: reason });
-      setOrders(prev => prev.map(o => o.id === orderToCancel ? { ...o, status: 'cancelled', cancelReason: reason } : o));
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
       setShowCancelModal(false);
       setOrderToCancel(null);
-      toast.error("Pesanan Dibatalkan", {
-        description: `Alasan: ${reason}`,
+      toast.error("MISSION ABORTED", {
+        description: `Reason: ${reason}`,
         duration: 4000
       });
     } catch (err) {
-      console.error("Cancel error:", err);
-      toast.error("Gagal membatalkan pesanan. Silakan coba lagi.");
+      toast.error("FAILED TO ABORT MISSION.");
     }
   };
 
   const handleConfirmReceipt = async (orderId: string, rawId: string) => {
     try {
       await api.put(`/orders/${rawId}/status`, { status: 'completed' });
-      setOrders(prev => prev.map(o => o.rawId === rawId ? { ...o, status: 'completed' } : o));
-      toast.success("Pesanan selesai! Terima kasih telah berbelanja at Antarestar.", {
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      toast.success("MISSION ARCHIVED.", {
         icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
         duration: 5000
       });
     } catch (err) {
-      console.error("Confirm receipt error:", err);
-      toast.error("Gagal mengonfirmasi pesanan. Silakan coba lagi.");
+      toast.error("FAILED TO CONFIRM MISSION.");
     }
   };
 
@@ -132,88 +133,70 @@ const Orders = () => {
     if (!order || !order.items.length) return;
 
     try {
-      // Use the first product as the main review target for now
       const productId = order.items[0].productId;
-      
-      await api.post('/product-reviews', {
-        order_id: orderId,
-        product_id: productId,
-        rating,
-        comment
-      });
-
-      setOrders(prev => prev.map(o => o.rawId === orderId ? { ...o, isRated: true } : o));
+      await api.post('/product-reviews', { order_id: orderId, product_id: productId, rating, comment });
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
       setShowRatingModal(false);
-      
-      toast.success("Penilaian Berhasil Dikirim!", {
-        description: "Terima kasih atas ulasan Anda. Gear Antarestar siap menemanimu!",
-        duration: 5000
-      });
+      toast.success("FEEDBACK SECURED.");
     } catch (err: any) {
-      console.error("Rating error:", err);
-      toast.error(err.response?.data?.message || "Gagal mengirim penilaian.");
+      toast.error("FAILED TO SUBMIT FEEDBACK.");
     }
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col font-body">
+    <div className="min-h-screen bg-[#0B0B0B] text-white flex flex-col selection:bg-orange-600 font-body">
       <Navbar />
 
-      <main className="section-padding flex-1 pt-24 md:pt-32 pb-20">
-        <div className="section-container max-w-5xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div className="space-y-1">
-               <div className="flex items-center gap-2 text-muted-foreground mb-4">
-                  <Link to="/" className="hover:text-accent transition-colors">Home</Link>
-                  <ChevronRight className="w-3 h-3" />
-                  <span className="text-foreground font-bold">Pesanan Saya</span>
-               </div>
-               <div className="mb-8">
-            <h1 className="font-display font-black text-2xl md:text-5xl uppercase tracking-tighter mb-2">Pesanan Saya</h1>
-            <p className="font-body text-xs md:text-sm text-muted-foreground">Kelola dan lacak gear Antarestar yang sudah kamu pesan.</p>
-          </div>
+      <main className="flex-1 pt-28 md:pt-40 pb-24 px-4 sm:px-6 md:px-20">
+        <div className="max-w-7xl mx-auto">
+          
+          <Reveal>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-12 md:mb-20 border-b border-white/10 pb-10 md:pb-12 text-white">
+                <div className="space-y-3">
+                    <p className="font-bold text-[10px] uppercase tracking-[0.4em] text-orange-600 leading-none">Protokol Pesanan</p>
+                    <h1 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl uppercase tracking-tighter text-white leading-tight mb-2">
+                        DAFTAR <span className="text-white/10">PESANAN.</span>
+                    </h1>
+                </div>
+                <div className="relative w-full md:w-96 group">
+                   <div className="absolute inset-0 bg-white/5 skew-x-[-4deg] group-focus-within:bg-orange-600/10 transition-colors" />
+                   <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-orange-600 transition-colors z-10" />
+                   <input 
+                     type="text" placeholder="CARI PESANAN (ID/GEAR)" value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                     className="relative w-full bg-transparent p-5 pl-14 font-bold uppercase text-xs tracking-widest focus:outline-none transition-all placeholder:text-white/10 z-10"
+                   />
+                </div>
             </div>
-            
-            <div className="relative w-full md:w-80">
-               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-               <input 
-                 type="text" placeholder="Cari pesanan atau produk..." value={searchQuery}
-                 onChange={(e) => setSearchQuery(e.target.value)}
-                 className="w-full bg-card border border-border rounded-xl pl-11 pr-4 py-3 text-sm font-body outline-none focus:ring-2 focus:ring-accent/20 transition-all shadow-sm"
-               />
-            </div>
-          </div>
+          </Reveal>
 
-          <div className="bg-card border border-border rounded-2xl p-1 mb-8 shadow-sm flex overflow-x-auto no-scrollbar scroll-smooth">
+          {/* Categories Tab - High End Minimal */}
+          <div className="flex overflow-x-auto no-scrollbar gap-10 md:gap-12 mb-12 md:mb-16 border-b border-white/5 pb-2 sticky top-[72px] md:relative bg-[#0B0B0B] z-30">
             {ORDER_STATUSES.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveTab(category.id)}
-                className={`flex-shrink-0 px-4 sm:px-6 py-3 rounded-xl font-display font-black text-[10px] sm:text-xs uppercase tracking-widest transition-all duration-300 relative ${
-                  activeTab === category.id
-                    ? "text-white"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                className={`flex-shrink-0 font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all relative py-3 ${
+                  activeTab === category.id ? "text-orange-600" : "text-white/20 hover:text-white"
                 }`}
               >
-                {activeTab === category.id && ( <motion.div layoutId="activeTab" className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/25" transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} /> )}
-                <span className="relative z-10">{category.label}</span>
+                {category.label}
+                {activeTab === category.id && (
+                    <motion.div layoutId="activeTabOrdersAlt" className="absolute bottom-0 left-0 right-0 h-1 bg-orange-600" transition={{ type: "spring", bounce: 0, duration: 0.4 }} />
+                )}
               </button>
             ))}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             <AnimatePresence mode="wait">
               {isLoading ? (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-card border border-border rounded-3xl p-12 text-center">
-                  <Package className="w-10 h-10 animate-bounce mx-auto text-accent mb-4" />
-                  <p className="font-display font-bold uppercase text-sm text-muted-foreground">Memuat Pesanan...</p>
-                </motion.div>
+                <div className="py-32 text-center space-y-4">
+                  <div className="w-16 h-16 border-4 border-orange-600 border-t-transparent animate-spin mx-auto" />
+                  <p className="font-display font-black uppercase tracking-[0.4em] italic text-white/20">ACCESSING DATABASE...</p>
+                </div>
               ) : filteredOrders.length > 0 ? (
-                <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-6">
+                <StaggerContainer key={activeTab}>
                   {filteredOrders.map((order) => (
                     <OrderCard 
                       key={order.id} 
@@ -224,14 +207,15 @@ const Orders = () => {
                       onShowRating={(o) => { setSelectedOrder(o); setShowRatingModal(true); }}
                     />
                   ))}
-                </motion.div>
+                </StaggerContainer>
               ) : (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-card border border-border rounded-3xl p-12 md:p-20 text-center flex flex-col items-center justify-center">
-                   <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6 text-muted-foreground opacity-40"> <ShoppingBag className="w-12 h-12" /> </div>
-                   <h2 className="font-display font-black text-2xl uppercase mb-2 tracking-tight">Tidak Ada Pesanan</h2>
-                   <p className="text-muted-foreground text-sm max-w-xs mb-8">Wah, belanjaan kamu masih kosong nih. Yuk, cari gear petualanganmu sekarang!</p>
-                   <Button asChild size="lg" className="rounded-2xl px-10 h-14 uppercase tracking-[0.2em] font-black text-xs shadow-xl shadow-accent/30"><Link to="/store">Belanja Sekarang</Link></Button>
-                </motion.div>
+                <Reveal direction="scale" className="py-24 text-center space-y-8">
+                   <ShoppingBag className="w-24 h-24 text-white/5 mx-auto" />
+                   <h2 className="font-display font-bold text-3xl md:text-5xl uppercase tracking-tight text-white leading-none">PESANAN <br /> <span className="text-orange-600">MASIH KOSONG.</span></h2>
+                   <Button asChild className="bg-orange-600 hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest px-12 py-6 rounded-none transition-all h-auto text-xs">
+                        <Link to="/store">MULAI BELANJA GEAR</Link>
+                   </Button>
+                </Reveal>
               )}
             </AnimatePresence>
           </div>
