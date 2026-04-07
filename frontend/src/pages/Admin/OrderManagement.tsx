@@ -23,7 +23,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
-import { AdminModal } from '@/components/Admin/AdminModal';
+import { AdminModal } from '@/pages/Admin/components/AdminModal';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; border: string; icon: React.ElementType }> = {

@@ -31,16 +31,16 @@ import {
 
 import Navbar          from "@/components/Navbar";
 import Footer          from "@/components/Footer";
-import HeroSection     from "@/components/HeroSection";
-import MarqueeBanner   from "@/components/MarqueeBanner";
-import CommunityGallery from "@/components/CommunityGallery";
-import BrandStory      from "@/components/BrandStory";
+import HeroSection     from "@/pages/Home/components/HeroSection";
+import MarqueeBanner   from "@/pages/Home/components/MarqueeBanner";
+import CommunityGallery from "@/pages/Home/components/CommunityGallery";
+import BrandStory      from "@/pages/Home/components/BrandStory";
 import ProductCard     from "@/components/ProductCard";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import { products }    from "@/data/products";
 import { useQuery }    from "@tanstack/react-query";
 import api             from "@/lib/api";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
+import AnnouncementBanner from "@/pages/Home/components/AnnouncementBanner";
 
 import heroImg       from "@/assets/hero-outdoor.jpg";
 import lifestyleCamp from "@/assets/lifestyle-camping.jpg";

@@ -10,18 +10,18 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
-import ProductDetailSkeleton from "@/components/ProductDetailSkeleton";
-import EpicStoreCTA from "@/components/EpicStoreCTA";
+import ProductDetailSkeleton from "@/pages/ProductDetail/components/ProductDetailSkeleton";
+import EpicStoreCTA from "@/pages/ProductDetail/components/EpicStoreCTA";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 
 /* Product Components */
-import ProductGallery from "@/components/product/ProductGallery";
-import ProductInfo from "@/components/product/ProductInfo";
-import FeatureBento from "@/components/product/FeatureBento";
-import SuggestedProducts from "@/components/product/SuggestedProducts";
-import StickyBuyBarPremium from "@/components/product/StickyBuyBarPremium";
+import ProductGallery from "@/pages/ProductDetail/components/ProductGallery";
+import ProductInfo from "@/pages/ProductDetail/components/ProductInfo";
+import FeatureBento from "@/pages/ProductDetail/components/FeatureBento";
+import SuggestedProducts from "@/pages/ProductDetail/components/SuggestedProducts";
+import StickyBuyBarPremium from "@/pages/ProductDetail/components/StickyBuyBarPremium";
 
 const formatPrice = (price: number) =>
   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(price);

@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { categories, activities, sortOptions } from "@/data/products";
-import { fmtK, MIN_PRICE, MAX_PRICE } from "@/components/StoreFilterSidebar";
+import { fmtK, MIN_PRICE, MAX_PRICE } from "@/pages/Store/components/StoreFilterSidebar";
 
 interface StoreMobileFilterProps {
   open: boolean;

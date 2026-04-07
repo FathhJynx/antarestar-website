@@ -9,7 +9,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import ScrollToTop from "./components/ScrollToTop";
-import BirthdayDiscountModal from "./components/BirthdayDiscountModal";
+import BirthdayDiscountModal from "@/pages/MemberArea/components/BirthdayDiscountModal";
 import GlobalStyler from "./components/antarestar/GlobalStyler";
 
 // --- Lazy-Loaded Application Pages ---

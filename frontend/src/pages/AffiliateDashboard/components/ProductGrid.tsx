@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
-import ProductCard from "@/components/store/ProductCard";
+import ProductCard from "@/pages/Store/components/ProductCard";
 
 const ProductGrid = () => {
   const { data: products = [], isLoading } = useQuery({

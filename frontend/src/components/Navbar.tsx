@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavbarScroll } from "@/hooks/useScrollAnimations";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import AnnouncementBanner from "./AnnouncementBanner";
+import AnnouncementBanner from "@/pages/Home/components/AnnouncementBanner";
 
 const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);

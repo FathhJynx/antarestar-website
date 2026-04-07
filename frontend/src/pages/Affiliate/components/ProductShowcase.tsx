@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCard from "@/components/store/ProductCard";
+import ProductCard from "@/pages/Store/components/ProductCard";
 import { Reveal, StaggerContainer } from "@/components/AnimationPrimitives";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";

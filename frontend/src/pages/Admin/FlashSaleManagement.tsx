@@ -21,8 +21,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
-import { AdminModal } from '@/components/Admin/AdminModal';
-import ConfirmModal from '@/components/Admin/ConfirmModal';
+import { AdminModal } from '@/pages/Admin/components/AdminModal';
+import ConfirmModal from '@/pages/Admin/components/ConfirmModal';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 const FlashSaleManagement = () => {

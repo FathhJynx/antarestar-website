@@ -4,16 +4,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Reveal, StaggerContainer } from "@/components/AnimationPrimitives";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import StoreHeroPremium from "@/components/store/StoreHeroPremium";
-import StoreMobileFilter from "@/components/StoreMobileFilter";
+import StoreHeroPremium from "@/pages/Store/components/StoreHeroPremium";
+import StoreMobileFilter from "@/pages/Store/components/StoreMobileFilter";
 import QuickAddModal from "@/components/QuickAddModal";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 
 /* Pure Refactor Components */
-import SearchBar from "@/components/store/SearchBar";
-import FilterBar from "@/components/store/FilterBar";
-import StoreLayout from "@/components/store/StoreLayout";
+import SearchBar from "@/pages/Store/components/SearchBar";
+import FilterBar from "@/pages/Store/components/FilterBar";
+import StoreLayout from "@/pages/Store/components/StoreLayout";
 import StoreHeroSlider from "./components/hero/StoreHeroSlider";
 import PromoCards from "./components/promo/PromoCards";
 import StoreMarquee from "./components/StoreMarquee";

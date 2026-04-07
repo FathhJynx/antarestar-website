@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/AnimationPrimitives';
 import api from '@/lib/api';
-import MemberAreaSkeleton from '@/components/MemberAreaSkeleton';
+import MemberAreaSkeleton from '@/pages/MemberArea/components/MemberAreaSkeleton';
 
 // Remove Mock Data Constants as we'll use backend data
 

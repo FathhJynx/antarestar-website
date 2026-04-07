@@ -24,8 +24,8 @@ import { useSearchParams } from 'react-router-dom';
 import AdminLayout from '@/layouts/AdminLayout';
 import api from '@/lib/api';
 import { toast } from 'sonner';
-import { AdminModal } from '@/components/Admin/AdminModal';
-import ConfirmModal from '@/components/Admin/ConfirmModal';
+import { AdminModal } from '@/pages/Admin/components/AdminModal';
+import ConfirmModal from '@/pages/Admin/components/ConfirmModal';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
