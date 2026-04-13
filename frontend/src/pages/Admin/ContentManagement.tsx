@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 
 const ContentManagement = () => {
   const sections = [
-    { title: 'HERO BANNER', icon: Layout, desc: 'Update homepage banner images and headlines.', status: 'ACTIVE', color: 'text-green-400', border: 'border-green-400/20', bg: 'bg-green-400/10' },
-    { title: 'FLASH SALE', icon: Sparkles, desc: 'Manage countdown timers and active discounts.', status: 'LIVE', color: 'text-accent', border: 'border-accent/20', bg: 'bg-accent/10' },
-    { title: 'BLOG & NEWS', icon: FileText, desc: 'Publish adventure guides and announcements.', status: 'ACTIVE', color: 'text-blue-400', border: 'border-blue-400/20', bg: 'bg-blue-400/10' },
-    { title: 'MEDIA VAULT', icon: ImageIcon, desc: 'Upload and organize site-wide visual assets.', status: 'READY', color: 'text-purple-400', border: 'border-purple-400/20', bg: 'bg-purple-400/10' },
+    { title: 'BANNER UTAMA', icon: Layout, desc: 'Perbarui gambar dan judul banner di halaman beranda.', status: 'AKTIF', color: 'text-green-400', border: 'border-green-400/20', bg: 'bg-green-400/10' },
+    { title: 'FLASH SALE', icon: Sparkles, desc: 'Kelola penghitung waktu mundur dan diskon aktif.', status: 'BERJALAN', color: 'text-accent', border: 'border-accent/20', bg: 'bg-accent/10' },
+    { title: 'BLOG & BERITA', icon: FileText, desc: 'Terbitkan panduan petualangan dan pengumuman.', status: 'AKTIF', color: 'text-blue-400', border: 'border-blue-400/20', bg: 'bg-blue-400/10' },
+    { title: 'BRANKAS MEDIA', icon: ImageIcon, desc: 'Unggah dan atur aset visual di seluruh situs.', status: 'SIAP', color: 'text-purple-400', border: 'border-purple-400/20', bg: 'bg-purple-400/10' },
   ];
 
   return (
@@ -17,9 +17,9 @@ const ContentManagement = () => {
         {/* Header */}
         <div className="pb-10 border-b border-white/5">
           <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic">
-            CONTENT <span className="text-accent underline decoration-4 underline-offset-8">CONTROL</span>
+            KENDALI <span className="text-accent underline decoration-4 underline-offset-8">KONTEN</span>
           </h1>
-          <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Visual narrative and storefront impact management hub</p>
+          <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Pusat Manajemen Narasi Visual & Dampak Toko</p>
         </div>
 
         {/* Section Cards */}
@@ -45,7 +45,7 @@ const ContentManagement = () => {
                 <h3 className="font-display font-black text-xl uppercase tracking-tighter mb-2 text-white group-hover:text-accent transition-colors italic">{section.title}</h3>
                 <p className="text-[11px] font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed mb-6">{section.desc}</p>
                 <div className="flex items-center gap-2 text-white/20 group-hover:text-accent transition-colors text-[10px] font-black uppercase tracking-[0.2em]">
-                  MANAGE <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  KELOLA <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>
             </motion.div>
@@ -68,10 +68,10 @@ const ContentManagement = () => {
               <Settings className="w-8 h-8 text-accent" />
             </motion.div>
             <h2 className="font-display font-black text-4xl uppercase tracking-tighter mb-4 italic text-white">
-              ADVANCED <span className="text-accent underline decoration-4">CONTROLS</span><br />INCOMING
+              KENDALI <span className="text-accent underline decoration-4">LANJUTAN</span><br />SEGERA HADIR
             </h2>
             <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.3em] leading-[2]">
-              We are building next-gen visual control systems<br />to give you full command over every component.
+              Kami sedang membangun sistem kendali visual generasi berikutnya<br />untuk memberikan Anda kendali penuh atas setiap komponen.
             </p>
           </div>
         </div>

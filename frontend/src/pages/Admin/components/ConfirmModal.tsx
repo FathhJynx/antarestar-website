@@ -16,7 +16,7 @@ interface ConfirmModalProps {
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen, onClose, onConfirm, title, message,
-  confirmText = 'CONFIRM', cancelText = 'ABORT', variant = 'warning'
+  confirmText = 'KONFIRMASI', cancelText = 'BATALKAN', variant = 'warning'
 }) => {
   useScrollLock(isOpen);
 

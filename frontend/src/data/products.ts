@@ -31,6 +31,6 @@ export interface Product {
 // No dummy products
 export const products: Product[] = [];
 
-export const categories = ["All", "Jackets", "Bags", "Footwear", "Accessories", "Apparel"];
-export const activities = ["All", "Hiking", "Travel", "Outdoor", "Camping"];
-export const sortOptions = ["Newest", "Popular", "Price: Low to High", "Price: High to Low"];
+export const categories = ["Semua Gear", "Jackets", "Bags", "Footwear", "Accessories", "Apparel"];
+export const activities = ["Semua", "Hiking", "Travel", "Outdoor", "Camping"];
+export const sortOptions = ["Terbaru", "Terpopuler", "Harga: Rendah ke Tinggi", "Harga: Tinggi ke Rendah"];

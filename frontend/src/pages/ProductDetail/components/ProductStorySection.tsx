@@ -60,8 +60,8 @@ const StoryScene = ({ title, subtitle, description, image, icon, index }: StoryS
                                 </div>
                                 <p className="font-display font-black text-[11px] text-orange-600 uppercase tracking-[0.6em]">{subtitle}</p>
                             </div>
-                            <h2 className="font-display font-black text-6xl sm:text-7xl md:text-8xl text-white uppercase leading-[0.8] tracking-tighter">
-                                {title}
+                            <h2 className="font-display font-black text-4xl sm:text-6xl md:text-7xl text-white uppercase leading-[0.8] tracking-tighter">
+                                {item.title}
                             </h2>
                         </div>
                         

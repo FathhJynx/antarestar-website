@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\UpdateOrderStatusRequest;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -43,9 +44,9 @@ class OrderController extends BaseController
         return $this->success($order, 'Order detail.');
     }
 
-    public function updateStatus(Request $request, string $id): JsonResponse
+    public function updateStatus(UpdateOrderStatusRequest $request, string $id): JsonResponse
     {
-        $data = $request->validate(['status' => 'required|string']);
+        $data = $request->validated();
         $order = $this->orderService->updateOrderStatus($id, $data['status']);
         return $this->success($order, 'Order status updated.');
     }

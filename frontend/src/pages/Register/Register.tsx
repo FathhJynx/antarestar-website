@@ -38,8 +38,8 @@ const Register = () => {
         password_confirmation: confirmPassword
       });
 
-      toast.success("Registrasi Berhasil!", {
-        description: "Akun Anda telah dibuat. Silakan masuk untuk memulai petualangan.",
+      toast.success("Mantap, Akun Lo Jadi! 🚀", {
+        description: "Akun lo udah aktif. Yuk gas login buat mulai petualangan!",
       });
       navigate("/login");
     } catch (error: any) {
@@ -79,10 +79,10 @@ const Register = () => {
           <div className="mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-600/10 border border-orange-600/20 text-orange-600 rounded-none mb-4">
               <UserPlus className="w-3 h-3" />
-              <span className="font-display text-[9px] font-black uppercase tracking-widest">Pendaftaran Member</span>
+              <span className="font-display text-[9px] font-black uppercase tracking-widest">Pendaftaran Regu</span>
             </div>
-            <h1 className="font-display font-black text-4xl text-white uppercase tracking-tight mb-3 italic">GABUNG EKSPEDISI?</h1>
-            <p className="text-white/50 text-sm">Daftar sebagai member dan nikmati gear terbaik khusus buat lo.</p>
+            <h1 className="font-display font-black text-4xl text-white uppercase tracking-tight mb-3 italic">IKUT EKSPEDISI?</h1>
+            <p className="text-white/50 text-sm">Gabung jadi regu explorer dan dapetin akses eksklusif ke gear terbaik kita.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -173,7 +173,7 @@ const Register = () => {
           </form>
 
           <div className="mt-10 pt-6 border-t border-white/5 flex flex-col items-center gap-6">
-            <p className="text-white/30 text-[10px] font-black uppercase tracking-widest">Sudah ada akses?</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-widest">Udah punya akses?</p>
             <Link 
               to="/login"
               className="w-full h-14 border border-white/10 hover:border-orange-600 hover:bg-orange-600/5 hover:text-orange-600 flex items-center justify-center font-display font-black text-[11px] uppercase tracking-[0.2em] rounded-none transition-all"

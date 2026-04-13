@@ -27,8 +27,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/stats', [PublicStatsController::class, 'index']);
 
 Route::prefix('auth')->group(function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:3,10'); // 3 attempts per 10 minutes
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');       // 5 attempts per minute
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
@@ -104,7 +104,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Orders
-    Route::prefix('orders')->group(function () {
+    Route::prefix('orders')->middleware('throttle:10,1')->group(function () {
         Route::get('/', [OrderController::class, 'index']);
         Route::post('/', [OrderController::class, 'store']);
         Route::get('/{id}', [OrderController::class, 'show']);

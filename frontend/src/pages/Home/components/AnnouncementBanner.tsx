@@ -69,13 +69,13 @@ const AnnouncementBanner = () => {
             <div className="flex items-center gap-2">
               <Zap className={`w-3.5 h-3.5 fill-current ${isStarted ? 'animate-pulse text-yellow-300' : 'text-slate-400'}`} />
               <span className="font-display font-black text-[10px] md:text-[11px] uppercase tracking-[0.2em] italic">
-                {activeCampaign.name} {isStarted ? 'LIVE NOW!' : 'COMING SOON'}
+                {activeCampaign.name} {isStarted ? 'LAGI GAS!' : 'BENTAR LAGI'}
               </span>
             </div>
             
             <div className="hidden sm:flex items-center gap-2 border-x border-white/20 px-4 md:px-8">
               <span className="font-body text-[9px] font-bold uppercase tracking-widest text-white/60">
-                {isStarted ? 'Ending in' : 'Starts in'}
+                {isStarted ? 'Berakhir dalam' : 'Mulai dalam'}
               </span>
               <div className="flex items-center gap-1 font-display font-black text-xs md:text-sm">
                 <span className="bg-black/20 px-1.5 py-0.5 rounded-md min-w-[24px]">{h}</span>
@@ -90,7 +90,7 @@ const AnnouncementBanner = () => {
               to="/store" 
               className="group flex items-center gap-1.5 font-display font-black text-[10px] md:text-[11px] uppercase tracking-widest hover:text-yellow-300 transition-colors"
             >
-              Shop Flash Sale <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              Gas Sikat Promonya <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
             </Link>
 
             <button 

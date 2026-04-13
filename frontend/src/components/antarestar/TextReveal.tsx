@@ -8,7 +8,7 @@ const TextReveal = () => {
     offset: ["start 85%", "end 35%"]
   });
 
-  const paragraph = "We don't just make gear — we engineer confidence. Every Antarestar product is born from obsessive testing in the harshest environments on Earth. Because when you're 4,000 meters above sea level, there's no room for compromise.";
+  const paragraph = "Kita nggak cuma bikin gear — kita ngebangun kepercayaan diri lo. Setiap produk Antarestar lahir dari uji coba gila-gilaan di medan paling ekstrem di bumi. Karena pas lo lagi di ketinggian 4.000 mdpl, nggak ada kata kompromi buat keselamatan.";
   const words = paragraph.split(" ");
 
   return (
@@ -23,7 +23,7 @@ const TextReveal = () => {
       />
 
       <div className="max-w-5xl mx-auto relative z-10">
-        <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500/60 mb-12 font-medium">Our Philosophy</p>
+        <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500/60 mb-12 font-medium">Prinsip Kita</p>
         <p className="font-display font-black text-[clamp(1.5rem,4vw,4.5rem)] leading-[1.1] tracking-[-0.02em]">
           {words.map((word, i) => {
             const start = i / words.length;

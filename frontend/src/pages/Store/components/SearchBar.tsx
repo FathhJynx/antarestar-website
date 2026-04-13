@@ -21,7 +21,7 @@ const SearchBar = ({ value, onChange, onOpenFilter, activeFilterCount }: SearchB
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Lagi cari gear buat naik gunung?"
+          placeholder="Mau cari gear apa nih buat muncak?"
           className="w-full h-14 pl-14 pr-16 bg-[#111111] border border-[#1F1F1F] rounded-none text-white placeholder:text-gray-400/50 focus:outline-none focus:border-orange-600 transition-all text-sm font-medium"
         />
 
@@ -31,7 +31,7 @@ const SearchBar = ({ value, onChange, onOpenFilter, activeFilterCount }: SearchB
             className="h-10 px-4 bg-[#1F1F1F] hover:bg-[#2A2A2A] text-white rounded-none flex items-center gap-2 transition-all active:scale-95 relative"
           >
             <SlidersHorizontal className="w-4 h-4" />
-            <span className="text-[11px] font-bold uppercase tracking-wider hidden sm:inline">Filters</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider hidden sm:inline">Filter</span>
             {activeFilterCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-orange-600 text-white text-[9px] font-black flex items-center justify-center rounded-none border-2 border-black">
                 {activeFilterCount}

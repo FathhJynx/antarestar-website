@@ -16,10 +16,10 @@ class AddressRequest extends FormRequest
         return [
             'province_id' => 'required|string|exists:provinces,id',
             'city_id' => 'required|string|exists:cities,id',
-            'recipient_name' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string',
-            'postal_code' => 'required|string|max:10',
+            'recipient_name' => 'required|string|min:3|max:100',
+            'phone' => 'required|string|regex:/^08[0-9]{8,11}$/',
+            'address' => 'required|string|min:10',
+            'postal_code' => 'required|string|size:5',
             'is_default' => 'nullable|boolean',
         ];
     }

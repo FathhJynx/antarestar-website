@@ -53,7 +53,7 @@ const CartLayout = ({ children, summary, total, onCheckout, isEmpty }: CartLayou
 
       {/* Mobile Sticky Checkout Bar */}
       {!isEmpty && (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-4 pb-8 bg-black/80 backdrop-blur-3xl border-t border-white/10 shadow-[0_-20px_40px_rgba(0,0,0,0.5)]">
+        <div className="lg:hidden fixed bottom-24 left-4 right-4 z-50 p-4 bg-[#111]/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
            <div className="flex items-center justify-between gap-6">
               <div className="space-y-1">
                  <p className="font-bold text-[10px] uppercase tracking-widest text-white/30">Total bayar</p>

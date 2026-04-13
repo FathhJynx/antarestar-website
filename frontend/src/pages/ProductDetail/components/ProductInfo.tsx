@@ -50,7 +50,7 @@ const ProductInfo = ({
         
         <div className="space-y-2">
            <p className="text-white/40 font-display font-medium text-xs uppercase tracking-widest">{product.category} ARCHIVE</p>
-           <h1 className="text-5xl lg:text-7xl font-display font-black text-white uppercase tracking-tighter leading-[0.9]">
+           <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black text-white uppercase tracking-tighter leading-[0.9]">
              {product.name}
            </h1>
         </div>

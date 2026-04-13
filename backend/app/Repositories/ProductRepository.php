@@ -96,11 +96,7 @@ class ProductRepository extends BaseRepository
         $sortDir = $filters['sort_dir'] ?? 'desc';
 
         if ($sortBy === 'popular') {
-            $query->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
-                  ->leftJoin('order_items', 'product_variants.id', '=', 'order_items.product_variant_id')
-                  ->selectRaw('products.*, SUM(order_items.quantity) as total_sold')
-                  ->groupBy('products.id')
-                  ->orderBy('total_sold', 'desc');
+            $query->orderBy('sold_count', 'desc');
         } else {
             $query->orderBy($sortBy, $sortDir);
         }

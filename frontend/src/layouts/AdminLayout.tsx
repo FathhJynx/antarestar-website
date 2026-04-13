@@ -37,15 +37,15 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { logout, user } = useAuth();
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
+    { icon: LayoutDashboard, label: 'Dasbor', path: '/admin' },
     { icon: Package, label: 'Produk', path: '/admin/products' },
     { icon: Layers, label: 'Kategori', path: '/admin/categories' },
     { icon: ShoppingBag, label: 'Pesanan', path: '/admin/orders' },
-    { icon: FileText, label: 'Produk Terjual', path: '/admin/sold-products' },
-    { icon: Users, label: 'Pelanggan', path: '/admin/users' },
-    { icon: Ticket, label: 'Diskon/Voucher', path: '/admin/discounts' },
+    { icon: FileText, label: 'Laporan Penjualan', path: '/admin/sold-products' },
+    { icon: Users, label: 'Manajemen Pengguna', path: '/admin/users' },
+    { icon: Ticket, label: 'Diskon & Voucher', path: '/admin/discounts' },
     { icon: Zap, label: 'Flash Sale', path: '/admin/flash-sales' },
-    { icon: FileText, label: 'Konten', path: '/admin/content' },
+    { icon: FileText, label: 'Manajemen Konten', path: '/admin/content' },
   ];
 
   const fetchNotificationData = async () => {
@@ -187,7 +187,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </span>
               <input
                 type="text"
-                placeholder="Cari apapun..."
+                placeholder="Cari data..."
                 className="w-full pl-10 pr-4 py-2 bg-[#0B0B0B] border border-white/10 rounded-xl text-xs text-white placeholder:text-white/20 focus:border-accent/40 focus:bg-white/5 transition-all outline-none"
               />
             </div>
@@ -200,7 +200,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </div>
               <div className="hidden sm:block">
                 <p className="text-[10px] font-black uppercase tracking-wider text-white leading-none mb-0.5">{user?.name || 'Administrator'}</p>
-                <p className="text-[8px] font-bold text-accent uppercase tracking-widest leading-none">Super Admin</p>
+                <p className="text-[8px] font-bold text-accent uppercase tracking-widest leading-none">Administrator Utama</p>
               </div>
             </div>
 
@@ -239,7 +239,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           onClick={markAllAsRead}
                           className="text-[9px] font-black uppercase tracking-widest text-accent hover:underline"
                         >
-                          Tandai Semua
+                          Tandai Dibaca
                         </button>
                       )}
                     </div>
@@ -282,7 +282,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       ) : (
                         <div className="py-12 flex flex-col items-center justify-center opacity-30 italic">
                           <CheckCircle2 className="w-8 h-8 mb-2" />
-                          <p className="text-[9px] font-black uppercase tracking-[0.2em]">Semua laporan bersih</p>
+                          <p className="text-[9px] font-black uppercase tracking-[0.2em]">Tidak ada pemberitahuan baru</p>
                         </div>
                       )}
                     </div>
@@ -293,7 +293,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         onClick={() => setIsNotificationsOpen(false)}
                         className="w-full py-3 bg-[#0B0B0B] border border-white/10 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-white hover:border-accent/40 transition-all shadow-sm"
                       >
-                        Lihat Semua Aktivitas
+                        Lihat Seluruh Aktivitas
                       </Link>
                     </div>
                   </motion.div>

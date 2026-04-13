@@ -10,9 +10,9 @@ const gridItems = [
     span: 'md:col-span-2 md:row-span-2',
     height: 'h-[420px] md:h-auto',
     img: 'https://images.unsplash.com/photo-1551632811-561f5505ee69?q=80&w=2670&auto=format&fit=crop',
-    label: 'Innovation',
-    title: 'Extreme Weather\nResistance',
-    desc: 'Engineered to handle sub-zero temperatures and gale-force winds without compromising mobility.',
+    label: 'Inovasi',
+    title: 'Tahan Cuaca\nEkstrem',
+    desc: 'Didesain buat nerjang suhu beku sama angin kencang tanpa bikin gerak lo kaku.',
     accent: true,
   },
   {
@@ -21,7 +21,7 @@ const gridItems = [
     height: 'h-[280px] md:h-auto',
     img: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?q=80&w=2603&auto=format&fit=crop',
     label: 'Material',
-    title: 'Unmatched\nDurability',
+    title: 'Ketahanan\nTanpa Tanding',
     desc: null,
     accent: false,
   },
@@ -32,7 +32,7 @@ const gridItems = [
     img: null,
     label: null,
     title: '100%',
-    desc: 'Waterproof',
+    desc: 'Anti Air',
     accent: true,
     isStat: true,
   },
@@ -42,7 +42,7 @@ const gridItems = [
     height: 'h-[280px] md:h-auto',
     img: 'https://images.unsplash.com/photo-1517400508447-f8dd518b86db?q=80&w=2670&auto=format&fit=crop',
     label: null,
-    title: 'Ultra\nLightweight',
+    title: 'Super\nEnteng',
     desc: null,
     accent: false,
     hasBar: true,
@@ -62,10 +62,10 @@ const BentoGrid = () => (
       >
         <div className="flex items-center gap-4 mb-4">
           <div className="w-8 h-[1px] bg-orange-500" />
-          <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500 font-bold">Product DNA</p>
+          <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500 font-bold">DNA Produk</p>
         </div>
         <h2 className="font-display font-black text-3xl md:text-5xl text-white uppercase tracking-tight leading-none">
-          Built Different
+          Dibuat Beda
         </h2>
       </motion.div>
 
@@ -102,7 +102,7 @@ const BentoGrid = () => (
             }`}>
               {item.isStat ? (
                 <>
-                  <h3 className="font-display font-black text-6xl md:text-7xl text-white mb-2 leading-none">{item.title}</h3>
+                  <h3 className="font-display font-black text-4xl md:text-6xl text-white mb-2 leading-none">{item.title}</h3>
                   <p className="font-display font-bold text-black/60 uppercase tracking-[0.2em] text-sm bg-white/20 px-5 py-1.5 rounded-full backdrop-blur-sm">{item.desc}</p>
                 </>
               ) : (
@@ -129,7 +129,7 @@ const BentoGrid = () => (
                           transition={{ duration: 1.2, delay: 0.3, ease }}
                         />
                       </div>
-                      <p className="font-body text-white/30 uppercase tracking-[0.3em] text-[8px] mt-2 font-medium">Performance Index</p>
+                      <p className="font-body text-white/30 uppercase tracking-[0.3em] text-[8px] mt-2 font-medium">Indeks Performa</p>
                     </div>
                   )}
                 </>

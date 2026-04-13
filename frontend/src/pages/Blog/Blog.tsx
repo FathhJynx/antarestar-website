@@ -113,7 +113,7 @@ const Blog = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.9, ease }}
-            className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-tighter leading-[0.85] text-white mb-6"
+            className="font-display font-black text-[clamp(2.5rem,10vw,7rem)] uppercase tracking-tighter leading-[0.85] text-white mb-6"
           >
             The Explorer<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-400">

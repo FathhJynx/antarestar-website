@@ -74,28 +74,28 @@ const PromptModal: React.FC<PromptModalProps> = ({
             <form onSubmit={handleSubmit} className="p-10 space-y-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2">
-                  <Coins className="w-3.5 h-3.5 text-accent" />AP_POINTS_AMOUNT
+                  <Coins className="w-3.5 h-3.5 text-accent" />JUMLAH POIN
                 </label>
                 <input
                   type="number"
                   required
                   value={points}
                   onChange={(e) => setPoints(e.target.value)}
-                  placeholder="e.g. 500"
+                  placeholder="cth. 500"
                   className="w-full h-14 px-6 bg-white/5 border border-white/5 rounded-2xl text-[14px] font-black text-white outline-none focus:border-accent/40 transition-all placeholder:text-white/10"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 flex items-center gap-2">
-                  <MessageSquare className="w-3.5 h-3.5 text-accent" />JUSTIFICATION_LOG
+                  <MessageSquare className="w-3.5 h-3.5 text-accent" />ALASAN PENYESUAIAN
                 </label>
                 <textarea
                   required
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  placeholder="Enter reason for the audit manifest..."
-                  className="w-full h-28 p-6 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white outline-none focus:border-accent/40 transition-all resize-none placeholder:text-white/10"
+                  placeholder="Masukkan alasan untuk log audit..."
+                  className="w-full h-28 p-6 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white outline-none focus:border-accent/40 transition-all resize-none no-scrollbar placeholder:text-white/10"
                 />
               </div>
 
@@ -105,13 +105,13 @@ const PromptModal: React.FC<PromptModalProps> = ({
                   onClick={onClose}
                   className="flex-1 h-14 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white/30 border border-white/5 hover:bg-white/5 transition-all"
                 >
-                  ABORT
+                  BATALKAN
                 </button>
                 <button
                   type="submit"
                   className="flex-[2] h-14 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-accent/80 active:scale-95 transition-all shadow-2xl shadow-accent/20 flex items-center justify-center gap-3"
                 >
-                  <Save className="w-4 h-4" />PUSH MANIFEST
+                  <Save className="w-4 h-4" />SIMPAN DATA
                 </button>
               </div>
             </form>

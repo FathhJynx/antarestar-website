@@ -39,21 +39,21 @@ const CTASection = () => {
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500 font-bold mb-8">Begin Your Journey</p>
+          <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500 font-bold mb-8">Mulai Perjalanan Lo</p>
           <h2 className="font-display font-black text-5xl md:text-[clamp(4rem,10vw,9rem)] text-white uppercase tracking-[-0.04em] leading-[0.85] mb-6">
-            Ready for<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">your next</span><br/>
-            expedition?
+            Siap buat<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">misi lo</span><br/>
+            berikutnya?
           </h2>
           <p className="font-body text-sm md:text-base text-white/40 mb-14 max-w-lg mx-auto leading-relaxed">
-            Explore our complete collection of battle-tested outdoor gear. Engineered for performance, designed for life.
+            Cek koleksi lengkap gear outdoor kita yang udah teruji tempur. Dibuat buat performa, didesain buat selamanya.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/store"
               className="group relative inline-flex items-center gap-3 h-14 px-10 bg-accent hover:bg-accent/90 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_0_28px_rgba(234,88,12,0.35)]"
             >
-              <span>Jelajahi Koleksi</span>
+              <span>Gas Cek Koleksi</span>
               <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -62,7 +62,7 @@ const CTASection = () => {
               to="/about"
               className="inline-flex items-center justify-center gap-3 h-14 px-10 border border-white/20 text-white hover:bg-white/5 font-display font-black text-sm uppercase tracking-wider rounded-xl transition-colors"
             >
-              Tentang Kami
+              Cerita Kita
             </Link>
           </div>
         </motion.div>

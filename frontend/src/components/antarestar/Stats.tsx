@@ -25,10 +25,10 @@ const CountUp = ({ end, suffix = "", duration = 2.5 }: { end: number; suffix?: s
 };
 
 const stats = [
-  { value: 10000, suffix: "+", label: "Products Sold", color: "text-white" },
-  { value: 5, suffix: " Climates", label: "Tested In", color: "text-orange-500" },
-  { value: 100, suffix: "%", label: "Satisfaction", color: "text-white" },
-  { value: 7, suffix: " Years", label: "Of Craft", color: "text-white" },
+  { value: 10000, suffix: "+", label: "Produk Terjual", color: "text-white" },
+  { value: 5, suffix: " Iklim", label: "Uji Coba Ekstrem", color: "text-orange-500" },
+  { value: 100, suffix: "%", label: "Kepuasan Explorer", color: "text-white" },
+  { value: 7, suffix: " Tahun", label: "Keahlian Kami", color: "text-white" },
 ];
 
 const Stats = () => (
@@ -47,10 +47,10 @@ const Stats = () => (
       >
         <div className="flex items-center gap-4 mb-4">
           <div className="w-8 h-[1px] bg-orange-500" />
-          <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500 font-bold">By The Numbers</p>
+          <p className="font-body text-[10px] uppercase tracking-[0.5em] text-orange-500 font-bold">Bukan Sekadar Angka</p>
         </div>
         <h2 className="font-display font-black text-3xl md:text-5xl text-white uppercase tracking-tight leading-none">
-          Numbers Don't Lie
+          Data Yang Bicara
         </h2>
       </motion.div>
 

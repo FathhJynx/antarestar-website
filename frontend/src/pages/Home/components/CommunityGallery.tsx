@@ -7,17 +7,17 @@ import c3 from "@/assets/community-3.jpg";
 import c4 from "@/assets/community-4.jpg";
 
 const images = [
-  { src: c1, label: "Waterfall Explorer", aspect: "aspect-square" },
-  { src: c2, label: "Summit Chaser", aspect: "aspect-[3/4]" },
-  { src: c3, label: "Night Camper", aspect: "aspect-square" },
-  { src: c4, label: "Urban Adventurer", aspect: "aspect-[3/4]" },
+  { src: c1, label: "Penjelajah Air Terjun", aspect: "aspect-square" },
+  { src: c2, label: "Pengejar Puncak", aspect: "aspect-[3/4]" },
+  { src: c3, label: "Camp Malam", aspect: "aspect-square" },
+  { src: c4, label: "Adventure di Kota", aspect: "aspect-[3/4]" },
 ];
 
 const CommunityGallery = () => {
   return (
     <section className="py-24 md:py-32 section-padding">
       <div className="section-container">
-        <SectionHeading subtitle="#AntarestarAdventure" title="Community Inspiration" center />
+        <SectionHeading subtitle="#AntarestarAdventure" title="Inspirasi Bareng Komunitas" center />
 
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" staggerDelay={0.1}>
           {images.map((img, i) => (
@@ -59,7 +59,7 @@ const CommunityGallery = () => {
             className="inline-flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-accent transition-colors reveal-line pb-1"
           >
             <Instagram className="w-4 h-4" />
-            Follow us on Instagram
+            Ikuti keseruan kita di Instagram
           </a>
         </motion.div>
       </div>

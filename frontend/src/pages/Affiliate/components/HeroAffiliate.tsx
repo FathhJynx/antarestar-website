@@ -24,7 +24,7 @@ const HeroAffiliate = ({ onJoin }: HeroProps) => {
                <div className="inline-flex items-center gap-3 px-4 py-2 bg-orange-600 text-white font-black uppercase text-[10px] tracking-[0.2em]">
                   <Sparkles className="w-3.5 h-3.5" /> AMBASSADOR PROGRAM
                </div>
-               <h1 className="font-display font-black text-4xl md:text-7xl lg:text-[7.5rem] uppercase text-white leading-[0.85] tracking-tighter">
+               <h1 className="font-display font-black text-[clamp(2.25rem,9vw,6.5rem)] uppercase text-white leading-[0.85] tracking-tighter">
                   HASILIN DARI <br /> 
                   <span className="text-orange-600 drop-shadow-[0_0_40px_rgba(234,88,12,0.3)]">GEAR YANG LO PAKAI.</span>
                </h1>

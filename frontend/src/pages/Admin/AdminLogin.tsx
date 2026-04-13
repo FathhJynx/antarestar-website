@@ -24,18 +24,18 @@ const AdminLogin = () => {
       if (response.data && response.data.data) {
         const { user, token } = response.data.data;
         if (user.role !== 'admin') {
-          toast.error("ACCESS DENIED", { description: "Insufficient clearance level for admin portal." });
+          toast.error("AKSES DITOLAK", { description: "Tingkat otorisasi Anda tidak mencukupi untuk mengakses portal admin." });
           return;
         }
         login(user, token);
-        toast.success("AUTH GRANTED", { description: `Welcome back, Commander ${user.name}.` });
+        toast.success("AUTENTIKASI BERHASIL", { description: `Selamat datang kembali, ${user.name}.` });
         navigate(from, { replace: true });
       }
     } catch (error: any) {
       const errorMsg = error.response?.data?.errors
         ? Object.values(error.response.data.errors).flat()[0] as string
-        : error.response?.data?.message || "Invalid credentials.";
-      toast.error("AUTH FAILED", { description: errorMsg });
+        : error.response?.data?.message || "Identitas yang Anda masukkan salah.";
+      toast.error("AUTENTIKASI GAGAL", { description: errorMsg });
     } finally {
       setIsLoading(false);
     }
@@ -60,25 +60,25 @@ const AdminLogin = () => {
             </div>
             <div>
               <p className="font-display font-black text-sm uppercase tracking-[0.3em] text-white">ANTARESTAR</p>
-              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30">ADMIN CONTROL</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30">KONTROL ADMIN</p>
             </div>
           </Link>
         </div>
         <div className="relative z-10 space-y-8">
           <div>
             <h1 className="font-display font-black text-6xl uppercase tracking-tighter leading-none italic text-white mb-4">
-              ADMIN<br /><span className="text-accent">PORTAL</span>
+              PORTAL<br /><span className="text-accent">ADMIN</span>
             </h1>
             <p className="text-white/30 text-[11px] font-black uppercase tracking-[0.3em] leading-relaxed max-w-xs">
-              Secure command hub for managing the Antarestar mission network. Level-4 clearance required.
+              Pusat kendali aman untuk mengelola jaringan misi Antarestar. Diperlukan otorisasi tingkat tinggi.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: 'ENCRYPTION', value: 'AES-256' },
-              { label: 'PROTOCOL', value: 'HTTPS/TLS' },
-              { label: 'SESSION', value: 'JWT Auth' },
-              { label: 'MONITORING', value: 'Active' },
+              { label: 'ENKRIPSI', value: 'AES-256' },
+              { label: 'PROTOKOL', value: 'HTTPS/TLS' },
+              { label: 'SESI', value: 'JWT Auth' },
+              { label: 'MONITORING', value: 'Aktif' },
             ].map(item => (
               <div key={item.label} className="bg-white/[0.03] border border-white/5 rounded-2xl p-4">
                 <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-1">{item.label}</p>
@@ -89,7 +89,7 @@ const AdminLogin = () => {
         </div>
         <div className="relative z-10 flex items-center gap-2 opacity-30">
           <ShieldAlert className="w-4 h-4 text-white" />
-          <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white">Unauthorized access is logged and reported</span>
+          <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white">Akses tanpa izin akan dicatat dan dilaporkan</span>
         </div>
       </div>
 
@@ -110,18 +110,18 @@ const AdminLogin = () => {
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div>
-              <p className="font-display font-black text-sm uppercase tracking-[0.3em] text-white">ANTARESTAR ADMIN</p>
-              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30">SECURE CONTROL HUB</p>
+              <p className="font-display font-black text-sm uppercase tracking-[0.3em] text-white">ADMIN ANTARESTAR</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30">PUSAT KENDALI AMAN</p>
             </div>
           </div>
 
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse shadow-[0_0_10px_rgba(251,133,0,0.6)]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">AUTHENTICATION REQUIRED</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">DIBUTUHKAN AUTENTIKASI</span>
             </div>
             <h2 className="font-display font-black text-4xl uppercase tracking-tighter text-white italic">
-              COMMANDER<br /><span className="text-accent underline decoration-4">LOGIN</span>
+              LOGIN<br /><span className="text-accent underline decoration-4">ADMINISTRATOR</span>
             </h2>
           </div>
 
@@ -132,21 +132,21 @@ const AdminLogin = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 flex items-center gap-2">
-                  <Fingerprint className="w-3.5 h-3.5 text-accent" />ADMIN_ID
+                  <Fingerprint className="w-3.5 h-3.5 text-accent" />ID_ADMIN
                 </label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="commander@antarestar.id"
+                  placeholder="admin@antarestar.id"
                   className="w-full h-14 px-6 bg-white/[0.03] border border-white/5 rounded-2xl text-white font-black text-[12px] outline-none focus:border-accent/40 transition-all placeholder:text-white/10 uppercase tracking-wider"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 flex items-center gap-2">
-                  <Key className="w-3.5 h-3.5 text-accent" />ACCESS_KEY
+                  <Key className="w-3.5 h-3.5 text-accent" />KUNCI_AKSES
                 </label>
                 <input
                   type="password"
@@ -172,7 +172,7 @@ const AdminLogin = () => {
                 ) : (
                   <>
                     <Terminal className="w-5 h-5" />
-                    AUTHENTICATE
+                    MASUK SISTEM
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
@@ -181,11 +181,11 @@ const AdminLogin = () => {
 
             <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
               <Link to="/login" className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors flex items-center gap-2">
-                <ChevronLeft className="w-3 h-3" />EXPLORER LOGIN
+                <ChevronLeft className="w-3 h-3" />LOGIN PENJELAJAH
               </Link>
               <div className="flex items-center gap-2 text-white/20 text-[9px] font-black uppercase tracking-[0.2em]">
                 <Lock className="w-3 h-3 text-accent" />
-                <span>SECURE PORT</span>
+                <span>PORT AMAN</span>
               </div>
             </div>
           </div>

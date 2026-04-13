@@ -24,24 +24,15 @@ const CheckoutModal = ({
   confirmLabel = "Lanjut Bayar",
   cancelLabel = "Periksa Lagi"
 }: CheckoutModalProps) => {
-  // Robust scroll lock
+  // Simple scroll lock
   useEffect(() => {
     if (isOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
     } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -105,12 +96,12 @@ const CheckoutModal = ({
                  type === 'success' ? 'bg-green-500/10 text-green-500' : 
                  type === 'error' ? 'bg-red-500/10 text-red-500' : 
                  type === 'loading' ? 'bg-orange-600/10 text-orange-600' :
-                 'bg-orange-600/10 text-orange-600'
+                 'bg-blue-500/10 text-blue-500'
                }`}>
                   {type === 'success' && <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10" />}
                   {type === 'error' && <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10" />}
                   {type === 'loading' && <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin" />}
-                  {type === 'confirmation' && <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10" />}
+                  {type === 'confirmation' && <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10" />}
                </div>
 
                {/* Content */}
@@ -136,7 +127,7 @@ const CheckoutModal = ({
                {/* Actions */}
                {type !== 'loading' && (
                  <div className="w-full flex gap-4 pt-4">
-                    {onConfirm ? (
+                    {(onConfirm && type === 'confirmation') ? (
                       <>
                         <Button
                           variant="outline"
@@ -154,10 +145,10 @@ const CheckoutModal = ({
                       </>
                     ) : (
                       <Button
-                        onClick={onClose}
+                        onClick={onConfirm || onClose}
                         className="w-full h-14 bg-orange-600 text-white hover:bg-white hover:text-orange-600 rounded-xl font-bold uppercase text-[10px] tracking-widest transition-all active:scale-[0.97] border-none"
                       >
-                         {type === 'success' ? 'Lihat Pesanan' : 'Oke, Siap'}
+                         {confirmLabel || (type === 'success' ? 'Lihat Pesanan' : 'Oke, Siap')}
                       </Button>
                     )}
                  </div>

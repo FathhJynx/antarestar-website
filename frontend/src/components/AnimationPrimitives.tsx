@@ -37,7 +37,7 @@ export const SectionHeading = ({ subtitle, title, light, center }: SectionHeadin
           initial={{ y: "100%" }}
           animate={isInView ? { y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className={`font-display font-bold text-3xl md:text-4xl lg:text-5xl leading-tight text-balance ${
+          className={`font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight text-balance ${
             light ? "text-primary-foreground" : "text-foreground"
           }`}
         >

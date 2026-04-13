@@ -50,7 +50,8 @@ const fetchProducts = async () => {
 
 const Store = () => {
   const [searchParams] = useSearchParams();
-  const initialCategory = searchParams.get("category") || "Semua";
+  const rawCategory = searchParams.get("category");
+  const initialCategory = (rawCategory === "Semua" || !rawCategory) ? "Semua Gear" : rawCategory;
   const initialSort     = searchParams.get("sort")     || "Terbaru";
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
@@ -69,18 +70,52 @@ const Store = () => {
 
   const filtered = useMemo(() => {
     let result = [...products];
-    if (selectedCategory !== "Semua") result = result.filter((p: any) => p.category === selectedCategory);
+    
+    // Category Filter
+    if (selectedCategory !== "Semua Gear") {
+      result = result.filter((p: any) => p.category === selectedCategory);
+    }
+    
+    // Activity Filter
+    if (selectedActivity !== "Semua") {
+      result = result.filter((p: any) => p.activity === selectedActivity);
+    }
+    
+    // Price Filter
+    result = result.filter((p: any) => p.price >= priceMin && p.price <= priceMax);
+    
+    // Search Query
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      result = result.filter((p: any) => p.name.toLowerCase().includes(q));
+      result = result.filter((p: any) => 
+        p.name.toLowerCase().includes(q) || 
+        p.category.toLowerCase().includes(q)
+      );
     }
-    // Simple filter logic for speed and clarity
+    
+    // Sorting
+    switch (selectedSort) {
+      case "Terbaru":
+        // Assuming products are already sorted by latest, or adding an ID-based sort
+        result = result.sort((a, b) => Number(b.id) - Number(a.id));
+        break;
+      case "Terpopuler":
+        result = result.sort((a, b) => (b.sold_count || 0) - (a.sold_count || 0));
+        break;
+      case "Harga: Rendah ke Tinggi":
+        result = result.sort((a, b) => a.price - b.price);
+        break;
+      case "Harga: Tinggi ke Rendah":
+        result = result.sort((a, b) => b.price - a.price);
+        break;
+    }
+    
     return result;
-  }, [products, selectedCategory, searchQuery]);
+  }, [products, selectedCategory, selectedActivity, selectedSort, searchQuery, priceMin, priceMax]);
 
   const categories = useMemo(() => Array.from(new Set(products.map(p => p.category))) as string[], [products]);
 
-  const activeFilterCount = (selectedCategory !== "Semua" ? 1 : 0) + (priceMin > MIN_PRICE || priceMax < MAX_PRICE ? 1 : 0);
+  const activeFilterCount = (selectedCategory !== "Semua Gear" ? 1 : 0) + (priceMin > MIN_PRICE || priceMax < MAX_PRICE ? 1 : 0);
 
   return (
     <div className="min-h-screen bg-[#0B0B0B] text-white selection:bg-orange-600/30 overflow-x-hidden">
@@ -137,7 +172,8 @@ const Store = () => {
         onSortChange={setSelectedSort}
         onPriceMinChange={setPriceMin}
         onPriceMaxChange={setPriceMax}
-        onReset={() => { setSelectedCategory("Semua"); setSelectedActivity("Semua"); setSearchQuery(""); }}
+        onReset={() => { setSelectedCategory("Semua Gear"); setSelectedActivity("Semua"); setSearchQuery(""); }}
+        categories={categories}
       />
 
        <QuickAddModal 

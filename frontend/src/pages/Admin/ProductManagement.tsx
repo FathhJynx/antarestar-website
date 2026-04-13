@@ -78,7 +78,7 @@ const ProductManagement = () => {
   const createProduct = useMutation({
     mutationFn: (data: any) => api.post('/admin/catalog/products', data),
     onSuccess: () => {
-        toast.success('ASSET_INITIALIZED_SUCCESSFULLY');
+        toast.success('Produk berhasil ditambahkan.');
         refetchProducts();
         setIsModalOpen(false);
     }
@@ -87,7 +87,7 @@ const ProductManagement = () => {
   const updateProduct = useMutation({
     mutationFn: ({ id, data }: { id: string, data: any }) => api.put(`/admin/catalog/products/${id}`, data),
     onSuccess: () => {
-        toast.success('ASSET_PROTOCOL_UPDATED');
+        toast.success('Data produk berhasil diperbarui.');
         refetchProducts();
         setIsModalOpen(false);
     }
@@ -163,7 +163,7 @@ const ProductManagement = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const slotToast = toast.loading(`Uploading media slot ${index + 1}...`);
+    const slotToast = toast.loading(`Mengunggah media slot ${index + 1}...`);
     setIsUploading(prev => ({ ...prev, [index]: true }));
 
     try {
@@ -179,9 +179,9 @@ const ProductManagement = () => {
       newImages[index].image_url = newUrl;
       setFormData({ ...formData, images: newImages });
 
-      toast.success(`Media slot ${index + 1} synchronized.`, { id: slotToast });
+      toast.success(`Media slot ${index + 1} berhasil disinkronkan.`, { id: slotToast });
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Media synchronization failed', { id: slotToast });
+      toast.error(err.response?.data?.message || 'Gagal menyinkronkan media.', { id: slotToast });
     } finally {
       setIsUploading(prev => ({ ...prev, [index]: false }));
     }
@@ -202,14 +202,14 @@ const ProductManagement = () => {
   };
 
   const onConfirmDelete = async () => {
-    const loadingToast = toast.loading('TERMINATING ASSET...');
+    const loadingToast = toast.loading('MENGHAPUS PRODUK...');
     try {
       await api.delete(`/admin/catalog/products/${deleteConfig.id}`);
-      toast.success(`${deleteConfig.name} ERASED FROM LEDGER.`, { id: loadingToast });
+      toast.success(`${deleteConfig.name} BERHASIL DIHAPUS.`, { id: loadingToast });
       refetchProducts();
       setIsConfirmOpen(false);
     } catch (err) {
-      toast.error('TERMINATION_SEQUENCE_FAILED.', { id: loadingToast });
+      toast.error('GAGAL MENGHAPUS PRODUK.', { id: loadingToast });
     }
   };
 
@@ -220,26 +220,26 @@ const ProductManagement = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-white/5">
           <div>
             <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic">
-              INVENTORY <span className="text-accent underline decoration-4 underline-offset-8">PROTOCOL</span>
+              PROTOKOL <span className="text-accent underline decoration-4 underline-offset-8">INVENTARIS</span>
             </h1>
-            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Catalog Management & Stock Control Terminal</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Manajemen Katalog & Terminal Kontrol Stok</p>
           </div>
           <button 
             onClick={() => handleOpenModal()}
             className="h-16 px-10 bg-accent text-white font-display font-black uppercase text-[11px] tracking-[0.2em] rounded-2xl flex items-center gap-3 shadow-2xl shadow-accent/20 hover:scale-105 active:scale-95 transition-all group"
           >
             <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" /> 
-            INITIALIZE NEW SKU
+            TAMBAH PRODUK BARU
           </button>
         </div>
 
-        {/* Filters and Search Hub — Boxy Brutalist */}
+        {/* Filters and Search Hub */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div className="lg:col-span-8 relative group">
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-accent transition-colors" />
             <input 
               type="text" 
-              placeholder="SEARCH CATALOG BY NAME, SKU, OR CATEGORY NODE..." 
+              placeholder="CARI KATALOG BERDASARKAN NAMA, SKU, ATAU KATEGORI..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full h-16 pl-16 pr-8 bg-white/[0.02] border border-white/5 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] outline-none focus:border-accent/40 transition-all text-white placeholder:text-white/10"
@@ -248,7 +248,7 @@ const ProductManagement = () => {
           <div className="lg:col-span-4 flex gap-4">
             <button className="flex-1 h-16 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center justify-center gap-3 text-white/40 hover:text-white hover:bg-white/5 transition-all group">
               <Filter className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="text-[11px] font-black uppercase tracking-[0.2em]">FILTER HUB</span>
+              <span className="text-[11px] font-black uppercase tracking-[0.2em]">FILTER</span>
             </button>
             
             {categoryIdParam && (
@@ -268,18 +268,18 @@ const ProductManagement = () => {
           {isLoading ? (
             <div className="flex-1 flex flex-col items-center justify-center opacity-20">
                <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin mb-8 shadow-[0_0_50px_rgba(251,133,0,0.3)]" />
-               <p className="text-[12px] uppercase font-black tracking-[0.4em]">Synchronizing Inventory Hub...</p>
+               <p className="text-[12px] uppercase font-black tracking-[0.4em]">Menyinkronkan Data Inventaris...</p>
             </div>
           ) : products.length > 0 ? (
             <div className="overflow-x-auto no-scrollbar flex-1">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-white/[0.03] border-b border-white/5">
-                    <th className="px-10 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">IDENTIFIER</th>
-                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">NODE</th>
-                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">VALUATION</th>
-                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">QUANTITY</th>
-                    <th className="px-10 py-8 text-right text-[11px] font-black uppercase tracking-[0.3em] text-white/20">OPERATIONS</th>
+                    <th className="px-10 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">IDENTITAS</th>
+                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">KATEGORI</th>
+                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">HARGA</th>
+                    <th className="px-8 py-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/20">STOK</th>
+                    <th className="px-10 py-8 text-right text-[11px] font-black uppercase tracking-[0.3em] text-white/20">AKSI</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -310,7 +310,7 @@ const ProductManagement = () => {
                         <td className="px-8 py-10">
                            <div className="flex items-center gap-3 px-5 py-2.5 rounded-xl bg-white/5 border border-white/5 w-fit group-hover:border-accent/20 transition-all">
                               <Layers className="w-4 h-4 text-accent" />
-                              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60">{product.category?.name || 'GENERIC'}</span>
+                              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60">{product.category?.name || 'UMUM'}</span>
                            </div>
                         </td>
                         <td className="px-8 py-10">
@@ -321,7 +321,7 @@ const ProductManagement = () => {
                                 {maxPrice > minPrice && (
                                 <span className="text-[10px] font-black text-white/20 uppercase tracking-widest mt-2 flex items-center gap-2">
                                    <ArrowRight className="w-4 h-4 text-accent" />
-                                   UP TO {Number(maxPrice || 0).toLocaleString('id-ID')}
+                                   HINGGA {Number(maxPrice || 0).toLocaleString('id-ID')}
                                 </span>
                                 )}
                              </div>
@@ -329,7 +329,7 @@ const ProductManagement = () => {
                         <td className="px-8 py-10">
                            <div className="flex flex-col gap-3">
                              <span className={`text-[11px] font-black uppercase tracking-widest ${totalStock < 10 ? 'text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'text-white/40'}`}>
-                                {totalStock} ACTIVE UNITS
+                                {totalStock} UNIT AKTIF
                              </span>
                             <div className="w-32 h-2.5 bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5">
                                <div className={`h-full rounded-full transition-all duration-1000 ${totalStock < 10 ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]'}`} style={{ width: `${Math.min(totalStock, 100)}%` }} />
@@ -360,24 +360,24 @@ const ProductManagement = () => {
                <div className="w-24 h-24 bg-white/5 text-white rounded-[3rem] flex items-center justify-center mb-10 border border-white/10">
                   <Search className="w-12 h-12" />
                </div>
-               <h3 className="font-display font-black text-3xl uppercase tracking-tighter mb-4 italic">VOID DETECTED</h3>
-               <p className="text-[12px] text-white font-black uppercase tracking-[0.4em] max-w-sm mx-auto leading-relaxed">System failed to resolve catalog data in the current sector.</p>
+               <h3 className="font-display font-black text-3xl uppercase tracking-tighter mb-4 italic">DATA KOSONG</h3>
+               <p className="text-[12px] text-white font-black uppercase tracking-[0.4em] max-w-sm mx-auto leading-relaxed">Sistem gagal menemukan data katalog di sektor ini.</p>
              </div>
            )}
         </div>
       </div>
 
-      {/* AdminModal Hub — Viewport Fixed & Centered Portal */}
+      {/* AdminModal Hub */}
       <AdminModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} maxWidth="max-w-6xl">
-        {/* Modal Header — Fixed Header */}
+        {/* Modal Header */}
         <div className="px-12 py-10 border-b border-white/5 flex items-center justify-between bg-[#111] shrink-0">
            <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">System Configuration Hub</h2>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">Pusat Konfigurasi Sistem</h2>
               </div>
               <h3 className="font-display font-black text-4xl uppercase tracking-tighter italic text-white">
-                {editingProduct ? 'UPDATE' : 'INITIALIZE'} <span className="text-accent underline decoration-4">ASSET-PROTOCOL</span>
+                {editingProduct ? 'PERBARUI' : 'TAMBAH'} <span className="text-accent underline decoration-4">PROTOKOL-ASET</span>
               </h3>
            </div>
            <button 
@@ -388,30 +388,30 @@ const ProductManagement = () => {
            </button>
         </div>
 
-        {/* Modal Body — Fluid Focused Scroll */}
+        {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-12 space-y-16 scroll-smooth bg-[#0B0B0B] scrollbar-stealth">
            <form id="productForm" onSubmit={handleSubmit} className="space-y-16">
               {/* Section 1: Core Identification */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-body">
                  <div className="lg:col-span-4">
-                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">CORE IDENT</h4>
-                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Define the primary metadata for the asset in the global catalog system.</p>
+                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">IDENTITAS INTI</h4>
+                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Tentukan metadata utama untuk produk dalam sistem katalog global.</p>
                  </div>
                  <div className="lg:col-span-8 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                        <div className="space-y-3">
-                          <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1">Asset Label Name</label>
+                          <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1">Nama Produk</label>
                           <input 
                             type="text" 
                             required
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black uppercase tracking-widest outline-none focus:border-accent transition-all text-white"
-                            placeholder="DESIGNATION KEY..."
+                            placeholder="NAMA PRODUK..."
                           />
                        </div>
                        <div className="space-y-3">
-                          <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1">Category Hub Node</label>
+                          <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1">Kategori Produk</label>
                           <div className="relative">
                             <select 
                                 required
@@ -419,7 +419,7 @@ const ProductManagement = () => {
                                 onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
                                 className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black uppercase tracking-widest outline-none focus:border-accent transition-all text-white appearance-none cursor-pointer"
                             >
-                                <option value="" className="bg-[#111]">SELECT SECTOR</option>
+                                <option value="" className="bg-[#111]">PILIH KATEGORI</option>
                                 {categories.map((cat: any) => (
                                 <option key={cat.id} value={cat.id} className="bg-[#111]">{cat.name.toUpperCase()}</option>
                                 ))}
@@ -429,14 +429,14 @@ const ProductManagement = () => {
                        </div>
                     </div>
                     <div className="space-y-3">
-                       <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1 font-bold">Asset Log Description</label>
+                       <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 ml-1 font-bold">Deskripsi Produk</label>
                        <textarea 
                          rows={4}
                          required
                          value={formData.description}
                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                          className="w-full p-8 bg-white/5 border border-white/5 rounded-[2rem] text-[12px] font-medium leading-relaxed outline-none focus:border-accent transition-all text-white/70 resize-none no-scrollbar"
-                         placeholder="ENCRYPTED ASSET DATA LOGS..."
+                         placeholder="DESKRIPSI PRODUK..."
                        />
                     </div>
                  </div>
@@ -445,14 +445,14 @@ const ProductManagement = () => {
               {/* Section 2: Variation Specs */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-body">
                  <div className="lg:col-span-4">
-                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">SPEC VARIATIONS</h4>
-                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Synchronize multiple variants, pricing tiers, and stock payloads across all nodes.</p>
+                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">VARIAN PRODUK</h4>
+                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Sinkronkan berbagai varian, tingkatan harga, dan data stok di semua node.</p>
                     <button 
                       type="button"
                       onClick={handleAddVariant}
                       className="mt-8 w-full h-14 border-2 border-dashed border-white/10 hover:border-accent/40 hover:bg-accent/5 text-white/20 hover:text-accent rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3"
                     >
-                       <Plus className="w-5 h-5" /> ADD OVERRIDE
+                       <Plus className="w-5 h-5" /> TAMBAH VARIAN
                     </button>
                  </div>
                  <div className="lg:col-span-8 space-y-6">
@@ -465,7 +465,7 @@ const ProductManagement = () => {
                        >
                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                               <div className="md:col-span-2 space-y-3">
-                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Variant Signature</label>
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Nama Varian</label>
                                  <input 
                                    type="text"
                                    required
@@ -476,11 +476,11 @@ const ProductManagement = () => {
                                       setFormData({ ...formData, variants: newVariants });
                                    }}
                                    className="w-full h-14 px-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black uppercase outline-none focus:border-accent text-white"
-                                   placeholder="VARIANT DESIGNATION..."
+                                   placeholder="NAMA VARIAN (CONTOH: XL, HITAM, DSB)..."
                                  />
                               </div>
                               <div className="space-y-3 text-right">
-                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Valuation Unit</label>
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Harga Satuan</label>
                                  <div className="relative">
                                     <span className="absolute left-5 top-1/2 -translate-y-1/2 text-accent font-black text-[10px]">RP</span>
                                     <input 
@@ -497,7 +497,7 @@ const ProductManagement = () => {
                                  </div>
                               </div>
                               <div className="space-y-3">
-                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Inventory Capacity</label>
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Kapasitas Stok</label>
                                  <input 
                                    type="number"
                                    required
@@ -511,7 +511,7 @@ const ProductManagement = () => {
                                  />
                               </div>
                                <div className="space-y-3">
-                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Dimension / Size</label>
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Ukuran / Dimensi</label>
                                  <input 
                                    type="text"
                                    value={variant.size || ''}
@@ -521,11 +521,11 @@ const ProductManagement = () => {
                                       setFormData({ ...formData, variants: newVariants });
                                    }}
                                    className="w-full h-14 px-6 bg-black/40 border border-white/5 rounded-xl text-[11px] font-black uppercase outline-none focus:border-accent text-white"
-                                   placeholder="SIZE (XL, 42, etc)"
+                                   placeholder="UKURAN (XL, 42, DSB)"
                                  />
                               </div>
                               <div className="space-y-3">
-                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Chroma Code</label>
+                                 <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Kode Warna</label>
                                  <div className="flex gap-4">
                                     <input 
                                       type="text"
@@ -559,14 +559,14 @@ const ProductManagement = () => {
               {/* Section 3: Asset Visuals */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-body">
                  <div className="lg:col-span-4">
-                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">VISUAL MANIFEST</h4>
-                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Deploy visual assets to the global storefront infrastructure.</p>
+                    <h4 className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20 mb-4 sticky top-0 uppercase">MANIFEST VISUAL</h4>
+                    <p className="text-[11px] text-white/40 font-medium leading-relaxed italic uppercase">Unggah aset visual ke infrastruktur toko global.</p>
                     <button 
                       type="button"
                       onClick={handleAddImage}
                       className="mt-8 w-full h-14 border-2 border-dashed border-white/10 hover:border-accent/40 hover:bg-accent/5 text-white/20 hover:text-accent rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-3"
                     >
-                       <Camera className="w-5 h-5" /> ADD MEDIA SLOT
+                       <Camera className="w-5 h-5" /> TAMBAH SLOT MEDIA
                     </button>
                  </div>
                  <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -583,7 +583,7 @@ const ProductManagement = () => {
                               {isUploading[idx] && (
                                  <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center">
                                     <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
-                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">UPLOADING...</span>
+                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent">MENGUNGGAH...</span>
                                  </div>
                               )}
                            </div>
@@ -600,12 +600,12 @@ const ProductManagement = () => {
                                        setFormData({ ...formData, images: newImages });
                                     }}
                                     className="w-full h-14 pl-12 pr-6 bg-black/40 border border-white/5 rounded-xl text-[10px] font-bold outline-none focus:border-accent text-white"
-                                    placeholder="MEDIA SOURCE URL..."
+                                    placeholder="URL SUMBER MEDIA..."
                                  />
                               </div>
                               <div className="flex gap-3">
                                  <label className="flex-1 h-14 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-widest cursor-pointer transition-all">
-                                    <Zap className="w-4 h-4 fill-current" /> SYNC UPLOAD
+                                    <Zap className="w-4 h-4 fill-current" /> UNGGAH GAMBAR
                                     <input 
                                        type="file" 
                                        className="hidden" 
@@ -632,14 +632,14 @@ const ProductManagement = () => {
            </form>
         </div>
 
-        {/* Modal Footer — Action Hub */}
+        {/* Modal Footer */}
         <div className="px-12 py-10 border-t border-white/5 flex items-center justify-between bg-[#111] shrink-0">
            <button 
              type="button" 
              onClick={() => setIsModalOpen(false)} 
              className="h-16 px-10 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] text-white/30 hover:bg-white/5 hover:text-white transition-all border border-white/5 bg-transparent"
            >
-              ABORT_SYNC
+              BATALKAN
            </button>
            <button 
               type="submit" 
@@ -650,7 +650,7 @@ const ProductManagement = () => {
               {(createProduct.isPending || updateProduct.isPending) ? (
                 <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
               ) : <Save className="w-5 h-5" />}
-              {editingProduct ? 'SYNC_PROTOCOL' : 'AUTHORIZE_LISTING'}
+              {editingProduct ? 'SIMPAN PERUBAHAN' : 'TERBITKAN PRODUK'}
            </button>
         </div>
       </AdminModal>
@@ -660,9 +660,9 @@ const ProductManagement = () => {
          isOpen={isConfirmOpen}
          onClose={() => setIsConfirmOpen(false)}
          onConfirm={onConfirmDelete}
-         title="ASSET TERMINATION"
-         message={`AUTHORIZING PERMANENT DELETION OF ${deleteConfig.name.toUpperCase()}. THIS ACTION IS IRREVERSIBLE. ALL LINKED LOGS AND VARIANTS WILL BE WIPED FROM THE CORE LEDGER.`}
-         confirmText="ERASE PERMANENTLY"
+         title="PENGHAPUSAN PRODUK"
+         message={`KONFIRMASI PENGHAPUSAN PERMANEN UNTUK ${deleteConfig.name.toUpperCase()}. TINDAKAN INI TIDAK DAPAT DIBATALKAN. SELURUH LOG DAN VARIAN TERKAIT AKAN DIHAPUS DARI DATABASE UTAMA.`}
+         confirmText="HAPUS PERMANEN"
          variant="danger"
        />
     </AdminLayout>

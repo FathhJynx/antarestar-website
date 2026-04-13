@@ -8,7 +8,7 @@ interface FilterBarProps {
 }
 
 const FilterBar = ({ categories, selectedCategory, onCategoryChange }: FilterBarProps) => {
-  const allCategories = ["Semua Gear", ...categories];
+  const allCategories = ["Semua Gear", ...categories.filter(c => c !== "Semua Gear")];
 
   return (
     <div className="w-full overflow-x-auto scrollbar-hide py-4 px-4 sm:px-6 lg:px-8">

@@ -12,9 +12,9 @@ const BrandStory = () => {
   const imgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   const stats = [
-    { num: "100+", label: "Products" },
-    { num: "50K+", label: "Adventurers" },
-    { num: "34", label: "Provinces Reached" },
+    { num: "100+", label: "Pilihan Produk" },
+    { num: "50K+", label: "Explorer Aktif" },
+    { num: "34", label: "Provinsi Terjangkau" },
   ];
 
   return (
@@ -45,7 +45,7 @@ const BrandStory = () => {
                 className="absolute -bottom-6 -right-4 md:-right-8 glass-light rounded-2xl p-6 shadow-xl border border-border/50"
               >
                 <p className="font-display font-black text-4xl md:text-5xl text-accent">5+</p>
-                <p className="font-body text-xs tracking-wider uppercase text-muted-foreground mt-1">Years of<br/>Adventure</p>
+                <p className="font-body text-xs tracking-wider uppercase text-muted-foreground mt-1">Tahun<br/>Berpetualang</p>
               </motion.div>
               {/* Decorative accent */}
               <div className="absolute -top-3 -left-3 w-20 h-20 border-l-2 border-t-2 border-accent/30 rounded-tl-2xl" />
@@ -54,17 +54,15 @@ const BrandStory = () => {
 
           {/* Text */}
           <div>
-            <SectionHeading subtitle="Our Story" title="Born from the Mountains of Indonesia" />
+            <SectionHeading subtitle="Cerita Kita" title="Lahir dari Gunung-Gunung Indonesia" />
             <Reveal delay={0.2}>
               <p className="font-body text-muted-foreground leading-[1.8] mb-5 text-[15px]">
-                Antarestar was founded with a simple belief: every first step matters. From the volcanic peaks of Java to the
-                rainforests of Sumatra, we design gear that empowers Indonesian adventurers to explore boldly and responsibly.
+                Antarestar bermula dari satu keyakinan: langkah pertama itu yang paling penting. Dari puncak Merapi sampai rimbunnya hutan Sumatera, kita bikin gear yang bikin lo makin pede buat eksplor Indonesia.
               </p>
             </Reveal>
             <Reveal delay={0.3}>
               <p className="font-body text-muted-foreground leading-[1.8] mb-10 text-[15px]">
-                Our products blend functional outdoor performance with urban street style — because adventure doesn't stop when
-                you leave the trail. Whether you're summiting Rinjani or navigating the city, Antarestar has you covered.
+                Gear kita nggak cuma oke buat muncak, tapi juga keren buat nongkrong di kota. Mau naik Rinjani atau sekadar jalan-jalan santai, Antarestar siap nemenin lo.
               </p>
             </Reveal>
 

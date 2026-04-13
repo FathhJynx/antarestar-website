@@ -114,9 +114,9 @@ const AdminDashboard = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-10">
           <div>
             <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic">
-              OVERVIEW <span className="text-accent underline decoration-4 underline-offset-8">DASHBOARD</span>
+              RINGKASAN <span className="text-accent underline decoration-4 underline-offset-8">DASBOR</span>
             </h1>
-            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">System Pulse & Transactional Metrics</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Metrik Transaksi & Denyut Sistem</p>
           </div>
           <div className="flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/10 rounded-2xl">
              <div className="flex -space-x-2">
@@ -127,7 +127,7 @@ const AdminDashboard = () => {
                 ))}
              </div>
              <div className="h-4 w-px bg-white/10 mx-2" />
-             <span className="text-[10px] font-black uppercase tracking-widest text-white/50">3 Active Operators</span>
+             <span className="text-[10px] font-black uppercase tracking-widest text-white/50">3 Operator Aktif</span>
           </div>
         </div>
 
@@ -168,13 +168,13 @@ const AdminDashboard = () => {
                        <DollarSign className="w-6 h-6" />
                     </div>
                     <div>
-                       <h3 className="font-display font-black text-2xl uppercase tracking-tighter">REVENUE <span className="text-white/30">STREAM</span></h3>
-                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Active Node: Transact-Alpha-01</p>
+                       <h3 className="font-display font-black text-2xl uppercase tracking-tighter">ALIRAN <span className="text-white/30">PENDAPATAN</span></h3>
+                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Node Aktif: Transact-Alpha-01</p>
                     </div>
                  </div>
                  <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/5">
-                    <button className="px-6 py-2.5 bg-accent text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-accent/20 transition-all">WEEKLY</button>
-                    <button className="px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors">MONTHLY</button>
+                    <button className="px-6 py-2.5 bg-accent text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-accent/20 transition-all">MINGGUAN</button>
+                    <button className="px-6 py-2.5 text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors">BULANAN</button>
                  </div>
               </div>
               
@@ -211,7 +211,7 @@ const AdminDashboard = () => {
                           }}
                           labelStyle={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '8px', color: '#ffffff30' }}
                           itemStyle={{ fontSize: '14px', fontWeight: 900, color: '#FB8500' }}
-                          formatter={(value: number) => [`Rp ${Number(value || 0).toLocaleString('id-ID')}`, 'VALUATION']}
+                          formatter={(value: number) => [`Rp ${Number(value || 0).toLocaleString('id-ID')}`, 'NILAI']}
                        />
                        <Area 
                           type="monotone" 
@@ -234,13 +234,13 @@ const AdminDashboard = () => {
                   <div className="absolute top-0 right-0 w-48 h-48 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-125 transition-transform duration-1000" />
                   <div className="relative z-10 flex flex-col h-full">
                     <Zap className="w-12 h-12 mb-8 text-white fill-current" />
-                    <h3 className="font-display font-black text-3xl uppercase tracking-tighter mb-4 italic leading-none">FLASH <br/>PROTOCOL</h3>
+                    <h3 className="font-display font-black text-3xl uppercase tracking-tighter mb-4 italic leading-none">PROTOKOL <br/>FLASH SALE</h3>
                     <div className="flex items-center gap-3 mb-10">
                        <div className="w-2 h-2 bg-white rounded-full animate-ping" />
-                       <p className="text-[11px] font-black text-white/70 uppercase tracking-[0.3em]">{stats?.promotions?.active_flash_sales || 0} ACTIVE CAMPAIGNS</p>
+                       <p className="text-[11px] font-black text-white/70 uppercase tracking-[0.3em]">{stats?.promotions?.active_flash_sales || 0} KAMPANYE AKTIF</p>
                     </div>
                     <button className="h-16 w-full rounded-2xl bg-white text-accent font-display font-black uppercase text-[11px] tracking-[0.2em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-3">
-                      OVERRIDE <ArrowRight className="w-5 h-5" />
+                      KELOLA <ArrowRight className="w-5 h-5" />
                     </button>
                   </div>
               </div>
@@ -251,11 +251,11 @@ const AdminDashboard = () => {
                     <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white border border-white/10">
                        <Package className="w-6 h-6" />
                     </div>
-                    <h3 className="font-display font-black text-xl uppercase tracking-tighter">STOCK <span className="text-white/20">STATUS</span></h3>
+                    <h3 className="font-display font-black text-xl uppercase tracking-tighter">STATUS <span className="text-white/20">STOK</span></h3>
                  </div>
                  <div className="space-y-8">
                     <div className="flex items-center justify-between">
-                       <p className="text-[10px] font-black text-white/30 uppercase tracking-widest">CRITICAL SKU</p>
+                       <p className="text-[10px] font-black text-white/30 uppercase tracking-widest">SKU KRITIS</p>
                        <span className="text-2xl font-black text-white">{stats?.inventory?.low_stock_count || 0} UNIT</span>
                     </div>
                     <div className="h-3 bg-white/5 rounded-full overflow-hidden border border-white/5">
@@ -267,7 +267,7 @@ const AdminDashboard = () => {
                        />
                     </div>
                     <Link to="/admin/products" className="w-full h-14 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2">
-                       RESOLVE INVENTORY <ExternalLink className="w-4 h-4 text-xs" />
+                       PERBARUI STOK <ExternalLink className="w-4 h-4 text-xs" />
                     </Link>
                  </div>
               </div>
@@ -282,12 +282,12 @@ const AdminDashboard = () => {
                    <Clock className="w-6 h-6 text-white/40" />
                  </div>
                  <div>
-                    <h3 className="font-display font-black text-2xl uppercase tracking-tighter">RECENT <span className="text-accent underline">HISTORY</span></h3>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">Encrypted Ledger Logs</p>
+                    <h3 className="font-display font-black text-2xl uppercase tracking-tighter">RIWAYAT <span className="text-accent underline">TERBARU</span></h3>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">Log Transaksi Terenkripsi</p>
                  </div>
               </div>
               <Link to="/admin/orders" className="h-12 px-8 bg-white/5 rounded-xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/60 hover:bg-accent hover:text-white hover:border-accent transition-all flex items-center gap-3">
-                 FULL DATABASE SYNC <ArrowRight className="w-4 h-4" />
+                 SINKRONISASI DATA <ArrowRight className="w-4 h-4" />
               </Link>
            </div>
 
@@ -295,11 +295,11 @@ const AdminDashboard = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-white/[0.02]">
-                    <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">LOG ID</th>
-                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">ENTITY</th>
-                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">PRAGMA</th>
-                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">VALUATION</th>
-                    <th className="px-10 py-6 text-right text-[10px] font-black uppercase tracking-[0.3em] text-white/20">TIMESTAMP</th>
+                    <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">ID LOG</th>
+                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">ENTITAS</th>
+                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">KETERANGAN</th>
+                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">STATUS</th>
+                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 text-right">AKSI</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -332,7 +332,7 @@ const AdminDashboard = () => {
               {(!stats?.recent_orders || stats.recent_orders.length === 0) && (
                 <div className="py-24 flex flex-col items-center justify-center opacity-10">
                    <ShoppingBag className="w-16 h-16 mb-6" />
-                   <p className="text-[12px] font-black uppercase tracking-[0.4em]">NO LOGS DETECTED</p>
+                   <p className="text-[12px] font-black uppercase tracking-[0.4em]">TIDAK ADA DATA TERDETEKSI</p>
                 </div>
               )}
            </div>

@@ -33,14 +33,14 @@ const SoldProducts = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-white/5">
           <div>
             <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic">
-              SOLD <span className="text-accent underline decoration-4 underline-offset-8">INVENTORY</span>
+              LAPORAN <span className="text-accent underline decoration-4 underline-offset-8">PENJUALAN</span>
             </h1>
-            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Mission equipment dispatch & delivered unit log</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Log Pengiriman Peralatan & Unit Terjual</p>
           </div>
           <div className="bg-white/[0.02] border border-white/5 rounded-2xl px-6 h-14 flex items-center gap-4">
             <TrendingUp className="w-5 h-5 text-green-400" />
             <div>
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">TOTAL UNITS</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">TOTAL UNIT</p>
               <p className="text-lg font-black text-white italic">{pagination?.total || 0}</p>
             </div>
           </div>
@@ -52,7 +52,7 @@ const SoldProducts = () => {
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-accent transition-colors" />
             <input
               type="text"
-              placeholder="SEARCH BY PRODUCT OR VARIANT..."
+              placeholder="CARI BERDASARKAN PRODUK ATAU VARIAN..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               className="w-full h-14 pl-16 pr-6 bg-white/[0.02] border border-white/5 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] outline-none focus:border-accent/40 transition-all text-white placeholder:text-white/10"
@@ -69,19 +69,19 @@ const SoldProducts = () => {
           {isLoading ? (
             <div className="h-96 flex flex-col items-center justify-center opacity-20">
               <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mb-6" />
-              <p className="text-[10px] uppercase font-black tracking-[0.4em]">Compiling dispatch logs...</p>
+              <p className="text-[10px] uppercase font-black tracking-[0.4em]">Menyusun log pengiriman...</p>
             </div>
           ) : items.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-white/5 bg-white/[0.02]">
-                    <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">PRODUCT & VARIANT</th>
+                    <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">PRODUK & VARIAN</th>
                     <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 text-center">QTY</th>
-                    <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">PRICE</th>
-                    <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">BUYER</th>
-                    <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">ORDER_ID</th>
-                    <th className="px-10 py-6 text-right text-[10px] font-black uppercase tracking-[0.3em] text-white/20">DATE</th>
+                    <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">HARGA SATUAN</th>
+                    <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">PEMBELI</th>
+                    <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">ID PESANAN</th>
+                    <th className="px-10 py-6 text-right text-[10px] font-black uppercase tracking-[0.3em] text-white/20">TANGGAL</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/[0.03]">
@@ -124,7 +124,7 @@ const SoldProducts = () => {
                           <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center text-[11px] font-black">
                             {item.order?.user?.name?.[0] || 'U'}
                           </div>
-                          <p className="text-[11px] font-black uppercase tracking-tight text-white/60 italic">{item.order?.user?.name || 'Member'}</p>
+                          <p className="text-[11px] font-black uppercase tracking-tight text-white/60 italic">{item.order?.user?.name || 'Anggota'}</p>
                         </div>
                       </td>
                       <td className="px-6 py-7">
@@ -152,8 +152,8 @@ const SoldProducts = () => {
           ) : (
             <div className="h-96 flex flex-col items-center justify-center text-center opacity-20">
               <ShoppingBag className="w-16 h-16 mb-6" />
-              <h3 className="font-display font-black text-xl uppercase tracking-tighter italic">NO DISPATCH LOGGED</h3>
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] mt-2">No units have been sold yet.</p>
+              <h3 className="font-display font-black text-xl uppercase tracking-tighter italic">TIDAK ADA DATA PENGIRIMAN</h3>
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] mt-2">Belum ada unit produk yang terjual.</p>
             </div>
           )}
         </div>

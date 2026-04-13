@@ -34,8 +34,8 @@ const Login = () => {
         const { user, token } = response.data.data;
         login(user, token);
         
-        toast.success("Selamat Datang Kembali!", {
-          description: "Anda telah berhasil masuk ke Antarestar Explorer Hub.",
+        toast.success("Wuih, Balik Lagi Nih! 🔥", {
+          description: "Lo udah masuk ke markas. Siap lanjut petualangan?",
         });
         navigate(from, { replace: true });
       }
@@ -43,7 +43,7 @@ const Login = () => {
       // Extract specific error messages if available (from Laravel Validation)
       const errorMsg = error.response?.data?.errors 
         ? Object.values(error.response.data.errors).flat()[0] as string
-        : error.response?.data?.message || "Email atau password salah.";
+        : error.response?.data?.message || "Email atau password lo salah nih.";
 
       toast.error("Login Gagal", {
         description: errorMsg,
@@ -80,7 +80,7 @@ const Login = () => {
 
           <div className="mb-10">
             <h1 className="font-display font-black text-4xl text-white uppercase tracking-tight mb-3 italic">SIAP LANJUT MISI?</h1>
-            <p className="text-white/50 text-sm">Siapkan diri lo untuk petualangan selanjutnya. Gas masuk!</p>
+            <p className="text-white/50 text-sm">Siapkan gear dan mental lo buat misi selanjutnya. Yuk gas masuk!</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -139,12 +139,12 @@ const Login = () => {
           </form>
 
           <div className="mt-12 pt-8 border-t border-white/5 flex flex-col items-center gap-6">
-            <p className="text-white/30 text-[10px] font-black uppercase tracking-widest">Belum join?</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-widest">Belum masuk regu?</p>
             <Link 
               to="/register" 
               className="w-full h-14 border border-white/10 hover:border-orange-600 hover:bg-orange-600/5 hover:text-orange-600 flex items-center justify-center font-display font-black text-[11px] uppercase tracking-[0.2em] rounded-none transition-all"
             >
-              YUK JOIN MEMBER
+              YUK GABUNG EXPLORER
             </Link>
             
             <div className="flex items-center gap-2 text-muted-foreground/40 font-body text-[10px] uppercase tracking-widest">

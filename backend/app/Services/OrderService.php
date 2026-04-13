@@ -235,11 +235,6 @@ class OrderService
 
     public function updateOrderStatus(string $orderId, string $status)
     {
-        $validStatuses = ['unpaid', 'pending', 'processing', 'shipped', 'completed', 'cancelled'];
-        if (!in_array($status, $validStatuses)) {
-            throw new BadRequestHttpException('Invalid status: ' . $status);
-        }
-
         $order = $this->orderRepository->findWithRelations($orderId);
         
         if ($status === 'cancelled' && $order->status !== 'cancelled') {

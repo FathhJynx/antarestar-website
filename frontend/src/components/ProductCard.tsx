@@ -70,7 +70,7 @@ const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     
     setTimeout(() => {
       setIsAdding(false);
-      toast.success(`${product.name} ditambahkan ke keranjang`);
+      toast.success(`Mantap! ${product.name} udah masuk tas lo 👌`);
     }, 500);
   };
 
@@ -138,13 +138,13 @@ const GridCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
               onClick={handleBuyNow}
               className="w-full h-12 bg-black dark:bg-white text-white dark:text-black font-display text-[10px] font-black tracking-[0.3em] uppercase hover:bg-orange-600 hover:text-white transition-colors duration-500 flex items-center justify-center gap-2 rounded-none"
             >
-               <Zap className="w-4 h-4" /> Instant Buy
+               <Zap className="w-4 h-4" /> Langsung Sikat
             </button>
             <button
               onClick={handleAddToCart}
               className="w-full h-12 bg-white/10 backdrop-blur-md text-white font-display text-[10px] font-black tracking-[0.3em] uppercase hover:bg-white hover:text-black transition-colors duration-500 flex items-center justify-center gap-2 rounded-none"
             >
-               <ShoppingBag className="w-4 h-4" /> Add to Arsenal
+               <ShoppingBag className="w-4 h-4" /> Masuk Tas
             </button>
           </div>
         </div>
@@ -208,7 +208,7 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
     
     setTimeout(() => {
       setIsAdding(false);
-      toast.success(`${product.name} ditambahkan ke keranjang`);
+      toast.success(`Mantap! ${product.name} udah masuk tas lo 👌`);
     }, 500);
   };
 
@@ -289,7 +289,7 @@ const ListCard = ({ product, index = 0, onQuickAdd }: { product: Product; index:
                onClick={handleAddToCart}
                className="h-16 px-10 bg-white text-black font-display text-[11px] font-black uppercase tracking-[0.3em] hover:bg-orange-600 hover:text-white transition-all rounded-none"
             >
-               Add to Arsenal
+               Masuk Tas
             </button>
             <button className="w-16 h-16 bg-white/5 flex items-center justify-center hover:bg-red-600 transition-all rounded-none">
               <Heart className="w-5 h-5 text-white" />

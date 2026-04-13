@@ -66,7 +66,7 @@ class AuthService
         $user = $this->authRepository->findByEmail($credentials['email']);
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            throw ValidationException::withMessages(['email' => 'Invalid credentials.']);
+            throw ValidationException::withMessages(['email' => 'email atau password yang lo masukkin salah nih']);
         }
 
         // Revoke all existing tokens

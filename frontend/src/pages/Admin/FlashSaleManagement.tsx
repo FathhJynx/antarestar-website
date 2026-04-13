@@ -15,7 +15,8 @@ import {
   XCircle, 
   X, 
   ChevronRight,
-  Plus
+  Plus,
+  MapPin
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AdminLayout from '@/layouts/AdminLayout';
@@ -69,42 +70,42 @@ const FlashSaleManagement = () => {
     try {
       if (editingCampaign) {
         await updateCampaign.mutateAsync({ id: editingCampaign.id, ...formData });
-        toast.success('CAMPAIGN_UPDATED_IN_REGISTRY');
+        toast.success('Kampanye berhasil diperbarui.');
       } else {
         await createCampaign.mutateAsync(formData);
-        toast.success('NEW_CAMPAIGN_DEPLOYED');
+        toast.success('Kampanye baru berhasil diterbitkan.');
       }
       setIsModalOpen(false);
       setEditingCampaign(null);
       setFormData({ name: '', start_date: '', end_date: '', is_active: true });
       refetchCampaigns();
     } catch (error) {
-      toast.error('PAYLOAD_REJECTED_BY_SERVER');
+      toast.error('Gagal memproses data kampanye.');
     }
   };
 
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    const t = toast.loading('Injecting asset into campaign node...');
+    const t = toast.loading('Menambahkan produk ke kampanye...');
     try {
       await api.post(`/admin/flash-sales/${selectedCampaignId}/products`, productFormData);
-      toast.success('ASSET_INJECTED_SUCCESSFULLY', { id: t });
+      toast.success('Produk berhasil ditambahkan ke kampanye.', { id: t });
       setIsProductModalOpen(false);
       setProductFormData({ product_id: '', discount_type: 'percentage', discount_value: '', sale_stock: '' });
       refetchCampaigns();
     } catch (err: any) {
-      toast.error('INJECTION_FAILED', { id: t });
+      toast.error('Gagal menambahkan produk.', { id: t });
     }
   };
 
   const handleRemoveProduct = async (id: string) => {
-    if (!confirm('TERMINATE_ASSET_FROM_CAMPAIGN?')) return;
-    const t = toast.loading('Removing node...');
+    if (!confirm('KONFIRMASI PENGHAPUSAN PRODUK DARI KAMPANYE?')) return;
+    const t = toast.loading('Menghapus produk...');
     try {
       await api.delete(`/admin/flash-sales/products/${id}`);
-      toast.success('NODE_ERASED', { id: t });
+      toast.success('Produk berhasil dihapus.', { id: t });
       refetchCampaigns();
-    } catch (err) { toast.error('ERASE_FAILED', { id: t }); }
+    } catch (err) { toast.error('Gagal menghapus produk.', { id: t }); }
   };
 
   const toggleStatus = async (campaign: any) => {
@@ -113,9 +114,9 @@ const FlashSaleManagement = () => {
         ...campaign, 
         is_active: !campaign.is_active 
       });
-      toast.success(`Broadcasting state toggled for ${campaign.name}`);
+      toast.success(`Status penyiaran diperbarui untuk ${campaign.name}`);
       refetchCampaigns();
-    } catch (err) { toast.error('Signal transmission failed.'); }
+    } catch (err) { toast.error('Gagal memperbarui status transmisi.'); }
   };
 
   const handleDelete = (id: string, name: string) => {
@@ -124,13 +125,13 @@ const FlashSaleManagement = () => {
   };
 
   const onConfirmDelete = async () => {
-    const t = toast.loading('Wiping campaign from system...');
+    const t = toast.loading('Menghapus kampanye dari sistem...');
     try {
       await api.delete(`/admin/flash-sales/${deleteConfig.id}`);
-      toast.success('Campaign terminated.', { id: t });
+      toast.success('Kampanye berhasil dihapus.', { id: t });
       refetchCampaigns();
       setIsConfirmOpen(false);
-    } catch (err) { toast.error('Termination sequence failed.', { id: t }); }
+    } catch (err) { toast.error('Gagal menghapus kampanye.', { id: t }); }
   };
 
   const handleOpenModal = (campaign: any = null) => {
@@ -155,20 +156,20 @@ const FlashSaleManagement = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-white/5">
           <div>
             <h1 className="font-display font-black text-4xl uppercase tracking-tighter mb-3 italic text-white shadow-red-500/10">
-              FLASH <span className="text-red-600 underline decoration-4 underline-offset-8">SALE</span> CTR
+              KENDALI <span className="text-red-600 underline decoration-4 underline-offset-8">FLASH SALE</span>
             </h1>
-            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">High-Velocity Temporal Campaign Terminal</p>
+            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.4em]">Terminal Manajemen Kampanye Temporal Berkecepatan Tinggi</p>
           </div>
           <button onClick={() => handleOpenModal()} className="h-16 px-10 bg-red-600 shadow-2xl shadow-red-600/20 text-white font-display font-black uppercase text-[11px] tracking-[0.2em] rounded-2xl flex items-center gap-3 hover:scale-105 active:scale-95 transition-all group">
             <Zap className="w-5 h-5 group-hover:scale-125 transition-transform" /> 
-            INITIALIZE NEW CAMPAIGN
+            TERBITKAN KAMPANYE BARU
           </button>
         </div>
 
         {/* Stats Strip */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-3">ACTIVE_CAMPAIGNS</p>
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-3">KAMPANYE_AKTIF</p>
             <div className="flex items-center justify-between">
               <h4 className="text-4xl font-display font-black text-white italic">{campaigns.filter((c: any) => c.is_active).length}</h4>
               <div className="w-14 h-14 bg-red-500/10 border border-red-500/10 rounded-2xl flex items-center justify-center text-red-500">
@@ -177,7 +178,7 @@ const FlashSaleManagement = () => {
             </div>
           </div>
           <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-3">PRODUCTS ON SALE</p>
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 mb-3">PRODUK DISKON</p>
             <div className="flex items-center justify-between">
               <h4 className="text-4xl font-display font-black text-white italic">
                 {campaigns.reduce((acc: number, c: any) => acc + (c.products?.length || 0), 0)}
@@ -189,9 +190,9 @@ const FlashSaleManagement = () => {
           </div>
           <div className="bg-red-600 rounded-[2rem] p-8 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-red-100 mb-3 relative z-10 font-bold">PRIORITY_MODE</p>
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-red-100 mb-3 relative z-10 font-bold">MODE_PRIORITAS</p>
             <div className="flex items-center justify-between relative z-10">
-              <h4 className="text-2xl font-display font-black text-white italic uppercase">HIGH SPEED Hub</h4>
+              <h4 className="text-2xl font-display font-black text-white italic uppercase">KECEPATAN TINGGI</h4>
               <TrendingDown className="w-7 h-7 text-white/60" />
             </div>
           </div>
@@ -225,21 +226,21 @@ const FlashSaleManagement = () => {
                     <div className="space-y-3 mb-6">
                       <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
                         <Calendar className="w-4 h-4 text-red-500" />
-                        {new Date(campaign.start_date).toLocaleDateString()} Hub {'->'} {new Date(campaign.end_date).toLocaleDateString()}
+                        {new Date(campaign.start_date).toLocaleDateString('id-ID')} {'->'} {new Date(campaign.end_date).toLocaleDateString('id-ID')}
                       </div>
                       <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
                         <Clock className="w-4 h-4 text-red-500" />
-                        {new Date(campaign.start_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} Hub - {new Date(campaign.end_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        {new Date(campaign.start_date).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} - {new Date(campaign.end_date).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})}
                       </div>
                       {isLive && (
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-400/10 border border-green-400/20 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-green-400">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />BROADCASTING LIVE
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />SEDANG BERLANGSUNG
                         </div>
                       )}
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => handleOpenModal(campaign)} className="h-11 px-5 bg-white/5 border border-white/5 text-white/40 rounded-2xl font-black uppercase text-[9px] tracking-widest hover:border-white/20 hover:text-white transition-all flex items-center gap-2">
-                        <Edit2 className="w-4 h-4" />EDIT
+                        <Edit2 className="w-4 h-4" />UBAH
                       </button>
                       <button onClick={() => handleDelete(campaign.id, campaign.name)} className="w-11 h-11 flex items-center justify-center bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl hover:bg-red-500/20 transition-all">
                         <Trash2 className="w-5 h-5" />
@@ -250,12 +251,12 @@ const FlashSaleManagement = () => {
                   {/* Products */}
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-6">
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 font-bold">ASSETS ({campaign.products?.length || 0})</h4>
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 font-bold">DAFTAR PRODUK ({campaign.products?.length || 0})</h4>
                       <button
                         onClick={() => { setSelectedCampaignId(campaign.id); setIsProductModalOpen(true); }}
                         className="h-9 px-5 border border-red-500/30 text-red-400 bg-red-500/10 font-black uppercase text-[9px] tracking-widest rounded-xl hover:bg-red-500/20 transition-all flex items-center gap-2"
                       >
-                        <PlusCircle className="w-4 h-4" />ADD Hub
+                        <PlusCircle className="w-4 h-4" />TAMBAH PRODUK
                       </button>
                     </div>
                     <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
@@ -271,7 +272,7 @@ const FlashSaleManagement = () => {
                              {p.product?.images?.[0] && <img src={p.product.images[0].image_url} alt="" className="w-full h-full object-cover" />}
                           </div>
                           <h5 className="text-[11px] font-black text-white/80 uppercase truncate italic">{p.product?.name}</h5>
-                          <p className="text-[9px] font-black text-red-500 uppercase tracking-widest mt-1">OFF {p.discount_type === 'percentage' ? `${p.discount_value}%` : `Rp ${Number(p.discount_value).toLocaleString()}`}</p>
+                          <p className="text-[9px] font-black text-red-500 uppercase tracking-widest mt-1">OFF {p.discount_type === 'percentage' ? `${p.discount_value}%` : `Rp ${Number(p.discount_value).toLocaleString('id-ID')}`}</p>
                         </div>
                       ))}
                     </div>
@@ -287,9 +288,9 @@ const FlashSaleManagement = () => {
         <div className="px-10 py-8 border-b border-white/5 bg-[#111] flex items-center justify-between shrink-0 font-body">
            <div>
               <h3 className="font-display font-black text-3xl uppercase tracking-tighter italic text-white uppercase italic">
-                {editingCampaign ? 'RE-SYNC' : 'INITIALIZE'} <span className="text-red-500 underline decoration-4 underline-offset-8">CAMPAIGN</span>
+                {editingCampaign ? 'PERBARUI' : 'TERBITKAN'} <span className="text-red-500 underline decoration-4 underline-offset-8">KAMPANYE</span>
               </h3>
-              <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.4em] mt-2">Deploy temporal flash sale node.</p>
+              <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.4em] mt-2">Terbitkan node flash sale temporal.</p>
            </div>
            <button onClick={() => setIsModalOpen(false)} className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 transition-all">
               <X className="w-7 h-7" />
@@ -299,16 +300,16 @@ const FlashSaleManagement = () => {
         <div className="flex-1 overflow-y-auto p-10 font-body">
            <form id="campaignForm" onSubmit={handleCampaignSubmit} className="space-y-6">
               <div className="space-y-3">
-                 <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Campaign Designation</label>
-                 <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="e.g. MEGA FLASH SALE 2025" className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white uppercase tracking-wider outline-none focus:border-red-500 transition-all italic" />
+                 <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Nama Kampanye</label>
+                 <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="cth. MEGA FLASH SALE 2025" className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white uppercase tracking-wider outline-none focus:border-red-500 transition-all italic" />
               </div>
               <div className="grid grid-cols-2 gap-6">
                  <div className="space-y-3 text-right">
-                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Start Signal</label>
+                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Sinyal Mulai</label>
                     <input type="datetime-local" required value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className="w-full h-16 px-6 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white outline-none focus:border-red-500 transition-all" />
                  </div>
                  <div className="space-y-3 text-right">
-                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Termination Time Hub</label>
+                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Waktu Berakhir</label>
                     <input type="datetime-local" required value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className="w-full h-16 px-6 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white outline-none focus:border-red-500 transition-all" />
                  </div>
               </div>
@@ -316,9 +317,9 @@ const FlashSaleManagement = () => {
         </div>
 
         <div className="px-10 py-8 border-t border-white/5 bg-[#111] flex items-center justify-between shrink-0 font-body">
-           <p className="text-[10px] font-black text-white/20 uppercase tracking-widest italic">Authorized Deploy State Hub</p>
+           <p className="text-[10px] font-black text-white/20 uppercase tracking-widest italic">Otorisasi Status Penerbitan</p>
            <button type="submit" form="campaignForm" className="h-16 px-12 bg-red-600 text-white font-black uppercase text-[11px] tracking-[0.3em] rounded-2xl hover:bg-black transition-all shadow-xl italic">
-              DEPLO Hub
+              TERBITKAN
            </button>
         </div>
       </AdminModal>
@@ -327,9 +328,9 @@ const FlashSaleManagement = () => {
           <div className="px-10 py-8 border-b border-white/5 bg-[#111] flex items-center justify-between shrink-0 font-body">
               <div>
                   <h3 className="font-display font-black text-2xl uppercase tracking-tighter italic text-white italic">
-                      ADD <span className="text-red-500 underline decoration-4 underline-offset-4">PRODUCT Hub</span>
+                      TAMBAH <span className="text-red-500 underline decoration-4 underline-offset-4">PRODUK</span>
                   </h3>
-                  <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.4em] mt-2 italic font-bold">Link asset to current flash campaign node Hub.</p>
+                  <p className="text-white/20 text-[9px] font-black uppercase tracking-[0.4em] mt-2 italic font-bold">Hubungkan aset ke node kampanye flash saat ini.</p>
               </div>
                <button onClick={() => setIsProductModalOpen(false)} className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 transition-all">
                   <X className="w-6 h-6" />
@@ -338,10 +339,10 @@ const FlashSaleManagement = () => {
           <div className="flex-1 overflow-y-auto p-10 font-body">
               <form id="addProductForm" onSubmit={handleAddProduct} className="space-y-8 h-fit">
                   <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Asset Selection Hub</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Seleksi Produk</label>
                       <div className="relative">
                           <select required value={productFormData.product_id} onChange={(e) => setProductFormData({ ...productFormData, product_id: e.target.value })} className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[12px] font-black text-white outline-none focus:border-red-500 appearance-none cursor-pointer uppercase">
-                              <option value="" className="bg-[#111]">SELECT ASSET Hub</option>
+                              <option value="" className="bg-[#111]">PILIH PRODUK</option>
                               {products.map((p: any) => (
                                   <option key={p.id} value={p.id} className="bg-[#111] font-body">{p.name.toUpperCase()}</option>
                               ))}
@@ -351,26 +352,26 @@ const FlashSaleManagement = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-8 h-fit">
                       <div className="space-y-3">
-                          <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Disc. Protocol</label>
+                          <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Protokol Diskon</label>
                           <select value={productFormData.discount_type} onChange={(e) => setProductFormData({ ...productFormData, discount_type: e.target.value })} className="w-full h-16 px-6 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white outline-none focus:border-red-500 appearance-none uppercase">
-                              <option value="percentage" className="bg-[#111]">Percentage % Hub</option>
-                              <option value="fixed" className="bg-[#111]">Fixed Amount RP Hub</option>
+                              <option value="percentage" className="bg-[#111]">Persentase (%)</option>
+                              <option value="fixed" className="bg-[#111]">Nominal Tetap (IDR)</option>
                           </select>
                       </div>
                       <div className="space-y-3">
-                          <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold h-fit">Valuation Override Hub</label>
-                          <input type="number" required value={productFormData.discount_value} onChange={(e) => setProductFormData({ ...productFormData, discount_value: e.target.value })} className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white outline-none focus:border-red-500" placeholder="VALUE..." />
+                          <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold h-fit">Nilai Potongan</label>
+                          <input type="number" required value={productFormData.discount_value} onChange={(e) => setProductFormData({ ...productFormData, discount_value: e.target.value })} className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white outline-none focus:border-red-500" placeholder="NILAI..." />
                       </div>
                   </div>
                   <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Allocation Stock Hub</label>
+                      <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 font-bold">Alokasi Stok</label>
                       <input type="number" required value={productFormData.sale_stock} onChange={(e) => setProductFormData({ ...productFormData, sale_stock: e.target.value })} className="w-full h-16 px-8 bg-white/5 border border-white/5 rounded-2xl text-[11px] font-black text-white outline-none focus:border-red-500" placeholder="QTY..." />
                   </div>
               </form>
           </div>
           <div className="px-10 py-8 border-t border-white/5 bg-[#111] flex items-center justify-end font-body">
               <button type="submit" form="addProductForm" className="h-16 px-12 bg-red-600 text-white font-black uppercase text-[11px] tracking-[0.3em] rounded-2xl hover:bg-black transition-all shadow-xl italic">
-                  INJECT ASSET Hub
+                  TAMBAHKAN PRODUK
               </button>
           </div>
       </AdminModal>
@@ -379,9 +380,9 @@ const FlashSaleManagement = () => {
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={onConfirmDelete}
-        title="DELETE CAMPAIGN Hub"
-        message={`Delete campaign "${deleteConfig.name}"? All linked product flash prices will be terminated.`}
-        confirmText="DELETE CAMPAIGN Hub"
+        title="HAPUS KAMPANYE"
+        message={`Hapus kampanye "${deleteConfig.name}"? Seluruh harga flash produk terkait akan dibatalkan.`}
+        confirmText="YA, HAPUS KAMPANYE"
         variant="danger"
       />
     </AdminLayout>

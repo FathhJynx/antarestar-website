@@ -25,7 +25,7 @@ const CommissionSection = ({ onJoin }: CommissionProps) => {
              <Reveal className="space-y-6 md:space-y-12 flex-1 w-full text-center lg:text-left">
                 <div className="space-y-4">
                    <p className="font-bold text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-orange-600 leading-none">SKEMA KOMISI</p>
-                   <h2 className="font-display font-black text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] uppercase text-white leading-[0.8] tracking-tighter">
+                   <h2 className="font-display font-black text-[clamp(3rem,12vw,8rem)] uppercase text-white leading-[0.8] tracking-tighter">
                       10% <br /> <span className="text-white/10">CUAN.</span>
                    </h2>
                 </div>

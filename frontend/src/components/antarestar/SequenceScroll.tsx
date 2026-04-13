@@ -17,12 +17,12 @@ const overlays = [
     position: 'center' as const,
     content: (
       <>
-        <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">TENTANG KAMI</p>
+        <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">CERITA KITA</p>
         <h1 className="font-display font-black text-5xl md:text-[6rem] lg:text-[7rem] uppercase tracking-tight leading-none text-white mb-6">
           ANTARESTAR
         </h1>
         <p className="font-body text-base md:text-lg text-white/50 max-w-lg mx-auto leading-relaxed">
-          <span className="text-white font-bold">Premium Outdoor Gear.</span> Dirancang khusus menghadapi iklim tropis Indonesia—dari lebatnya hutan hingga puncak berbatu.
+          <span className="text-white font-bold">Gear Outdoor Premium.</span> Dirancang khusus menghadapi iklim tropis Indonesia—dari lebatnya hutan hingga puncak berbatu.
         </p>
       </>
     ),
@@ -35,14 +35,14 @@ const overlays = [
     position: 'left' as const,
     content: (
       <>
-        <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">Filosofi Kami</p>
+        <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">Prinsip Kita</p>
         <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl text-white uppercase leading-none tracking-tight mb-5">
           Lahir dari<br />
           <span className="text-accent">Pegunungan</span><br />
           Nusantara
         </h2>
         <p className="font-body text-sm md:text-base text-white/50 max-w-md leading-relaxed">
-          Setiap produk kami diuji oleh alam tropis yang keras — memastikan ketahanan dan kenyamanan maksimal di setiap kondisi perjalanan.
+          Setiap produk kita diuji langsung di alam tropis yang keras — buat mastiin ketahanan dan kenyamanan maksimal buat lo.
         </p>
       </>
     ),
@@ -62,7 +62,7 @@ const overlays = [
           <span className="text-accent">Berarti</span>
         </h2>
         <p className="font-body text-sm md:text-base text-white/50 max-w-md leading-relaxed">
-          Petualangan bukan sekadar tempat tujuan akhir, namun tentang setiap jejak yang kamu tinggalkan dan perlengkapan yang bisa kamu andalkan.
+          Petualangan bukan cuma soal tujuan akhir, tapi tentang setiap jejak yang lo tinggalin dan gear yang bisa lo andalin.
         </p>
       </div>
     ),
@@ -75,20 +75,20 @@ const overlays = [
     position: 'center' as const,
     content: (
       <>
-        <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">Mulai Petualanganmu</p>
+        <p className="font-body text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">Gas Petualangan Lo</p>
         <h2 className="font-display font-black text-4xl sm:text-5xl md:text-7xl text-white uppercase leading-none tracking-tight mb-6">
-          Ready to<br />
-          <span className="text-accent">Conquer?</span>
+          Siap buat<br />
+          <span className="text-accent">Taklukin Medan?</span>
         </h2>
         <p className="font-body text-sm md:text-base text-white/50 mb-10 max-w-lg mx-auto leading-relaxed">
-          Ribuan penjelajah telah menemukan perlengkapan terbaik mereka. Sekarang giliranmu untuk memulai cerita baru.
+          Ribuan explorer udah nemuin gear terbaik mereka. Sekarang giliran lo buat mulai cerita baru.
         </p>
         <div className="pointer-events-auto mt-2">
           <Link
             to="/store"
             className="group inline-flex items-center gap-3 h-14 px-8 bg-accent hover:bg-accent/90 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_0_28px_rgba(234,88,12,0.35)]"
           >
-            Eksplor Koleksi <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            Gas Cek Koleksi <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </>

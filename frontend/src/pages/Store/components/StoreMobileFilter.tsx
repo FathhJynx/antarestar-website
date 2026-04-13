@@ -1,8 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { categories, activities, sortOptions } from "@/data/products";
-import { fmtK, MIN_PRICE, MAX_PRICE } from "@/pages/Store/components/StoreFilterSidebar";
+import { categories as defaultCategories, activities, sortOptions } from "@/data/products";
 
 interface StoreMobileFilterProps {
   open: boolean;
@@ -20,6 +19,7 @@ interface StoreMobileFilterProps {
   onPriceMinChange: (v: number) => void;
   onPriceMaxChange: (v: number) => void;
   onReset: () => void;
+  categories?: string[];
 }
 
 const StoreMobileFilter = ({
@@ -28,7 +28,10 @@ const StoreMobileFilter = ({
   priceMin, priceMax, filteredCount, activeFilterCount,
   onCategoryChange, onActivityChange, onSortChange,
   onPriceMinChange, onPriceMaxChange, onReset,
+  categories = defaultCategories,
 }: StoreMobileFilterProps) => {
+  const allCategories = ["Semua Gear", ...categories.filter(c => c !== "Semua Gear")];
+
   return (
     <AnimatePresence>
       {open && (
@@ -80,7 +83,7 @@ const StoreMobileFilter = ({
 
                {/* Sort */}
                <div className="mb-10">
-                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Urutkan</p>
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Urutin</p>
                 <div className="flex flex-col">
                   {sortOptions.map((opt) => (
                     <motion.button
@@ -104,7 +107,7 @@ const StoreMobileFilter = ({
               <div className="mb-10">
                 <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Kategori</p>
                 <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => (
+                  {allCategories.map((cat) => (
                     <motion.button
                       key={cat}
                       whileTap={{ scale: 0.96 }}
@@ -124,7 +127,7 @@ const StoreMobileFilter = ({
 
               {/* Activity */}
               <div className="mb-10">
-                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Aktivitas</p>
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Kegiatan</p>
                 <div className="flex flex-wrap gap-2">
                   {activities.map((act) => (
                     <motion.button
@@ -146,7 +149,7 @@ const StoreMobileFilter = ({
 
               {/* Price Range */}
               <div className="mb-8">
-                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Harga</p>
+                <p className="font-display font-black text-xs tracking-[0.3em] uppercase text-white/40 mb-4 border-b border-white/10 pb-3">Budget</p>
                 <div className="flex items-center justify-between font-display font-black tracking-widest text-[10px] text-white/60 mb-5">
                   <span className="bg-[#111111] border border-white/10 px-3 py-1.5">RP {fmtK(priceMin)}</span>
                   <span className="text-white/20">—</span>
@@ -181,10 +184,10 @@ const StoreMobileFilter = ({
                 onClick={onReset}
                 className="flex-1 font-display font-black uppercase text-[10px] tracking-widest text-white/40 border border-white/10 hover:text-white transition-colors"
               >
-                Reset Semua
+                Mulai Ulang
               </button>
               <button className="flex-[2] font-display font-black uppercase text-xs tracking-widest px-4 py-4 bg-orange-500 text-white" onClick={onClose}>
-                Terapkan {filteredCount} Barang
+                Pasang {filteredCount} Barang
               </button>
             </div>
           </motion.div>

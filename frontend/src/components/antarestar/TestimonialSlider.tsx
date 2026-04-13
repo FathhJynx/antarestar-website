@@ -52,10 +52,10 @@ const TestimonialSlider = () => {
       {/* Massive Parallax Marquee Background */}
       <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[200vw] flex flex-col gap-4 pointer-events-none opacity-[0.03] transform -rotate-3 z-0">
         <motion.div style={{ x: x1 }} className="whitespace-nowrap font-display font-black text-[clamp(10rem,15vw,20rem)] uppercase leading-none tracking-tighter">
-          COMMUNITY INSPIRATION EXPLORE BEYOND
+          INSPIRASI KOMUNITAS JELAJAH TANPA BATAS
         </motion.div>
         <motion.div style={{ WebkitTextStroke: "2px white", x: x2 }} className="whitespace-nowrap font-display font-black text-[clamp(10rem,15vw,20rem)] uppercase leading-none tracking-tighter text-transparent">
-          ANTARESTAR EXPLORER HUB GLOBAL
+          ANTARESTAR EXPLORER HUB INDONESIA
         </motion.div>
       </div>
 
@@ -64,7 +64,7 @@ const TestimonialSlider = () => {
         {/* Animated Label */}
         <motion.div style={{ y: useTransform(scrollYProgress, [0, 1], [50, -50]) }} className="flex items-center gap-4 mb-16 md:mb-24">
           <div className="w-12 h-1 bg-orange-500" />
-          <p className="font-display text-[10px] sm:text-xs uppercase tracking-[0.4em] text-orange-500 font-black">Community Voices</p>
+          <p className="font-display text-[10px] sm:text-xs uppercase tracking-[0.4em] text-orange-500 font-black">Suara Komunitas</p>
         </motion.div>
 
         {/* Parallax Content Box */}

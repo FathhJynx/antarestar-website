@@ -6,22 +6,22 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 const footerLinks = {
   shop: [
-    { label: "Semua Produk", to: "/store" },
+    { label: "Semua Gear", to: "/store" },
     { label: "Jaket", to: "/store?category=Jakets" },
     { label: "Tas", to: "/store?category=Bags" },
     { label: "Alas Kaki", to: "/store?category=Footwear" },
     { label: "Aksesoris", to: "/store?category=Accessories" },
   ],
   company: [
-    { label: "Tentang Kami", to: "/about" },
-    { label: "Blog", to: "/blog" },
-    { label: "Afiliasi", to: "/affiliate" },
-    { label: "Korporat", to: "/corporate" },
+    { label: "Tentang Kita", to: "/about" },
+    { label: "Jurnal", to: "/blog" },
+    { label: "Misi Cuan", to: "/affiliate" },
+    { label: "Kerjasama", to: "/corporate" },
   ],
   support: [
-    { label: "Tracking Pesanan", to: "/tracking" },
-    { label: "Area Member", to: "/member" },
-    { label: "Kontak", to: "#" },
+    { label: "Cek Status Paket", to: "/tracking" },
+    { label: "Basecamp Member", to: "/member" },
+    { label: "Hubungi Kita", to: "#" },
   ],
   social: [
     { label: "Instagram", icon: Instagram, to: "#" },
@@ -32,7 +32,7 @@ const footerLinks = {
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white relative overflow-hidden border-t border-white/[0.06]">
+    <footer className="bg-black text-white relative overflow-hidden border-t border-white/[0.06] pb-32 lg:pb-40">
       {/* Large brand text */}
       <div className="overflow-hidden py-16 md:py-24 border-b border-white/[0.06]">
         <motion.div
@@ -42,7 +42,7 @@ const Footer = () => {
           transition={{ duration: 1, ease }}
           className="px-8 md:px-20 lg:px-32"
         >
-          <h2 className="font-display font-black text-[clamp(3rem,12vw,10rem)] uppercase tracking-[-0.05em] leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-white/15 to-white/[0.03]">
+          <h2 className="font-display font-black text-[clamp(2rem,8vw,7rem)] uppercase tracking-[-0.05em] leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-white/15 to-white/[0.03]">
             Antarestar
           </h2>
         </motion.div>
@@ -60,7 +60,7 @@ const Footer = () => {
               draggable={false}
             />
             <p className="font-body text-[13px] text-white/35 leading-relaxed max-w-sm mb-8">
-              Kami merancang perlengkapan premium untuk mereka yang tak kenal lelah. Dibuat untuk petualang Indonesia sejak 2019.
+              Kita bikin gear premium buat lo yang nggak bisa diem. Temen setia petualang Indonesia dari 2019.
             </p>
             <div className="flex gap-2">
               {footerLinks.social.map((s) => (
@@ -77,7 +77,7 @@ const Footer = () => {
 
           {/* Shop */}
           <div className="md:col-span-2 md:col-start-6">
-            <h4 className="font-body text-[9px] uppercase tracking-[0.4em] text-white/25 font-medium mb-6">Belanja</h4>
+            <h4 className="font-body text-[9px] uppercase tracking-[0.4em] text-white/25 font-medium mb-6">Gas Belanja</h4>
             <ul className="space-y-3">
               {footerLinks.shop.map((link) => (
                 <li key={link.label}>
@@ -91,7 +91,7 @@ const Footer = () => {
 
           {/* Company */}
           <div className="md:col-span-2">
-            <h4 className="font-body text-[9px] uppercase tracking-[0.4em] text-white/25 font-medium mb-6">Perusahaan</h4>
+            <h4 className="font-body text-[9px] uppercase tracking-[0.4em] text-white/25 font-medium mb-6">Tentang Kita</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
@@ -105,7 +105,7 @@ const Footer = () => {
 
           {/* Support */}
           <div className="md:col-span-2">
-            <h4 className="font-body text-[9px] uppercase tracking-[0.4em] text-white/25 font-medium mb-6">Bantuan</h4>
+            <h4 className="font-body text-[9px] uppercase tracking-[0.4em] text-white/25 font-medium mb-6">Butuh Bantuan?</h4>
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.label}>
