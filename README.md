@@ -1,6 +1,6 @@
 # 🚀 Antarestar Explorer Hub
-> **Next-Gen E-Commerce for Modern Adventurers**  
-> *Crafted with ❤️ by **Fathan Jamil***
+> **Platform E-Commerce Generasi Terbaru untuk Para Petualang**  
+> *Dikembangkan dengan ❤️ oleh **Fathan Jamil***
 
 [![Laravel](https://img.shields.io/badge/Laravel-13.0-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
@@ -10,28 +10,32 @@
 
 ---
 
-## ✨ Overview
+## ✨ Ikhtisar (Overview)
 
-**Antarestar Explorer Hub** is a premium, high-performance e-commerce platform designed specifically for outdoor equipment and adventure gear. Built using the latest technology stack, it offers a seamless, blazingly fast, and visually stunning shopping experience.
+**Antarestar Explorer Hub** adalah platform e-commerce premium yang dirancang khusus untuk kebutuhan perlengkapan outdoor dan petualangan. Dengan performa tinggi dan desain modern, platform ini memberikan pengalaman belanja yang mulus dan responsif bagi para penjelajah.
 
-### 🌟 Key Features
-- **⚡ Ultra-Performance:** Powered by **Laravel Octane & RoadRunner** for sub-millisecond API responses.
-- **🎨 Modern UI/UX:** Responsive design using **React 19**, **Tailwind CSS**, and **Framer Motion**.
-- **🛠️ Robust Backend:** Scalable architecture with Laravel 13, featuring comprehensive admin management.
-- **📱 Mobile Optimized:** Designed for explorers on the go with a mobile-first approach.
-- **🛡️ Security Hardened:** Implementation of security headers and strict validation protocols.
+### 🌟 Fitur Utama Website
+- **⚡ Performa Kilat:** Navigasi antar halaman yang instan tanpa *lag* berkat optimasi server **RoadRunner**.
+- **🛍️ Katalog Produk Modern:** Penelusuran produk yang interaktif dengan sistem filter kategori yang cerdas.
+- **🔥 Promo Flash Sale:** Fitur penjualan terbatas dengan penghitung waktu mundur (*countdown*) yang real-time.
+- **💎 Member Area Eksklusif:** Dashboard khusus anggota untuk melacak pesanan, poin, dan sistem **Referral** untuk mendapatkan reward.
+- **🤝 Program Afiliasi:** Halaman khusus bagi mitra untuk memantau komisi, klik, dan performa konversi secara transparan.
+- **🛡️ Sistem Checkout Terpadu:** Alur pembayaran yang aman dengan manajemen alamat, pemilihan kurir, dan integrasi voucher.
+- **📊 Panel Admin Powerfull:** Dashboard manajemen lengkap untuk mengelola produk, kategori, diskon, hingga laporan penjualan detail.
+- **📱 Responsivitas Tinggi:** Pengalaman belanja yang konsisten dan nyaman baik di desktop maupun perangkat mobile.
+- **📖 Blog Petualangan:** Ruang edukasi dan inspirasi seputar tips petualangan dan review perlengkapan.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Arsitektur Sistem
 
-The project is split into two main components:
+Proyek ini menggunakan pemisahan struktur yang modern:
 
 ### 🌐 [Frontend](./frontend)
 - **Framework:** React 19 (Vite)
 - **Styling:** Tailwind CSS + Shadcn/UI
-- **Animations:** Framer Motion
-- **State Management:** React Context API / Hooks
+- **Animasi:** Framer Motion
+- **State Management:** React Context API & Hooks
 
 ### ⚙️ [Backend](./backend)
 - **Framework:** Laravel 13
@@ -41,17 +45,17 @@ The project is split into two main components:
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Cara Menjalankan
 
-### Prerequisites
+### Persyaratan Sistem
 - PHP >= 8.3
 - Node.js >= 20
 - Composer
 - MySQL
 
-### Installation
+### Langkah Instalasi
 
-1. **Clone the repository**
+1. **Clone repositori**
    ```bash
    git clone https://github.com/FathhJynx/antarestar-website.git
    cd antarestar-explorer-hub
@@ -64,7 +68,7 @@ The project is split into two main components:
    cp .env.example .env
    php artisan key:generate
    php artisan migrate --seed
-   # For Windows Dev:
+   # Untuk Windows Dev:
    php artisan octane:start --server=roadrunner --watch
    ```
 
@@ -77,9 +81,9 @@ The project is split into two main components:
 
 ---
 
-## 🛠️ Tech Stack & Credits
+## 🛠️ Teknologi & Kredit
 
-| Technology | Usage |
+| Teknologi | Penggunaan |
 | :--- | :--- |
 | **Laravel 13** | Backend Core |
 | **Laravel Octane** | Performance Layer |
@@ -87,24 +91,23 @@ The project is split into two main components:
 | **React 19** | UI Library |
 | **TypeScript** | Type Safety |
 | **Tailwind CSS** | Styling |
-| **Framer Motion** | Interaction & Motion |
-| **Lucide Icons** | Iconography |
+| **Framer Motion** | Interaksi & Animasi |
 
 ---
 
-## 👤 Author
+## 👤 Pengembang
 
 **Fathan Jamil**  
-*Fullstack Developer & UI Enthusiast*
+*Fullstack Developer & UI/UX Enthusiast*
 
 - **GitHub:** [@FathhJynx](https://github.com/FathhJynx)
-- **Project:** Antarestar Website
+- **Project:** Antarestar Website Official
 
 ---
 
-## 📜 License
+## 📜 Lisensi
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Proyek ini dilisensikan di bawah Lisensi MIT.
 
 ---
-<p align="center">Built for explorers, by an explorer. 🏔️</p>
+<p align="center">Dibuat khusus untuk para penjelajah, oleh seorang penjelajah. 🏔️</p>
