@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::get('/stats', [PublicStatsController::class, 'index']);
+Route::get('/ping', function() { return response()->json(['message' => 'pong']); });
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:3,10'); // 3 attempts per 10 minutes

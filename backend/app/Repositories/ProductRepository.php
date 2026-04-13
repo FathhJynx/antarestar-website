@@ -145,7 +145,16 @@ class ProductRepository extends BaseRepository
             return new Collection();
         }
 
-        return $this->model->with(['category', 'variants', 'images', 'reviews'])
+        return $this->model->with([
+            'category', 
+            'variants', 
+            'images', 
+            'reviews',
+            'flashSaleProducts.flashSale' => function($q) {
+                $q->where('is_active', true)
+                  ->where('end_date', '>=', now());
+            }
+        ])
             ->withSum('orderItems as sold_count', 'quantity')
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $productId)

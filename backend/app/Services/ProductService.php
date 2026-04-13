@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class ProductService
 {
@@ -17,17 +18,21 @@ class ProductService
     // Categories
     public function getAllCategories()
     {
-        return $this->productRepository->allCategories();
+        return Cache::remember('all_categories', 3600, function () {
+            return $this->productRepository->allCategories();
+        });
     }
 
     public function createCategory(array $data)
     {
+        Cache::forget('all_categories');
         $data['slug'] = Str::slug($data['name']);
         return $this->productRepository->createCategory($data);
     }
 
     public function updateCategory(string $id, array $data)
     {
+        Cache::forget('all_categories');
         if (isset($data['name'])) {
             $data['slug'] = Str::slug($data['name']);
         }
@@ -36,6 +41,7 @@ class ProductService
 
     public function deleteCategory(string $id)
     {
+        Cache::forget('all_categories');
         return $this->productRepository->deleteCategory($id);
     }
 
@@ -44,11 +50,11 @@ class ProductService
     {
         $perPage = $filters['per_page'] ?? 15;
         $products = $this->productRepository->getProductsFiltered($filters, $perPage);
-        
+
         $products->getCollection()->transform(function($product) {
             return $this->transformProductForFlashSale($product);
         });
-        
+
         return $products;
     }
 
@@ -72,14 +78,19 @@ class ProductService
 
     public function transformProductForFlashSale($product)
     {
-        $activeFlashSaleProduct = $product->flashSaleProducts->first(function($fsp) {
+        // Use eager loaded relationship to avoid N+1
+        $flashSaleProducts = $product->relationLoaded('flashSaleProducts') 
+            ? $product->flashSaleProducts 
+            : $product->flashSaleProducts();
+
+        $activeFlashSaleProduct = $flashSaleProducts->first(function($fsp) {
             return $fsp->flashSale && $fsp->flashSale->is_active && new \DateTime($fsp->flashSale->end_date) >= new \DateTime();
         });
 
         foreach ($product->variants as $variant) {
             if ($activeFlashSaleProduct) {
                 $variant->is_on_flash_sale = true;
-                
+
                 // Calculate discounted price based on type
                 if ($activeFlashSaleProduct->discount_type === 'percentage') {
                     $discountValue = (float) $activeFlashSaleProduct->discount_value;
@@ -103,7 +114,6 @@ class ProductService
         }
         return $product;
     }
-
     public function createProduct(array $data)
     {
         $variants = $data['variants'] ?? [];
